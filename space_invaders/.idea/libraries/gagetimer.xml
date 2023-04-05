@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="gagetimer">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/gagetimer.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
