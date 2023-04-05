@@ -1,16 +1,17 @@
 package org.newdawn.spaceinvaders;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -79,7 +80,7 @@ public class Game extends Canvas
 	/**
 	 * Construct our game and set it running.
 	 */
-	public Game() {
+	public Game() throws IOException {
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
 
@@ -147,7 +148,7 @@ public class Game extends Canvas
 	 */
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this,"sprites/ship.gif",370,550);
+		ship = new ShipEntity(this,"sprites/PiggyOriGagul.png",370,550);
 		entities.add(ship);
 		
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
@@ -248,7 +249,7 @@ public class Game extends Canvas
 	 * - Checking Input
 	 * <p>
 	 */
-	public void gameLoop() {
+	public void gameLoop() throws IOException {
 		long lastLoopTime = SystemTimer.getTime();
 		
 		// keep looping round til the game ends
@@ -270,13 +271,22 @@ public class Game extends Canvas
 				lastFpsTime = 0;
 				fps = 0;
 			}
-			
+
 			// Get hold of a graphics context for the accelerated 
 			// surface and blank it out
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-			g.setColor(Color.black);
+//			g.setColor(Color.black);
 			g.fillRect(0,0,800,600);
-			
+
+			// 이미지 파일을 읽어와서 BufferedImage 객체로 변환
+			BufferedImage img = ImageIO.read(new File("space_invaders/src/sprites/spaceBackground.jpg"));
+
+			Image scaledImg = img.getScaledInstance(800, 600, Image.SCALE_SMOOTH);
+
+			// Graphics2D 객체를 사용하여 이미지 그리기
+			g.drawImage(scaledImg, 0, 0, null);
+
+
 			// cycle round asking each entity to move itself
 			if (!waitingForKeyPress) {
 				for (int i=0;i<entities.size();i++) {
@@ -465,7 +475,7 @@ public class Game extends Canvas
 	 * 
 	 * @param argv The arguments that are passed into our game
 	 */
-	public static void main(String argv[]) {
+	public static void main(String argv[]) throws IOException {
 		Game g = new Game();
 
 		// Start the main game loop, note: this method will not
