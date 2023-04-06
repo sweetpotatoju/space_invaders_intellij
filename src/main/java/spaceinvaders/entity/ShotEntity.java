@@ -1,6 +1,7 @@
 package spaceinvaders.entity;
 
 import spaceinvaders.Game;
+//import spaceinvaders.TimerMode;
 
 /**
  * An entity representing a shot fired by the player's ship
@@ -12,6 +13,7 @@ public class ShotEntity extends Entity {
 	private double moveSpeed = -300;
 	/** The game in which this entity exists */
 	private Game game;
+//	private TimerMode timerMode;
 	/** True if this shot has been "used", i.e. its hit something */
 	private boolean used = false;
 	
@@ -23,13 +25,23 @@ public class ShotEntity extends Entity {
 	 * @param x The initial x location of the shot
 	 * @param y The initial y location of the shot
 	 */
-	public ShotEntity(Game game,String sprite,int x,int y) {
+	public ShotEntity(Game game, String sprite, int x, int y) {
 		super(sprite,x,y);
 		
 		this.game = game;
+
 		
 		dy = moveSpeed;
 	}
+
+//	public ShotEntity(TimerMode timerMode, String sprite, int x, int y) {
+//		super(sprite,x,y);
+//
+//		this.timerMode = timerMode;
+//
+//
+//		dy = moveSpeed;
+//	}
 
 	/**
 	 * Request that this shot moved based on time elapsed

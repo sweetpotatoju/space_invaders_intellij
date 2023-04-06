@@ -3,6 +3,7 @@ package spaceinvaders.entity;
 import spaceinvaders.Game;
 import spaceinvaders.Sprite;
 import spaceinvaders.SpriteStore;
+//import spaceinvaders.TimerMode;
 
 /**
  * An entity which represents one of our space invader aliens.
@@ -30,7 +31,7 @@ public class AlienEntity extends Entity {
 	 * @param x The intial x location of this alien
 	 * @param y The intial y location of this alient
 	 */
-	public AlienEntity(Game game,int x,int y) {
+	public AlienEntity(Game game, int x, int y) {
 		super("sprites/alien.gif",x,y);
 		
 		// setup the animatin frames
@@ -42,6 +43,19 @@ public class AlienEntity extends Entity {
 		this.game = game;
 		dx = -moveSpeed;
 	}
+
+//	public AlienEntity(TimerMode timerMode, int x, int y) {
+//		super("sprites/alien.gif",x,y);
+//
+//		// setup the animatin frames
+//		frames[0] = sprite;
+//		frames[1] = SpriteStore.get().getSprite("sprites/alien2.gif");
+//		frames[2] = sprite;
+//		frames[3] = SpriteStore.get().getSprite("sprites/alien3.gif");
+//
+//		this.timerMode = timerMode;
+//		dx = -moveSpeed;
+//	}
 
 	/**
 	 * Request that this alien moved based on time elapsed
