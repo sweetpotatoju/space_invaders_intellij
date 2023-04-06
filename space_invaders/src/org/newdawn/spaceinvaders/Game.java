@@ -1,10 +1,7 @@
 package org.newdawn.spaceinvaders;
 
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,8 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
@@ -66,6 +62,7 @@ public class Game extends Canvas
 	private boolean rightPressed = false;
 	/** True if we are firing */
 	private boolean firePressed = false;
+
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
 	/** The last time at which we recorded the frame rate */
@@ -76,7 +73,7 @@ public class Game extends Canvas
 	private String windowTitle = "Space Invaders 102";
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
-	
+
 	/**
 	 * Construct our game and set it running.
 	 */
@@ -125,6 +122,13 @@ public class Game extends Canvas
 		// initialise the entities in our game so there's something
 		// to see at startup
 		initEntities();
+
+
+
+
+
+		
+
 	}
 	
 	/**
@@ -141,7 +145,7 @@ public class Game extends Canvas
 		rightPressed = false;
 		firePressed = false;
 	}
-	
+
 	/**
 	 * Initialise the starting state of the entities (ship and aliens). Each
 	 * entitiy will be added to the overall list of entities in the game.
@@ -234,10 +238,12 @@ public class Game extends Canvas
 		
 		// if we waited long enough, create the shot entity, and record the time.
 		lastFire = System.currentTimeMillis();
-		ShotEntity shot = new ShotEntity(this,"sprites/shot.gif",ship.getX()+10,ship.getY()-30);
+		ShotEntity shot = new ShotEntity(this,"sprites/starShott.png",ship.getX()+10,ship.getY()-30);
 		entities.add(shot);
 	}
 	
+
+
 	/**
 	 * The main game loop. This loop is running during all game
 	 * play as is responsible for the following activities:
@@ -259,6 +265,7 @@ public class Game extends Canvas
 			// move this loop
 			long delta = SystemTimer.getTime() - lastLoopTime;
 			lastLoopTime = SystemTimer.getTime();
+
 
 			// update the frame counter
 			lastFpsTime += delta;
@@ -337,7 +344,7 @@ public class Game extends Canvas
 			// if we're waiting for an "any key" press then draw the 
 			// current message 
 			if (waitingForKeyPress) {
-				g.setColor(Color.white);
+				g.setColor(Color.pink);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
 				g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
 			}
@@ -368,9 +375,14 @@ public class Game extends Canvas
 			// to this and then factor in the current time to give 
 			// us our final value to wait for
 			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
+
+
+
 		}
 	}
-	
+
+
+
 	/**
 	 * A class to handle keyboard input from the user. The class
 	 * handles both dynamic input during game play, i.e. left/right 
@@ -411,6 +423,8 @@ public class Game extends Canvas
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = true;
 			}
+
+
 		} 
 		
 		/**
@@ -434,6 +448,8 @@ public class Game extends Canvas
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = false;
 			}
+
+
 		}
 
 		/**
