@@ -63,6 +63,10 @@ public class Game extends Canvas
 	private boolean leftPressed = false;
 	/** True if the right cursor key is currently pressed */
 	private boolean rightPressed = false;
+	/** down movement key detection */
+	private boolean downPressed = false;
+	/** up movement key detection */
+	private boolean upPressed = false;
 	/** True if we are firing */
 	private boolean firePressed = false;
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
@@ -143,6 +147,8 @@ public class Game extends Canvas
 		// blank out any keyboard settings we might currently have
 		leftPressed = false;
 		rightPressed = false;
+		upPressed = false;
+		downPressed = false;
 		firePressed = false;
 	}
 	
@@ -345,11 +351,37 @@ public class Game extends Canvas
 			// resolve the movement of the ship. First assume the ship 
 			// isn't moving. If either cursor key is pressed then
 			// update the movement appropraitely
-			ship.setHorizontalMovement(0);
-			
-			if ((leftPressed) && (!rightPressed)) {
+
+			if ((leftPressed)&&(!rightPressed)&&(!upPressed)&&(!downPressed)){
 				ship.setHorizontalMovement(-moveSpeed);
-			} else if ((rightPressed) && (!leftPressed)) {
+			}
+			//right unique move
+			else if ((rightPressed)&&(!leftPressed)&&(!upPressed)&&(!downPressed)){
+				ship.setHorizontalMovement(moveSpeed);
+			}
+			//up unique move
+			else if ((upPressed)&&(!downPressed)&&(!rightPressed)&&(!leftPressed)){
+				ship.setVerticalMovement(-moveSpeed);
+			}
+			//down unique move
+			else if ((downPressed)&&(!upPressed)&&(!rightPressed)&&(!leftPressed)){
+				ship.setVerticalMovement(moveSpeed);
+			}
+			//left&up degree 45
+			else if((leftPressed)&&(upPressed)&&(!rightPressed)&&(!downPressed)){
+				ship.setVerticalMovement(-moveSpeed);
+				ship.setHorizontalMovement(-moveSpeed);
+			}
+			else if((leftPressed)&&(downPressed)&&(!rightPressed)&&(!upPressed)){
+				ship.setVerticalMovement(moveSpeed);
+				ship.setHorizontalMovement(-moveSpeed);
+			}
+			else if((rightPressed)&&(upPressed)&&(!downPressed)&&(!leftPressed)){
+				ship.setVerticalMovement(-moveSpeed);
+				ship.setHorizontalMovement(moveSpeed);
+			}
+			else if((rightPressed)&&(downPressed)&&(!upPressed)&&(!leftPressed)){
+				ship.setVerticalMovement(moveSpeed);
 				ship.setHorizontalMovement(moveSpeed);
 			}
 			
@@ -395,36 +427,48 @@ public class Game extends Canvas
 			if (waitingForKeyPress) {
 				return;
 			}
-			
-			
+
+
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 				leftPressed = true;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				rightPressed = true;
 			}
+			if (e.getKeyCode() == KeyEvent.VK_UP){
+				upPressed = true;
+			}
+			if(e.getKeyCode() == KeyEvent.VK_DOWN){
+				downPressed = true;
+			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = true;
 			}
-		} 
-		
+		}
+
 		/**
 		 * Notification from AWT that a key has been released.
 		 *
-		 * @param e The details of the key that was released 
+		 * @param e The details of the key that was released
 		 */
 		public void keyReleased(KeyEvent e) {
-			// if we're waiting for an "any key" typed then we don't 
+			// if we're waiting for an "any key" typed then we don't
 			// want to do anything with just a "released"
 			if (waitingForKeyPress) {
 				return;
 			}
-			
+
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 				leftPressed = false;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				rightPressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_UP){
+				upPressed = false;
+			}
+			if(e.getKeyCode() == KeyEvent.VK_DOWN){
+				downPressed = false;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = false;
