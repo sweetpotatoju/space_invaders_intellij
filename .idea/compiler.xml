@@ -9,8 +9,5 @@
         <module name="space_invaders_intellij" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="space_invaders_intellij" target="1.7" />
-    </bytecodeTargetLevel>
   </component>
 </project>

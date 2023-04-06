@@ -1,4 +1,4 @@
-package spaceinvaders;
+package org.newdawn.spaceinvaders;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import spaceinvaders.entity.AlienEntity;
-import spaceinvaders.entity.Entity;
-import spaceinvaders.entity.ShipEntity;
-import spaceinvaders.entity.ShotEntity;
+import org.newdawn.spaceinvaders.entity.AlienEntity;
+import org.newdawn.spaceinvaders.entity.Entity;
+import org.newdawn.spaceinvaders.entity.ShipEntity;
+import org.newdawn.spaceinvaders.entity.ShotEntity;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -63,6 +63,10 @@ public class Game extends Canvas
 	private boolean leftPressed = false;
 	/** True if the right cursor key is currently pressed */
 	private boolean rightPressed = false;
+
+	private boolean upPressed = false;
+
+	private boolean downPressed = false;
 	/** True if we are firing */
 	private boolean firePressed = false;
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
@@ -82,25 +86,25 @@ public class Game extends Canvas
 	public Game() {
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
-
+		
 		// get hold the content of the frame and set up the resolution of the game
 		JPanel panel = (JPanel) container.getContentPane();
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
-
+		
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
 		panel.add(this);
-
+		
 		// Tell AWT not to bother repainting our canvas since we're
 		// going to do that our self in accelerated mode
 		setIgnoreRepaint(true);
-
-		// finally make the window visible
+		
+		// finally make the window visible 
 		container.pack();
 		container.setResizable(false);
 		container.setVisible(true);
-
+		
 		// add a listener to respond to the user closing the window. If they
 		// do we'd like to exit the game
 		container.addWindowListener(new WindowAdapter() {
@@ -108,28 +112,23 @@ public class Game extends Canvas
 				System.exit(0);
 			}
 		});
-
+		
 		// add a key input system (defined below) to our canvas
 		// so we can respond to key pressed
 		addKeyListener(new KeyInputHandler());
-
+		
 		// request the focus so key events come to us
 		requestFocus();
 
 		// create the buffering strategy which will allow AWT
 		// to manage our accelerated graphics
-		createBufferStrategy(2 );
+		createBufferStrategy(2);
 		strategy = getBufferStrategy();
-
+		
 		// initialise the entities in our game so there's something
 		// to see at startup
 		initEntities();
-		new LoginPage();
-		new MFirebaseTool().hashCode();
-
 	}
-
-
 	
 	/**
 	 * Start a fresh game, this should clear out any old data and
@@ -143,6 +142,8 @@ public class Game extends Canvas
 		// blank out any keyboard settings we might currently have
 		leftPressed = false;
 		rightPressed = false;
+		upPressed = false;
+		downPressed = false;
 		firePressed = false;
 	}
 	
@@ -152,7 +153,7 @@ public class Game extends Canvas
 	 */
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this, "sprites/ship.gif",370,550);
+		ship = new ShipEntity(this,"sprites/ship.gif",370,550);
 		entities.add(ship);
 		
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
@@ -238,7 +239,7 @@ public class Game extends Canvas
 		
 		// if we waited long enough, create the shot entity, and record the time.
 		lastFire = System.currentTimeMillis();
-		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ship.getX()+10,ship.getY()-30);
+		ShotEntity shot = new ShotEntity(this,"sprites/shot.gif",ship.getX()+10,ship.getY()-30);
 		entities.add(shot);
 	}
 	
@@ -346,13 +347,40 @@ public class Game extends Canvas
 			// isn't moving. If either cursor key is pressed then
 			// update the movement appropraitely
 			ship.setHorizontalMovement(0);
-			
-			if ((leftPressed) && (!rightPressed)) {
+			ship.setVerticalMovement(0);
+			//left unique move
+			if ((leftPressed)&&(!rightPressed)&&(!upPressed)&&(!downPressed)){
 				ship.setHorizontalMovement(-moveSpeed);
-			} else if ((rightPressed) && (!leftPressed)) {
+			}
+			//right unique move
+			else if ((rightPressed)&&(!leftPressed)&&(!upPressed)&&(!downPressed)){
 				ship.setHorizontalMovement(moveSpeed);
 			}
-			
+			//up unique move
+			else if ((upPressed)&&(!downPressed)&&(!rightPressed)&&(!leftPressed)){
+				ship.setVerticalMovement(-moveSpeed);
+			}
+			//down unique move
+			else if ((downPressed)&&(!upPressed)&&(!rightPressed)&&(!leftPressed)){
+				ship.setVerticalMovement(moveSpeed);
+			}
+			//left&up degree 45
+			else if((leftPressed)&&(upPressed)&&(!rightPressed)&&(!downPressed)){
+				ship.setVerticalMovement(-moveSpeed);
+				ship.setHorizontalMovement(-moveSpeed);
+			}
+			else if((leftPressed)&&(downPressed)&&(!rightPressed)&&(!upPressed)){
+				ship.setVerticalMovement(moveSpeed);
+				ship.setHorizontalMovement(-moveSpeed);
+			}
+			else if((rightPressed)&&(upPressed)&&(!downPressed)&&(!leftPressed)){
+				ship.setVerticalMovement(-moveSpeed);
+				ship.setHorizontalMovement(moveSpeed);
+			}
+			else if((rightPressed)&&(downPressed)&&(!upPressed)&&(!leftPressed)){
+				ship.setVerticalMovement(moveSpeed);
+				ship.setHorizontalMovement(moveSpeed);
+			}
 			// if we're pressing fire, attempt to fire
 			if (firePressed) {
 				tryToFire();
@@ -395,13 +423,17 @@ public class Game extends Canvas
 			if (waitingForKeyPress) {
 				return;
 			}
-			
-			
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 				leftPressed = true;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				rightPressed = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_UP){
+				upPressed = true;
+			}
+			if(e.getKeyCode() == KeyEvent.VK_DOWN){
+				downPressed = true;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = true;
@@ -419,12 +451,17 @@ public class Game extends Canvas
 			if (waitingForKeyPress) {
 				return;
 			}
-			
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 				leftPressed = false;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				rightPressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_UP){
+				upPressed = false;
+			}
+			if(e.getKeyCode() == KeyEvent.VK_DOWN){
+				downPressed = false;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = false;
@@ -477,6 +514,5 @@ public class Game extends Canvas
 		// return until the game has finished running. Hence we are
 		// using the actual main thread to run the game.
 		g.gameLoop();
-
 	}
 }
