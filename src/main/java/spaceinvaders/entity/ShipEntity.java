@@ -1,6 +1,6 @@
-package spaceinvaders.entity;
+package org.newdawn.spaceinvaders.entity;
 
-import spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Game;
 
 /**
  * The entity that represents the players ship
@@ -40,6 +40,13 @@ public class ShipEntity extends Entity {
 		// if we're moving right and have reached the right hand side
 		// of the screen, don't move
 		if ((dx > 0) && (x > 750)) {
+			return;
+		}
+		//same as horizontal.
+		if ((dy < 0) && (y < 10)) {
+			return;
+		}
+		if ((dy > 0) && (y > 570)) {
 			return;
 		}
 		
