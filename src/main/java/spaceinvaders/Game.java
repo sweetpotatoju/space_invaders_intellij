@@ -1,18 +1,14 @@
 package spaceinvaders;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import spaceinvaders.entity.AlienEntity;
 import spaceinvaders.entity.Entity;
@@ -127,10 +123,10 @@ public class Game extends Canvas
 
 		// initialise the entities in our game so there's something
 		// to see at startup
-		initEntities();
+
 		new LoginPage();
 		new MFirebaseTool().hashCode();
-
+		initEntities();
 	}
 
 
@@ -156,27 +152,102 @@ public class Game extends Canvas
 	 * Initialise the starting state of the entities (ship and aliens). Each
 	 * entitiy will be added to the overall list of entities in the game.
 	 */
+
+//	private void initEntities() {
+//		// create the player ship and place it roughly in the center of the screen
+//		ship = new ShipEntity(this, "sprites/ship.gif",370,550);
+//		entities.add(ship);
+//
+//
+//		int alienCount = 50; // number of aliens
+//		int alienWidth = 50; // width of each alien
+//		int alienHeight = 30; // height of each alien
+//		int minY = 10; // minimum y-coordinate
+//		int maxY = 200; // maximum y-coordinate
+//
+//		Set<Point> points = new HashSet<>(); // set to keep track of the generated points
+//		Random random = new Random();
+//
+//		while (points.size() < alienCount) {
+//			int x = random.nextInt(getWidth() - alienWidth);
+//			int y = random.nextInt(maxY - minY) + minY;
+//
+//			// check if the new point overlaps with any existing points
+//			boolean overlapping = false;
+//			for (Point point : points) {
+//				if (Math.abs(point.x - x) < alienWidth && Math.abs(point.y - y) < alienHeight) {
+//					overlapping = true;
+//					break;
+//				}
+//			}
+//
+//			// if not overlapping, add the new point to the set
+//			if (!overlapping) {
+//				points.add(new Point(x, y));
+//			}
+//		}
+//
+//// create aliens for each generated point
+//		for (Point point : points) {
+//			Entity alien = new AlienEntity(this, point.x, point.y);
+//			entities.add(alien);
+//		}}
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this, "sprites/ship.gif",370,550);
+		ship = new ShipEntity(this, "sprites/ship.gif", 370, 550);
 		entities.add(ship);
-		
-		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
-		alienCount = 0;
-		for (int row=0;row<5;row++) {
-			for (int x=0;x<12;x++) {
-				Entity alien = new AlienEntity(this,100+(x*50),(50)+row*30);
-				entities.add(alien);
-				alienCount++;
+
+		final int alienCount = 50; // number of aliens
+		int alienWidth = 50; // width of each alien
+		int alienHeight = 30; // height of each alien
+		int minY = 10; // minimum y-coordinate
+		int maxY = 200; // maximum y-coordinate
+		int delay = 1000; // time delay between each batch of aliens (in milliseconds)
+
+		final Set<Point> points = new HashSet<>(); // set to keep track of the generated points
+		Random random = new Random();
+
+		while (points.size() < alienCount) {
+			int x = random.nextInt(getWidth() - alienWidth);
+			int y = random.nextInt(maxY - minY) + minY;
+
+			// check if the new point overlaps with any existing points
+			boolean overlapping = false;
+			for (Point point : points) {
+				if (Math.abs(point.x - x) < alienWidth && Math.abs(point.y - y) < alienHeight) {
+					overlapping = true;
+					break;
+				}
+			}
+
+			// if not overlapping, add the new point to the set
+			if (!overlapping) {
+				points.add(new Point(x, y));
 			}
 		}
+
+		// create a timer to add aliens every delay milliseconds
+		Timer timer = new Timer(delay, new ActionListener() {
+			int count = 0;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (count < alienCount) {
+					Point point = points.toArray(new Point[0])[count];
+					Entity alien = new AlienEntity(Game.this, point.x, point.y);
+					entities.add(alien);
+					count++;
+				}
+			}
+		});
+		timer.start();
 	}
-	
 	/**
-	 * Notification from a game entity that the logic of the game
-	 * should be run at the next opportunity (normally as a result of some
-	 * game event)
-	 */
+             * Notification from a game entity that the logic of the game
+             * should be run at the next opportunity (normally as a result of some
+             * game event)
+             */
+
 	public void updateLogic() {
 		logicRequiredThisLoop = true;
 	}
