@@ -1,23 +1,17 @@
 package spaceinvaders;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import spaceinvaders.entity.AlienEntity;
 import spaceinvaders.entity.Entity;
 import spaceinvaders.entity.ShipEntity;
 import spaceinvaders.entity.ShotEntity;
+
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -79,6 +73,12 @@ public class Game extends Canvas
 	private String windowTitle = "Space Invaders 102";
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
+//	private TimerBar = new TimerBar();
+
+	private TimerBar timerBar;
+
+
+
 	
 	/**
 	 * Construct our game and set it running.
@@ -87,23 +87,28 @@ public class Game extends Canvas
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
 
+
+		timerBar = new TimerBar();
+
+
 		// get hold the content of the frame and set up the resolution of the game
 		JPanel panel = (JPanel) container.getContentPane();
-		panel.setPreferredSize(new Dimension(800,600));
-		panel.setLayout(null);
 
-		// setup our canvas size and put it into the content of the frame
+		panel.setLayout(null);
+		panel.setPreferredSize(new Dimension(800,600));
+
+		panel.add(timerBar);
+
 		setBounds(0,0,800,600);
+		panel.setLayout(new GridLayout());
+
 		panel.add(this);
 
-		// Tell AWT not to bother repainting our canvas since we're
-		// going to do that our self in accelerated mode
 		setIgnoreRepaint(true);
-
-		// finally make the window visible
 		container.pack();
 		container.setResizable(false);
 		container.setVisible(true);
+
 
 		// add a listener to respond to the user closing the window. If they
 		// do we'd like to exit the game
@@ -120,6 +125,7 @@ public class Game extends Canvas
 		// request the focus so key events come to us
 		requestFocus();
 
+
 		// create the buffering strategy which will allow AWT
 		// to manage our accelerated graphics
 		createBufferStrategy(2 );
@@ -128,20 +134,24 @@ public class Game extends Canvas
 		// initialise the entities in our game so there's something
 		// to see at startup
 		initEntities();
+
 		new LoginPage();
 		new MFirebaseTool().hashCode();
+
 
 	}
 
 
-	
+
 	/**
 	 * Start a fresh game, this should clear out any old data and
 	 * create a new set.
 	 */
 	private void startGame() {
 		// clear out any existing entities and intialise a new set
+
 		entities.clear();
+
 		initEntities();
 		
 		// blank out any keyboard settings we might currently have
@@ -150,6 +160,9 @@ public class Game extends Canvas
 		upPressed = false;
 		downPressed = false;
 		firePressed = false;
+
+
+
 	}
 	
 	/**
@@ -157,6 +170,8 @@ public class Game extends Canvas
 	 * entitiy will be added to the overall list of entities in the game.
 	 */
 	private void initEntities() {
+
+
 		// create the player ship and place it roughly in the center of the screen
 		ship = new ShipEntity(this, "sprites/ship.gif",370,550);
 		entities.add(ship);
@@ -247,6 +262,9 @@ public class Game extends Canvas
 		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ship.getX()+10,ship.getY()-30);
 		entities.add(shot);
 	}
+
+
+
 	
 	/**
 	 * The main game loop. This loop is running during all game
@@ -261,14 +279,18 @@ public class Game extends Canvas
 	 */
 	public void gameLoop() {
 		long lastLoopTime = SystemTimer.getTime();
-		
+
 		// keep looping round til the game ends
 		while (gameRunning) {
 			// work out how long its been since the last update, this
 			// will be used to calculate how far the entities should
 			// move this loop
+
+
 			long delta = SystemTimer.getTime() - lastLoopTime;
 			lastLoopTime = SystemTimer.getTime();
+
+
 
 			// update the frame counter
 			lastFpsTime += delta;
@@ -287,7 +309,8 @@ public class Game extends Canvas
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
 			g.setColor(Color.black);
 			g.fillRect(0,0,800,600);
-			
+
+
 			// cycle round asking each entity to move itself
 			if (!waitingForKeyPress) {
 				for (int i=0;i<entities.size();i++) {
@@ -341,6 +364,10 @@ public class Game extends Canvas
 				g.setColor(Color.white);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
 				g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
+
+				JPanel panel = new JPanel();
+
+
 			}
 			
 			// finally, we've completed drawing so clear up the graphics
@@ -494,11 +521,17 @@ public class Game extends Canvas
 					// our new game
 					waitingForKeyPress = false;
 					startGame();
+
+
+
 					pressCount = 0;
+
 				} else {
 					pressCount++;
 				}
 			}
+
+
 			
 			// if we hit escape, then quit the game
 			if (e.getKeyChar() == 27) {
@@ -517,10 +550,74 @@ public class Game extends Canvas
 	public static void main(String argv[]) {
 		Game g = new Game();
 
+
 		// Start the main game loop, note: this method will not
 		// return until the game has finished running. Hence we are
 		// using the actual main thread to run the game.
 		g.gameLoop();
 
 	}
-}
+
+//	TimerBar() {
+//		int width = 450, height = 50;
+//		int x = 10, y = 50;
+//		Color color = new Color(255, 0, 0);
+//
+//		int second;
+//
+//		public TimerBar() {
+//			setBackground(color);
+//			setOpaque(true);
+//			setBounds(x, y, width, height);
+//
+//			this.second = second;
+//		}
+//
+//		@Override
+//		public void run() {
+//			while (true) {
+//				try {
+//					Thread.sleep(1000 / (width / second));
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//
+//				if (getWidth() > 0) {
+//					width -= 1;	// 너비가 1씩 줄어듦
+//					//System.out.println(width);
+//					setBounds(x, y, width, height);
+//				} else {
+//					//System.out.println("종료");
+//					break;
+//				}
+//			}
+//		}
+	}
+
+//	public void TimerTest(){
+//
+//		JPanel panel;
+//
+//		TimerBar timerBar;
+//		Thread threadBar;
+//
+//		int second = 15;		// 초
+//
+//		panel = new JPanel();
+//		panel.setLayout(null);
+//
+//		timerBar = new TimerBar();
+//		threadBar = new Thread(timerBar);
+//		threadBar.start();
+//		panel.add(timerBar);
+//
+//
+//
+//		add(panel);
+////        setTitle("타이머");
+//		setSize(470, 300);
+//		setVisible(true);
+//	}
+
+
+

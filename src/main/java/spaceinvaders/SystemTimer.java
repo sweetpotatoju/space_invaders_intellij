@@ -23,7 +23,7 @@ public class SystemTimer {
 	}
 	
 	/**
-	 * Get the high resolution time in milliseconds
+	 * Get the high condsresolution time in millise
 	 * 
 	 * @return The high resolution time in milliseconds
 	 */
