@@ -68,6 +68,9 @@ public class Game extends Canvas
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
 	/** The last time at which we recorded the frame rate */
+
+	private boolean isGameStart = false;
+
 	private long lastFpsTime;
 	/** The current number of frames recorded */
 	private int fps;
@@ -229,14 +232,15 @@ public class Game extends Canvas
 		// create a timer to add aliens every delay milliseconds
 		Timer timer = new Timer(delay, new ActionListener() {
 			int count = 0;
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (count < alienCount) {
-					Point point = points.toArray(new Point[0])[count];
-					Entity alien = new AlienEntity(Game.this, point.x, point.y);
-					entities.add(alien);
-					count++;
+				if (isGameStart) {
+					if (count < alienCount) {
+						Point point = points.toArray(new Point[0])[count];
+						Entity alien = new AlienEntity(Game.this, point.x, point.y);
+						entities.add(alien);
+						count++;
+					}
 				}
 			}
 		});
@@ -268,6 +272,7 @@ public class Game extends Canvas
 	public void notifyDeath() {
 		message = "Oh no! They got you, try again?";
 		waitingForKeyPress = true;
+		isGameStart = false;
 	}
 	
 	/**
@@ -277,6 +282,7 @@ public class Game extends Canvas
 	public void notifyWin() {
 		message = "Well done! You Win!";
 		waitingForKeyPress = true;
+		isGameStart = false;
 	}
 	
 	/**
@@ -412,6 +418,8 @@ public class Game extends Canvas
 				g.setColor(Color.white);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
 				g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
+			} else {
+				isGameStart = true;
 			}
 			
 			// finally, we've completed drawing so clear up the graphics
