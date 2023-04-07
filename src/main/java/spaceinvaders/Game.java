@@ -10,10 +10,7 @@ import java.util.Set;
 
 import javax.swing.*;
 
-import spaceinvaders.entity.AlienEntity;
-import spaceinvaders.entity.Entity;
-import spaceinvaders.entity.ShipEntity;
-import spaceinvaders.entity.ShotEntity;
+import spaceinvaders.entity.*;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -41,7 +38,6 @@ public class Game extends Canvas
 	/** The list of entities that need to be removed from the game this loop */
 	private ArrayList removeList = new ArrayList();
 	/** The entity representing the player */
-	private ShipEntity ship, ship2;
 	/** The speed at which the player's ship should move (pixels/sec) */
 	private static double moveSpeed = 300;
 	/** The number of aliens left on the screen */
@@ -53,6 +49,8 @@ public class Game extends Canvas
 	private boolean waitingForKeyPress = true;
 	/** True if the left cursor key is currently pressed */
 	//1P key set
+	private ShipEntity ship;
+	private Entity p1Life1, p1Life2, p1Life3;
 	/** True if the left cursor key is currently pressed */
 	private static boolean leftPressed = false;
 	/** True if the right cursor key is currently pressed */
@@ -69,6 +67,8 @@ public class Game extends Canvas
 	private long firingInterval = 500;
 
 	//2P key set
+	private ShipEntity ship2;
+	private Entity p2Life1, p2Life2, p2Life3;
 	/** True if the 2P left cursor key is currently pressed */
 	private static boolean left2Pressed = false;
 	/** True if the 2P right cursor key is currently pressed */
@@ -83,6 +83,7 @@ public class Game extends Canvas
 	private long last2Fire = 0;
 	/** The interval between our players shot (ms) */
 	private long firing2Interval = 500;
+
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
 	private boolean isGameStart = false;
@@ -94,6 +95,8 @@ public class Game extends Canvas
 	private String windowTitle = "Space Invaders 102";
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
+
+	public Entity[] LifeCounter = {p1Life1, p1Life2, p1Life3, p2Life1, p2Life2, p2Life3};
 	
 	/**
 	 * Construct our game and set it running.
@@ -221,11 +224,24 @@ public class Game extends Canvas
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
 		//1P ship
-		ship = new ShipEntity(this, "sprites/ship.gif", 350, 550);
+		ship = new ShipEntity(this, "sprites/ship.gif", 350, 550, false);
 		//2P ship
-		ship2 = new ShipEntity(this, "sprites/ship.gif", 390, 550);
+		ship2 = new ShipEntity(this, "sprites/ship2.gif", 390, 550, true);
 		entities.add(ship);
 		entities.add(ship2);
+		int idx = 20;
+		for (Entity Life : LifeCounter){
+			if (idx > 60) {
+				Life = new LifeEntity(this, 655+idx, 580);
+				LifeCounter[idx/20 - 1] = Life;
+			}
+			else {
+				Life = new LifeEntity(this, idx-15, 580);
+				LifeCounter[idx/20 - 1] = Life;
+			}
+			entities.add(Life);
+			idx+=20;
+		}
 
 		final int alienCount = 50; // number of aliens
 		int alienWidth = 50; // width of each alien
@@ -292,9 +308,14 @@ public class Game extends Canvas
 	public void removeEntity(Entity entity) {
 		removeList.add(entity);
 	}
-	
 	/**
-	 * Notification that the player has died. 
+	 * HeartBox Entity Decreasion
+	 */
+	public void notifyHit(LifeEntity Life){
+		Life.LifeDecrease();
+	}
+	/**
+	 * Notification that the player has died.
 	 */
 	public void notifyDeath() {
 		message = "Oh no! They got you, try again?";
@@ -695,6 +716,9 @@ public class Game extends Canvas
 			ship.setVerticalMovement(moveSpeed);
 			ship.setHorizontalMovement(moveSpeed);
 		}
+	}
+	public void LifeCounter(){
+
 	}
 	/**
 	 * The entry point into the game. We'll simply create an
