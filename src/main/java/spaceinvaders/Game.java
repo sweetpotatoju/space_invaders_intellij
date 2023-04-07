@@ -422,6 +422,8 @@ public class Game extends Canvas
 			// resolve the movement of the ship. First assume the ship 
 			// isn't moving. If either cursor key is pressed then
 			// update the movement appropraitely
+			ship.setHorizontalMovement(0);
+			ship.setVerticalMovement(0);
 
 			if ((leftPressed)&&(!rightPressed)&&(!upPressed)&&(!downPressed)){
 				ship.setHorizontalMovement(-moveSpeed);
