@@ -41,13 +41,9 @@ public class Game extends Canvas
 	/** The list of entities that need to be removed from the game this loop */
 	private ArrayList removeList = new ArrayList();
 	/** The entity representing the player */
-	private Entity ship;
+	private ShipEntity ship, ship2;
 	/** The speed at which the player's ship should move (pixels/sec) */
-	private double moveSpeed = 300;
-	/** The time at which last fired a shot */
-	private long lastFire = 0;
-	/** The interval between our players shot (ms) */
-	private long firingInterval = 500;
+	private static double moveSpeed = 300;
 	/** The number of aliens left on the screen */
 	private int alienCount;
 	
@@ -56,21 +52,41 @@ public class Game extends Canvas
 	/** True if we're holding up game play until a key has been pressed */
 	private boolean waitingForKeyPress = true;
 	/** True if the left cursor key is currently pressed */
-	private boolean leftPressed = false;
+	//1P key set
+	/** True if the left cursor key is currently pressed */
+	private static boolean leftPressed = false;
 	/** True if the right cursor key is currently pressed */
-	private boolean rightPressed = false;
+	private static boolean rightPressed = false;
 	/** down movement key detection */
-	private boolean downPressed = false;
+	private static boolean downPressed = false;
 	/** up movement key detection */
-	private boolean upPressed = false;
+	private static boolean upPressed = false;
 	/** True if we are firing */
-	private boolean firePressed = false;
+	private static boolean firePressed = false;
+	/** The time at which last fired a shot */
+	private long lastFire = 0;
+	/** The interval between our players shot (ms) */
+	private long firingInterval = 500;
+
+	//2P key set
+	/** True if the 2P left cursor key is currently pressed */
+	private static boolean left2Pressed = false;
+	/** True if the 2P right cursor key is currently pressed */
+	private static boolean right2Pressed = false;
+	/** 2P down movement key detection */
+	private static boolean down2Pressed = false;
+	/** 2P up movement key detection */
+	private static boolean up2Pressed = false;
+	/** 2P True if we are firing */
+	private static boolean fire2Pressed = false;
+	/** The time at which last fired a shot */
+	private long last2Fire = 0;
+	/** The interval between our players shot (ms) */
+	private long firing2Interval = 500;
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
-	/** The last time at which we recorded the frame rate */
-
 	private boolean isGameStart = false;
-
+	/** The last time at which we recorded the frame rate */
 	private long lastFpsTime;
 	/** The current number of frames recorded */
 	private int fps;
@@ -149,6 +165,13 @@ public class Game extends Canvas
 		upPressed = false;
 		downPressed = false;
 		firePressed = false;
+
+		//2P key init
+		left2Pressed = false;
+		right2Pressed = false;
+		up2Pressed = false;
+		down2Pressed = false;
+		fire2Pressed = false;
 	}
 	
 	/**
@@ -197,8 +220,12 @@ public class Game extends Canvas
 //		}}
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this, "sprites/ship.gif", 370, 550);
+		//1P ship
+		ship = new ShipEntity(this, "sprites/ship.gif", 350, 550);
+		//2P ship
+		ship2 = new ShipEntity(this, "sprites/ship.gif", 390, 550);
 		entities.add(ship);
+		entities.add(ship2);
 
 		final int alienCount = 50; // number of aliens
 		int alienWidth = 50; // width of each alien
@@ -324,6 +351,17 @@ public class Game extends Canvas
 		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ship.getX()+10,ship.getY()-30);
 		entities.add(shot);
 	}
+	public void tryToFire2() {
+		// check that we have waiting long enough to fire
+		if (System.currentTimeMillis() - last2Fire < firing2Interval) {
+			return;
+		}
+
+		// if we waited long enough, create the shot entity, and record the time.
+		last2Fire = System.currentTimeMillis();
+		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ship2.getX()+10,ship2.getY()-30);
+		entities.add(shot);
+	}
 	
 	/**
 	 * The main game loop. This loop is running during all game
@@ -430,47 +468,18 @@ public class Game extends Canvas
 			// resolve the movement of the ship. First assume the ship 
 			// isn't moving. If either cursor key is pressed then
 			// update the movement appropraitely
-			ship.setHorizontalMovement(0);
-			ship.setVerticalMovement(0);
 
-			if ((leftPressed)&&(!rightPressed)&&(!upPressed)&&(!downPressed)){
-				ship.setHorizontalMovement(-moveSpeed);
-			}
-			//right unique move
-			else if ((rightPressed)&&(!leftPressed)&&(!upPressed)&&(!downPressed)){
-				ship.setHorizontalMovement(moveSpeed);
-			}
-			//up unique move
-			else if ((upPressed)&&(!downPressed)&&(!rightPressed)&&(!leftPressed)){
-				ship.setVerticalMovement(-moveSpeed);
-			}
-			//down unique move
-			else if ((downPressed)&&(!upPressed)&&(!rightPressed)&&(!leftPressed)){
-				ship.setVerticalMovement(moveSpeed);
-			}
-			//left&up degree 45
-			else if((leftPressed)&&(upPressed)&&(!rightPressed)&&(!downPressed)){
-				ship.setVerticalMovement(-moveSpeed);
-				ship.setHorizontalMovement(-moveSpeed);
-			}
-			else if((leftPressed)&&(downPressed)&&(!rightPressed)&&(!upPressed)){
-				ship.setVerticalMovement(moveSpeed);
-				ship.setHorizontalMovement(-moveSpeed);
-			}
-			else if((rightPressed)&&(upPressed)&&(!downPressed)&&(!leftPressed)){
-				ship.setVerticalMovement(-moveSpeed);
-				ship.setHorizontalMovement(moveSpeed);
-			}
-			else if((rightPressed)&&(downPressed)&&(!upPressed)&&(!leftPressed)){
-				ship.setVerticalMovement(moveSpeed);
-				ship.setHorizontalMovement(moveSpeed);
-			}
-			
+			//1P Control
+			shipControl(ship);
+			//2P control
+			shipControl2(ship2);
 			// if we're pressing fire, attempt to fire
 			if (firePressed) {
 				tryToFire();
 			}
-			
+			if (fire2Pressed){
+				tryToFire2();
+			}
 			// we want each frame to take 10 milliseconds, to do this
 			// we've recorded when we started the frame. We add 10 milliseconds
 			// to this and then factor in the current time to give 
@@ -525,8 +534,22 @@ public class Game extends Canvas
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = true;
 			}
+			if (e.getKeyCode() == KeyEvent.VK_A) {
+				left2Pressed = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_D) {
+				right2Pressed = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_W){
+				up2Pressed = true;
+			}
+			if(e.getKeyCode() == KeyEvent.VK_S){
+				down2Pressed = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_1) {
+				fire2Pressed = true;
+			}
 		}
-
 		/**
 		 * Notification from AWT that a key has been released.
 		 *
@@ -554,8 +577,22 @@ public class Game extends Canvas
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = false;
 			}
+			if (e.getKeyCode() == KeyEvent.VK_A) {
+				left2Pressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_D) {
+				right2Pressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_W){
+				up2Pressed = false;
+			}
+			if(e.getKeyCode() == KeyEvent.VK_S){
+				down2Pressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_1) {
+				fire2Pressed = false;
+			}
 		}
-
 		/**
 		 * Notification from AWT that a key has been typed. Note that
 		 * typing a key means to both press and then release it.
@@ -587,7 +624,78 @@ public class Game extends Canvas
 			}
 		}
 	}
-	
+	public static void shipControl(ShipEntity ship){
+		ship.setHorizontalMovement(0);
+		ship.setVerticalMovement(0);
+		if ((leftPressed)&&(!rightPressed)&&(!upPressed)&&(!downPressed)){
+			ship.setHorizontalMovement(-moveSpeed);
+		}
+		//right unique move
+		else if ((rightPressed)&&(!leftPressed)&&(!upPressed)&&(!downPressed)){
+			ship.setHorizontalMovement(moveSpeed);
+		}
+		//up unique move
+		else if ((upPressed)&&(!downPressed)&&(!rightPressed)&&(!leftPressed)){
+			ship.setVerticalMovement(-moveSpeed);
+		}
+		//down unique move
+		else if ((downPressed)&&(!upPressed)&&(!rightPressed)&&(!leftPressed)){
+			ship.setVerticalMovement(moveSpeed);
+		}
+		//left&up degree 45
+		else if((leftPressed)&&(upPressed)&&(!rightPressed)&&(!downPressed)){
+			ship.setVerticalMovement(-moveSpeed);
+			ship.setHorizontalMovement(-moveSpeed);
+		}
+		else if((leftPressed)&&(downPressed)&&(!rightPressed)&&(!upPressed)){
+			ship.setVerticalMovement(moveSpeed);
+			ship.setHorizontalMovement(-moveSpeed);
+		}
+		else if((rightPressed)&&(upPressed)&&(!downPressed)&&(!leftPressed)){
+			ship.setVerticalMovement(-moveSpeed);
+			ship.setHorizontalMovement(moveSpeed);
+		}
+		else if((rightPressed)&&(downPressed)&&(!upPressed)&&(!leftPressed)){
+			ship.setVerticalMovement(moveSpeed);
+			ship.setHorizontalMovement(moveSpeed);
+		}
+	}
+	public static void shipControl2(ShipEntity ship){
+		ship.setHorizontalMovement(0);
+		ship.setVerticalMovement(0);
+		if ((left2Pressed)&&(!right2Pressed)&&(!up2Pressed)&&(!down2Pressed)){
+			ship.setHorizontalMovement(-moveSpeed);
+		}
+		//right unique move
+		else if ((right2Pressed)&&(!left2Pressed)&&(!up2Pressed)&&(!down2Pressed)){
+			ship.setHorizontalMovement(moveSpeed);
+		}
+		//up unique move
+		else if ((up2Pressed)&&(!down2Pressed)&&(!right2Pressed)&&(!left2Pressed)){
+			ship.setVerticalMovement(-moveSpeed);
+		}
+		//down unique move
+		else if ((down2Pressed)&&(!up2Pressed)&&(!right2Pressed)&&(!left2Pressed)){
+			ship.setVerticalMovement(moveSpeed);
+		}
+		//left&up degree 45
+		else if((left2Pressed)&&(up2Pressed)&&(!right2Pressed)&&(!down2Pressed)){
+			ship.setVerticalMovement(-moveSpeed);
+			ship.setHorizontalMovement(-moveSpeed);
+		}
+		else if((left2Pressed)&&(down2Pressed)&&(!right2Pressed)&&(!up2Pressed)){
+			ship.setVerticalMovement(moveSpeed);
+			ship.setHorizontalMovement(-moveSpeed);
+		}
+		else if((right2Pressed)&&(up2Pressed)&&(!down2Pressed)&&(!left2Pressed)){
+			ship.setVerticalMovement(-moveSpeed);
+			ship.setHorizontalMovement(moveSpeed);
+		}
+		else if((right2Pressed)&&(down2Pressed)&&(!up2Pressed)&&(!left2Pressed)){
+			ship.setVerticalMovement(moveSpeed);
+			ship.setHorizontalMovement(moveSpeed);
+		}
+	}
 	/**
 	 * The entry point into the game. We'll simply create an
 	 * instance of class which will start the display and game
