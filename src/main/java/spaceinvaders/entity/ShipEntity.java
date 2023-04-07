@@ -46,7 +46,7 @@ public class ShipEntity extends Entity {
 		if ((dy < 0) && (y < 10)) {
 			return;
 		}
-		if ((dy > 0) && (y > 570)) {
+		if ((dy > 0) && (y > 550)) {
 			return;
 		}
 		
