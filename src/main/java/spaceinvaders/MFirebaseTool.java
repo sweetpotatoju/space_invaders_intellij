@@ -39,7 +39,7 @@ import java.util.logging.Logger;
 //    }
 //}
 
-public class        MFirebaseTool {
+public class MFirebaseTool {
     private FirebaseOptions options;
 
     private static FirebaseApp firebaseApp;
