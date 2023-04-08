@@ -3,16 +3,15 @@ package spaceinvaders;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.TimerTask;
 
-public class CountDown extends JLabel implements Runnable {
+public class Timer extends JLabel implements Runnable {
     int width = 75, height = 75;
     int x = 350, y = 50;
 
     int second;
 
 
-    public CountDown(int second) {
+    public Timer(int second) {
         setOpaque(true);
         setBounds(x, y, width, height);
         setForeground(Color.BLUE);

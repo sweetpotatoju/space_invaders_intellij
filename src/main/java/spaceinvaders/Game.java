@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.CountDownLatch;
 
 import javax.swing.*;
 
@@ -109,8 +108,8 @@ public class Game extends Canvas
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
 
-		CountDown countDown = new CountDown(50);
-		panel.add(countDown);
+		Timer timer = new Timer(50);
+		panel.add(timer);
 
 
 		// setup our canvas size and put it into the content of the frame
@@ -126,10 +125,10 @@ public class Game extends Canvas
 		container.setResizable(false);
 		container.setVisible(true);
 
-		Thread threadCountdown = new Thread(countDown);
+		Thread threadCountdown = new Thread(timer);
 		threadCountdown.start();
 
-		if (countDown.second == 0){
+		if (timer.second == 0){
 			isGameStart = false;
 		}
 
@@ -270,7 +269,7 @@ public class Game extends Canvas
 		}
 
 		// create a timer to add aliens every delay milliseconds
-		Timer timer = new Timer(delay, new ActionListener() {
+		javax.swing.Timer timer = new javax.swing.Timer(delay, new ActionListener() {
 			int count = 0;
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -712,6 +711,10 @@ public class Game extends Canvas
 			ship.setHorizontalMovement(moveSpeed);
 		}
 	}
+
+
+
+
 	/**
 	 * The entry point into the game. We'll simply create an
 	 * instance of class which will start the display and game
