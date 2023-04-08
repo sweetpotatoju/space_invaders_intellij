@@ -1,10 +1,13 @@
 package spaceinvaders;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Objects;
 import javax.swing.ImageIcon;
 
-public class Window extends JFrame{
+public class Window extends JFrame {
 
     public Window() {
 
@@ -93,20 +96,40 @@ public class Window extends JFrame{
             button1.setForeground(Color.WHITE);
             button3.setForeground(Color.WHITE);
 
+            button3.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Game game = new Game("2p");
+                            game.gameLoop();
+                        }
+                    });
+                    thread.start();
+                }
+            });
+
             panel.add(button1);
             panel.add(button2);
             panel.add(button3);
 
-
-
             getContentPane().add(panel);
             setVisible(true);
-        } }
 
-
-        public static void main (String[]args){
-            new Window();
-
+            new LoginPage();
+            new MFirebaseTool().hashCode();
         }
-
     }
+
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Window();
+            }
+        });
+    }
+
+}
