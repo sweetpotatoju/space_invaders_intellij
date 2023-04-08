@@ -101,7 +101,7 @@ public class Game extends Canvas
 	/**
 	 * Construct our game and set it running.
 	 */
-	public Game() {
+	public Game(String option) {
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
 
@@ -146,8 +146,10 @@ public class Game extends Canvas
 		// initialise the entities in our game so there's something
 		// to see at startup
 
-		new LoginPage();
-		new MFirebaseTool().hashCode();
+		if (option.equals("2p")) {
+			System.out.println("2p");
+		}
+
 		initEntities();
 	}
 
@@ -728,7 +730,7 @@ public class Game extends Canvas
 	 * @param argv The arguments that are passed into our game
 	 */
 	public static void main(String argv[]) {
-		Game g = new Game();
+		Game g = new Game("");
 
 		// Start the main game loop, note: this method will not
 		// return until the game has finished running. Hence we are
