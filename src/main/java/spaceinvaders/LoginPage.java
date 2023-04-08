@@ -33,6 +33,7 @@ public class LoginPage extends JFrame {
     private static String ID = null;
     //사용자 비밀번호
     private char[] pw = null;
+    private LoginListener loginListener;
 
 
     public LoginPage() {
@@ -91,9 +92,19 @@ public class LoginPage extends JFrame {
             String uid = userRecord.getUid();
             String password = userRecord.getDisplayName();
 
+
             if (password.equals(String.valueOf(tpw.getPassword()))){
                 JOptionPane.showMessageDialog(null, "Hello" + " " + email);
                 setVisible(false);
+              ;
+                new Window();
+
+                // 로그인 성공시 LoginListener의 loginSuccess 메소드 호출하여 처리할 로직 구현
+                if (loginListener != null) {
+                    loginListener.loginSuccess(email);
+                }
+
+
             } else {
                 JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.");
             }
@@ -116,4 +127,14 @@ public class LoginPage extends JFrame {
             e.printStackTrace();
         }
     }
-}
+
+
+    public void setLoginLiscctener(LoginListener loginListener) {
+        this.loginListener = loginListener;
+    }
+
+
+    public interface LoginListener {
+        void loginSuccess(String email);
+    }
+    }

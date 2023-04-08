@@ -250,7 +250,7 @@ public class Game extends Canvas
 		int alienHeight = 30; // height of each alien
 		int minY = 10; // minimum y-coordinate
 		int maxY = 200; // maximum y-coordinate
-		int delay = 1000; // time delay between each batch of aliens (in milliseconds)
+		int delay = 5000; // time delay between each batch of aliens (in milliseconds)
 
 		final Set<Point> points = new HashSet<>(); // set to keep track of the generated points
 		Random random = new Random();
@@ -738,4 +738,6 @@ public class Game extends Canvas
 		g.gameLoop();
 
 	}
+
+
 }
