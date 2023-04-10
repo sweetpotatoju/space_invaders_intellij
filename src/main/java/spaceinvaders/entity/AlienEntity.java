@@ -4,6 +4,13 @@ import spaceinvaders.Game;
 import spaceinvaders.Sprite;
 import spaceinvaders.SpriteStore;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+
 /**
  * An entity which represents one of our space invader aliens.
  * 
@@ -22,6 +29,9 @@ public class AlienEntity extends Entity {
 	private long frameDuration = 250;
 	/** The current frame of animation being displayed */
 	private int frameNumber;
+
+
+
 	
 	/**
 	 * Create a new alien entity
@@ -30,18 +40,19 @@ public class AlienEntity extends Entity {
 	 * @param x The intial x location of this alien
 	 * @param y The intial y location of this alient
 	 */
-	public AlienEntity(Game game,int x,int y) {
-		super("sprites/alien.gif",x,y);
-		
+	public AlienEntity(Game game, int x, int y) {
+		super("sprites/munG1.png", x, y);
+
 		// setup the animatin frames
 		frames[0] = sprite;
-		frames[1] = SpriteStore.get().getSprite("sprites/alien2.gif");
+		frames[1] = SpriteStore.get().getSprite("sprites/munG2.png");
 		frames[2] = sprite;
-		frames[3] = SpriteStore.get().getSprite("sprites/alien3.gif");
-		
+		frames[3] = SpriteStore.get().getSprite("sprites/munG3.png");
+
 		this.game = game;
 		dx = -moveSpeed;
 	}
+
 
 	/**
 	 * Request that this alien moved based on time elapsed

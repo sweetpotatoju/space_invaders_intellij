@@ -98,8 +98,6 @@ public class Game extends Canvas
 
 	public Entity[] LifeCounter = {p1Life1, p1Life2, p1Life3, p2Life1, p2Life2, p2Life3};
 
-	private Thread timeCounterThread;
-
 	/**
 	 * Construct our game and set it running.
 	 */
@@ -112,20 +110,9 @@ public class Game extends Canvas
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
 
-		TimeCounter timeCounter = new TimeCounter((int) 0.00);
-		panel.add(timeCounter);
-
-
-
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
 		panel.add(this);
-
-		// TimeCounter 객체를 실행하는 Thread를 생성하고 시작합니다.
-		timeCounterThread = new Thread(timeCounter);
-		timeCounterThread.start();
-
-
 
 		// Tell AWT not to bother repainting our canvas since we're
 		// going to do that our self in accelerated mode
@@ -239,7 +226,7 @@ public class Game extends Canvas
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
 		//1P ship
-		ship = new ShipEntity(this, "sprites/ship.gif", 350, 550, false);
+		ship = new ShipEntity(this, "sprites/gaoNasi.png", 350, 550, false);
 		//2P ship
 		ship2 = new ShipEntity(this, "sprites/ship2.gif", 390, 550, true);
 		entities.add(ship);
@@ -402,7 +389,7 @@ public class Game extends Canvas
 
 		// if we waited long enough, create the shot entity, and record the time.
 		lastFire = System.currentTimeMillis();
-		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ship.getX()+10,ship.getY()-30);
+		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ship.getX(),ship.getY()-30);//총알 발사 위치 바꿈
 		entities.add(shot);
 	}
 
