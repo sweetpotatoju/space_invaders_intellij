@@ -55,6 +55,7 @@ public class Window extends JFrame {
                     button3.setForeground(Color.WHITE);
 
                     button3.addActionListener(new ActionListener() {
+
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                     Thread thread = new Thread(new Runnable() {
@@ -87,12 +88,13 @@ public class Window extends JFrame {
                         @Override
                         public void run() {
                                 LoginPage loginPage = new LoginPage();
-                            new MFirebaseTool().hashCode();
+                                new MFirebaseTool().hashCode();
                                 loginPage.setLoginLiscctener(new LoginPage.LoginListener() {
                                         @Override
                                         public void loginSuccess(String email) {
                                                 Window window = new Window();
                                                 window.showWindow();
+
                                         }
                                 });
                         }
