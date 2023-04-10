@@ -4,14 +4,12 @@ import spaceinvaders.Game;
 import spaceinvaders.Sprite;
 import spaceinvaders.SpriteStore;
 
-import java.util.Iterator;
-
 /**
  * An entity which represents one of our space invader aliens.
  *
  * @author Kevin Glass
  */
-public class bosseEntity extends Entity {
+public class level2alienEntity extends Entity {
     /** The speed at which the alient moves horizontally */
     private double moveSpeed = 75;
     /** The game in which the entity exists */
@@ -24,8 +22,6 @@ public class bosseEntity extends Entity {
     private long frameDuration = 250;
     /** The current frame of animation being displayed */
     private int frameNumber;
-    private int bossLife = 100 ;
-
 
     /**
      * Create a new alien entity
@@ -34,28 +30,24 @@ public class bosseEntity extends Entity {
      * @param x The intial x location of this alien
      * @param y The intial y location of this alient
      */
-    public bosseEntity (Game game,int x,int y) {
-        super("sprites/boss.png", x, y);
+    public level2alienEntity(Game game,int x,int y) {
+        super("sprites/alien.gif",x,y);
 
+        // setup the animatin frames
         frames[0] = sprite;
-        frames[1] = SpriteStore.get().getSprite("sprites/boss.png");
+        frames[1] = SpriteStore.get().getSprite("sprites/alien2.gif");
         frames[2] = sprite;
-        frames[3] = SpriteStore.get().getSprite("sprites/boss.png");
-
+        frames[3] = SpriteStore.get().getSprite("sprites/alien3.gif");
 
         this.game = game;
         dx = -moveSpeed;
     }
 
-
-
-
-
-
-//     * Request that this alien moved based on time elapsed
-//     *
-//     * @param delta The time that has elapsed since last move
-//     */
+    /**
+     * Request that this alien moved based on time elapsed
+     *
+     * @param delta The time that has elapsed since last move
+     */
     public void move(long delta) {
         // since the move tells us how much time has passed
         // by we can use it to drive the animation, however
@@ -105,10 +97,8 @@ public class bosseEntity extends Entity {
         // dies
         if (y > 570) {
             game.notifyDeath();
-
         }
     }
-
 
     /**
      * Notification that this alien has collided with another entity
@@ -116,19 +106,6 @@ public class bosseEntity extends Entity {
      * @param other The other entity
      */
     public void collidedWith(Entity other) {
-
-// if we've hit an alien, kill it!
-        if (other instanceof ShotEntity) {
-            // remove the affected entities
-            bossLife--;
-
-            if(bossLife==0){
-
-                game.notifyAlienKilled();
-            }
-
-            // notify the game that the alien has been killed
-
-
+        // collisions with aliens are handled elsewhere
     }
-} }
+}

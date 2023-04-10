@@ -4,6 +4,8 @@ import spaceinvaders.Game;
 import spaceinvaders.Sprite;
 import spaceinvaders.SpriteStore;
 
+import java.util.Iterator;
+
 /**
  * An entity which represents one of our space invader aliens.
  * 
@@ -99,6 +101,9 @@ public class AlienEntity extends Entity {
 			game.notifyDeath();
 		}
 	}
+
+
+
 	
 	/**
 	 * Notification that this alien has collided with another entity

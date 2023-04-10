@@ -63,37 +63,57 @@ public class ShipEntity extends Entity {
 	 * @param other The entity with which the ship has collided
 	 */
 	public void collidedWith(Entity other) {
-		// if its an alien, notify the game that the player
-		// is dead
-		if (this.multiPlay){
-			if (other instanceof AlienEntity){
-				if(playerLife == 1){
+		// if its an alien, notify the game that the player is dead
+		if (this.multiPlay) {
+			if (other instanceof AlienEntity) {
+				if (playerLife == 1) {
 					game.notifyHit((LifeEntity) game.LifeCounter[2+playerLife]);
 					game.removeEntity(this);
 					--playerLife;
 					game.notifyDeath();
-				}
-				else{
+				} else {
 					game.removeEntity(other);
 					game.notifyHit((LifeEntity) game.LifeCounter[2+playerLife]);
 					--playerLife;
 				}
+			} else if (other instanceof level2shotEntity) {
+				if (playerLife == 1) {
+					game.notifyHit((LifeEntity) game.LifeCounter[2+playerLife]);
+					game.removeEntity(this);
+					--playerLife;
+					game.notifyDeath();
+				} else {
+					game.removeEntity(other);
+					game.notifyHit((LifeEntity) game.LifeCounter[2+playerLife]);
+					--playerLife;}
 			}
-		}
-		else {
-			if (other instanceof AlienEntity){
-				if(playerLife == 1){
+		} else {
+			if (other instanceof AlienEntity) {
+				if (playerLife == 1) {
 					game.notifyHit((LifeEntity) game.LifeCounter[playerLife-1]);
 					game.removeEntity(this);
 					--playerLife;
 					game.notifyDeath();
-				}
-				else{
+				} else {
 					game.removeEntity(other);
 					game.notifyHit((LifeEntity) game.LifeCounter[playerLife-1]);
 					--playerLife;
 				}
+			} else if (other instanceof level2shotEntity) {
+				game.notifyHit((LifeEntity) game.LifeCounter[2+playerLife]);
+				game.removeEntity(this);
+				--playerLife;
+				game.notifyDeath();
+			} else {
+				game.removeEntity(other);
+				game.notifyHit((LifeEntity) game.LifeCounter[2+playerLife]);
+				--playerLife;
+			}
+
 			}
 		}
 	}
-}
+
+
+
+
