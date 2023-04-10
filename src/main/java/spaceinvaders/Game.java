@@ -98,6 +98,8 @@ public class Game extends Canvas
 
 	public Entity[] LifeCounter = {p1Life1, p1Life2, p1Life3, p2Life1, p2Life2, p2Life3};
 
+	private Thread timeCounterThread;
+
 	/**
 	 * Construct our game and set it running.
 	 */
@@ -110,9 +112,20 @@ public class Game extends Canvas
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
 
+		TimeCounter timeCounter = new TimeCounter((int) 0.00);
+		panel.add(timeCounter);
+
+
+
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
 		panel.add(this);
+
+		// TimeCounter 객체를 실행하는 Thread를 생성하고 시작합니다.
+		timeCounterThread = new Thread(timeCounter);
+		timeCounterThread.start();
+
+
 
 		// Tell AWT not to bother repainting our canvas since we're
 		// going to do that our self in accelerated mode

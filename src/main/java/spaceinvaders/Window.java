@@ -16,7 +16,7 @@ public class Window extends JFrame {
             setSize(800, 600);
             setLocationRelativeTo(null);
 
-         ;
+
     }
                    public void showWindow(){
                     setVisible(true);
@@ -29,6 +29,12 @@ public class Window extends JFrame {
                                     ImageIcon icon = new ImageIcon(getClass().getResource("/sprites/Background.png"));
                                     Image image = icon.getImage();
                                     g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+
+                                    ImageIcon btImage = new ImageIcon(getClass().getResource("/sprites/gameModeButton.png"));
+                                    g.drawImage(btImage.getImage(), 23, 400, 750, 100, null);
+
+                                    ImageIcon myPageButton = new ImageIcon(getClass().getResource("/sprites/myPageButton.png"));
+                                    g.drawImage(myPageButton.getImage(), 700, 30, 50, 50, null);
                             }
                     };
 
@@ -37,10 +43,23 @@ public class Window extends JFrame {
                     JButton button1 = new JButton("mashupmode");
                     JButton button2 = new JButton("scoremode");
                     JButton button3 = new JButton("2P mode");
+                    JButton myPageButton = new JButton();
+                    JButton ranking = new JButton();
 
-                    button1.setBounds(25, 400, 250, 200);
-                    button2.setBounds(275, 400, 250, 200);
-                    button3.setBounds(525, 400, 250, 200);
+                       //버튼 투명하게
+                    button1.setOpaque(false);
+                    button2.setOpaque(false);
+                    button3.setOpaque(false);
+                    myPageButton.setOpaque(false);
+
+
+                       //버튼 테투리 없애기
+                    myPageButton.setBorderPainted(false);
+
+                    button1.setBounds(25, 400, 250, 100);
+                    button2.setBounds(275, 400, 250, 100);
+                    button3.setBounds(525, 400, 250, 100);
+                    myPageButton.setBounds(700, 30, 50, 50);
 
                     button1.setFont(new Font("Arial", Font.PLAIN, 20));
                     button2.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -49,6 +68,7 @@ public class Window extends JFrame {
                     button1.setBackground(new Color(36, 54, 105));
                     button2.setBackground(new Color(36, 54, 105));
                     button3.setBackground(new Color(36, 54, 105));
+                    myPageButton.setBackground(new Color(36, 54, 105));
 
                     button2.setForeground(Color.WHITE);
                     button1.setForeground(Color.WHITE);
@@ -72,6 +92,7 @@ public class Window extends JFrame {
                     panel.add(button1);
                     panel.add(button2);
                     panel.add(button3);
+                    panel.add(myPageButton);
 
                     getContentPane().add(panel);
 
