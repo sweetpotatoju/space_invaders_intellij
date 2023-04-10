@@ -97,7 +97,7 @@ public class Game extends Canvas
 	private JFrame container;
 
 	public Entity[] LifeCounter = {p1Life1, p1Life2, p1Life3, p2Life1, p2Life2, p2Life3};
-	
+
 	/**
 	 * Construct our game and set it running.
 	 */
@@ -245,12 +245,19 @@ public class Game extends Canvas
 			idx+=20;
 		}
 
-		final int alienCount = 50; // number of aliens
+		/** 아래 함수에 int 중복선언하고 나서, 값 할당이 initGame로컬변수 취급받다보니 중괄호 범위 넘어간 이후로 값이 틀어지는것 같습니다.
+		 *
+		 *
+		 *
+		 *
+		 * */
+		alienCount = 3;
+
 		int alienWidth = 50; // width of each alien
 		int alienHeight = 30; // height of each alien
 		int minY = 10; // minimum y-coordinate
 		int maxY = 200; // maximum y-coordinate
-		int delay = 5000; // time delay between each batch of aliens (in milliseconds)
+		int delay = 1000; // time delay between each batch of aliens (in milliseconds)
 
 		final Set<Point> points = new HashSet<>(); // set to keep track of the generated points
 		Random random = new Random();
@@ -274,28 +281,28 @@ public class Game extends Canvas
 			}
 		}
 
-		// create a timer to add aliens every delay milliseconds
+// create a timer to add aliens every delay milliseconds
 		Timer timer = new Timer(delay, new ActionListener() {
 			int count = 0;
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (isGameStart) {
 					if (count < alienCount) {
-						Point point = points.toArray(new Point[0])[count];
-						Entity alien = new AlienEntity(Game.this, point.x, point.y);
+						Point[] pointArray = points.toArray(new Point[0]); // convert set to array
+						Entity alien = new AlienEntity(Game.this, pointArray[count].x, pointArray[count].y);
 						entities.add(alien);
-						count++;
+						count += 2; // increase count by 2 to prevent two aliens being added at once
 					}
 				}
 			}
 		});
-		timer.start();
-	}
-	/**
-             * Notification from a game entity that the logic of the game
-             * should be run at the next opportunity (normally as a result of some
-             * game event)
-             */
+		timer.setInitialDelay(0); // start timer immediately
+		timer.start();}
+	// start timer }
+//             * Notification from a game entity that the logic of the game
+//             * should be run at the next opportunity (normally as a result of some
+//             * game event)
+//             */
 
 	public void updateLogic() {
 		logicRequiredThisLoop = true;
@@ -338,22 +345,33 @@ public class Game extends Canvas
 	/**
 	 * Notification that an alien has been killed
 	 */
+//	public void notifyAlienKilled() {
+//		// reduce the alient count, if there are none left, the player has won!
+//		alienCount--;
+//		System.out.println("notifyAlienKilled() called, alienCount: " + alienCount);
+//
+//		if (alienCount == 0) {
+//			notifyWin();
+//		}
+
 	public void notifyAlienKilled() {
 		// reduce the alient count, if there are none left, the player has won!
 		alienCount--;
-		
+		System.out.println("notifyAlienKilled() called, alienCount: " + alienCount);
+
 		if (alienCount == 0) {
 			notifyWin();
 		}
-		
+
+//
 		// if there are still some aliens left then they all need to get faster, so
 		// speed up all the existing aliens
 		for (int i=0;i<entities.size();i++) {
-			Entity entity = (Entity) entities.get(i);
+			Entity entity = (Entity) entities.get(i);// 게임의 상태 확인 엔티티
 			
 			if (entity instanceof AlienEntity) {
 				// speed up by 2%
-				entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.02);
+				entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.00);
 			}
 		}
 	}
@@ -374,6 +392,20 @@ public class Game extends Canvas
 		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ship.getX()+10,ship.getY()-30);
 		entities.add(shot);
 	}
+
+
+	public void level2shot(){
+		if (System.currentTimeMillis() - lastFire < firingInterval) {
+			return;
+		}
+
+		// if we waited long enough, create the shot entity, and record the time.
+		lastFire = System.currentTimeMillis();
+		level2shotEntity shot = new level2shotEntity(this, "sprites/shot.gif",ship.getX()+10,ship.getY()-30);
+		entities.add(shot);
+	}
+
+
 	public void tryToFire2() {
 		// check that we have waiting long enough to fire
 		if (System.currentTimeMillis() - last2Fire < firing2Interval) {
