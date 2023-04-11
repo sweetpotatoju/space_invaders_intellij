@@ -42,48 +42,23 @@ public class Game extends Canvas
 	private static double moveSpeed = 300;
 	/** The number of aliens left on the screen */
 	private int alienCount;
-
 	/** The message to display which waiting for a key press */
 	private String message = "";
 	/** True if we're holding up game play until a key has been pressed */
 	private boolean waitingForKeyPress = true;
 	/** True if the left cursor key is currently pressed */
 	//1P key set
-	private ShipEntity ship;
-	private Entity p1Life1, p1Life2, p1Life3;
-	/** True if the left cursor key is currently pressed */
-	private static boolean leftPressed = false;
-	/** True if the right cursor key is currently pressed */
-	private static boolean rightPressed = false;
-	/** down movement key detection */
-	private static boolean downPressed = false;
-	/** up movement key detection */
-	private static boolean upPressed = false;
-	/** True if we are firing */
-	private static boolean firePressed = false;
-	/** The time at which last fired a shot */
-	private long lastFire = 0;
-	/** The interval between our players shot (ms) */
-	private long firingInterval = 500;
-
-	//2P key set
-	private ShipEntity ship2;
-	private Entity p2Life1, p2Life2, p2Life3;
-	/** True if the 2P left cursor key is currently pressed */
-	private static boolean left2Pressed = false;
-	/** True if the 2P right cursor key is currently pressed */
-	private static boolean right2Pressed = false;
-	/** 2P down movement key detection */
-	private static boolean down2Pressed = false;
-	/** 2P up movement key detection */
-	private static boolean up2Pressed = false;
-	/** 2P True if we are firing */
-	private static boolean fire2Pressed = false;
-	/** The time at which last fired a shot */
-	private long last2Fire = 0;
-	/** The interval between our players shot (ms) */
-	private long firing2Interval = 500;
-
+	private ShipEntity ship1, ship2;
+	private ShipEntity[] ShipCounter = new ShipEntity[2]; private boolean multiPlay = true;
+	private static boolean leftPressed; private static boolean left2Pressed;
+	private static boolean rightPressed; private static boolean right2Pressed;
+	private static boolean upPressed; private static boolean up2Pressed;
+	private static boolean downPressed; private static boolean down2Pressed;
+	private static boolean firePressed; private static boolean fire2Pressed;
+	private boolean player1Dead, player2Dead;
+	private long lastFire = 0; private long last2Fire = 0;
+	private long firingInterval = 500; private long firing2Interval = 500;
+	public LifeEntity[] LifeCounter = new LifeEntity[6];
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
 	private boolean isGameStart = false;
@@ -95,8 +70,7 @@ public class Game extends Canvas
 	private String windowTitle = "Space Invaders 102";
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
-
-	public Entity[] LifeCounter = {p1Life1, p1Life2, p1Life3, p2Life1, p2Life2, p2Life3};
+	private Thread timeCounterThread;
 
 	/**
 	 * Construct our game and set it running.
@@ -110,9 +84,20 @@ public class Game extends Canvas
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
 
+		TimeCounter timeCounter = new TimeCounter((int) 0.00);
+		panel.add(timeCounter);
+
+
+
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
 		panel.add(this);
+
+		// TimeCounter 객체를 실행하는 Thread를 생성하고 시작합니다.
+		timeCounterThread = new Thread(timeCounter);
+		timeCounterThread.start();
+
+
 
 		// Tell AWT not to bother repainting our canvas since we're
 		// going to do that our self in accelerated mode
@@ -170,6 +155,7 @@ public class Game extends Canvas
 		upPressed = false;
 		downPressed = false;
 		firePressed = false;
+		player1Dead = false;
 
 		//2P key init
 		left2Pressed = false;
@@ -177,6 +163,7 @@ public class Game extends Canvas
 		up2Pressed = false;
 		down2Pressed = false;
 		fire2Pressed = false;
+		player2Dead = false;
 	}
 
 	/**
@@ -224,25 +211,21 @@ public class Game extends Canvas
 //			entities.add(alien);
 //		}}
 	private void initEntities() {
-		// create the player ship and place it roughly in the center of the screen
-		//1P ship
-		ship = new ShipEntity(this, "sprites/gaoNasi.png", 350, 550, false);
-		//2P ship
-		ship2 = new ShipEntity(this, "sprites/ship2.gif", 390, 550, true);
-		entities.add(ship);
-		entities.add(ship2);
-		int idx = 20;
-		for (Entity Life : LifeCounter){
-			if (idx > 60) {
-				Life = new LifeEntity(this, 655+idx, 580);
-				LifeCounter[idx/20 - 1] = Life;
+		if (multiPlay){
+			ship2 = new ShipEntity(this, "sprites/ship2.gif",390, 550, true);
+			ShipCounter[1] = ship2;
+			entities.add(ship2);
+			for (int i = 3; i < 6; i++){
+				LifeCounter[i] = new LifeEntity(this, 655+(i+1)*20, 580);
+				entities.add(LifeCounter[i]);
 			}
-			else {
-				Life = new LifeEntity(this, idx-15, 580);
-				LifeCounter[idx/20 - 1] = Life;
-			}
-			entities.add(Life);
-			idx+=20;
+		}
+		ship1 = new ShipEntity(this, "sprites/ship1.gif",350, 550, false);
+		ShipCounter[0] = ship1;
+		entities.add(ship1);
+		for (int i = 0; i < 3; i++){
+			LifeCounter[i] = new LifeEntity(this, (i+1)*20-15, 580);
+			entities.add(LifeCounter[i]);
 		}
 
 		/** 아래 함수에 int 중복선언하고 나서, 값 할당이 initGame로컬변수 취급받다보니 중괄호 범위 넘어간 이후로 값이 틀어지는것 같습니다.
@@ -251,7 +234,7 @@ public class Game extends Canvas
 		 *
 		 *
 		 * */
-		alienCount = 3;
+		alienCount = 6;
 
 		int alienWidth = 50; // width of each alien
 		int alienHeight = 30; // height of each alien
@@ -297,7 +280,8 @@ public class Game extends Canvas
 			}
 		});
 		timer.setInitialDelay(0); // start timer immediately
-		timer.start();}
+		timer.start();
+	}
 	// start timer }
 //             * Notification from a game entity that the logic of the game
 //             * should be run at the next opportunity (normally as a result of some
@@ -326,7 +310,16 @@ public class Game extends Canvas
 	/**
 	 * Notification that the player has died.
 	 */
-	public void notifyDeath() {
+	public void notifyDeath(int status) {
+		if(status == 1) {player1Dead = true; }
+		if(status == 2) {player2Dead = true; }
+
+		if(multiPlay){
+			if (player1Dead == true && player2Dead == true) notifyRetire();
+		}
+		else notifyRetire();
+	}
+	public void notifyRetire(){
 		message = "Oh no! They got you, try again?";
 		waitingForKeyPress = true;
 		isGameStart = false;
@@ -382,6 +375,7 @@ public class Game extends Canvas
 	 * point, i.e. has he/she waited long enough between shots
 	 */
 	public void tryToFire() {
+		if (player1Dead == true) return;
 		// check that we have waiting long enough to fire
 		if (System.currentTimeMillis() - lastFire < firingInterval) {
 			return;
@@ -389,7 +383,7 @@ public class Game extends Canvas
 
 		// if we waited long enough, create the shot entity, and record the time.
 		lastFire = System.currentTimeMillis();
-		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ship.getX(),ship.getY()-30);//총알 발사 위치 바꿈
+		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ship1.getX(),ship1.getY()-30);//총알 발사 위치 바꿈
 		entities.add(shot);
 	}
 
@@ -401,12 +395,13 @@ public class Game extends Canvas
 
 		// if we waited long enough, create the shot entity, and record the time.
 		lastFire = System.currentTimeMillis();
-		level2shotEntity shot = new level2shotEntity(this, "sprites/shot.gif",ship.getX()+10,ship.getY()-30);
+		level2shotEntity shot = new level2shotEntity(this, "sprites/shot.gif",ship1.getX()+10,ship1.getY()-30);
 		entities.add(shot);
 	}
 
 
 	public void tryToFire2() {
+		if ( player2Dead == true ) return;
 		// check that we have waiting long enough to fire
 		if (System.currentTimeMillis() - last2Fire < firing2Interval) {
 			return;
@@ -525,7 +520,7 @@ public class Game extends Canvas
 			// update the movement appropraitely
 
 			//1P Control
-			shipControl(ship);
+			shipControl(ship1);
 			//2P control
 			shipControl2(ship2);
 			// if we're pressing fire, attempt to fire

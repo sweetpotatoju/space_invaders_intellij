@@ -13,7 +13,6 @@ public class LifeEntity extends Entity{
      * @param y   The initial y location of this entity
      */
     private Game game;
-    private int Life;
     private Sprite[] status = new Sprite[2];
 
     public LifeEntity(Game game, int x, int y) {
@@ -22,9 +21,8 @@ public class LifeEntity extends Entity{
         status[1] = SpriteStore.get().getSprite("sprites/lostHeart.gif");
         this.game = game;
     }
-    public void LifeDecrease(){
-        sprite = status[1];
-    }
+    public void LifeDecrease() { sprite = status[1]; }
+    public void LifeIncrease() { sprite = status[0]; }
 
     @Override
     public void collidedWith(Entity other) {
