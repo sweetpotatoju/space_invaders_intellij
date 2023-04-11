@@ -105,8 +105,7 @@ public class bosseEntity extends Entity {
         // if we've reached the bottom of the screen then the player
         // dies
         if (y > 570) {
-            game.notifyDeath();
-
+            game.notifyRetire();
         }
     }
 

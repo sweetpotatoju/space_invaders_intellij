@@ -10,8 +10,7 @@ import spaceinvaders.Game;
 public class ShipEntity extends Entity {
 	/** The game in which the ship exists */
 	private Game game;
-	private boolean multiPlay;
-	private int playerLife;
+	private boolean player2; private int playerLife; private long moveSpeed, fireTime, fireRatio;
 
 	/**
 	 * Create a new entity to represent the players ship
@@ -24,9 +23,11 @@ public class ShipEntity extends Entity {
 	//boolean can make decision to multi play
 	public ShipEntity(Game game,String ref,int x,int y,boolean player) {
 		super(ref,x,y);
-		this.multiPlay = player;
+		this.player2 = player;
 		this.game = game;
 		this.playerLife = 3;
+		moveSpeed = 300;
+		fireRatio = 500;
 	}
 
 	/**
@@ -68,12 +69,21 @@ public class ShipEntity extends Entity {
 			if (other instanceof AlienEntity) {
 				if (playerLife == 1) {
 					game.notifyHit((LifeEntity) game.LifeCounter[2+playerLife]);
+		// if its an alien, notify the game that the player
+		// is dead
+		if (player2){
+			if (other instanceof AlienEntity){
+				if(playerLife == 1){
+					game.notifyHit(game.LifeCounter[2+playerLife]);
 					game.removeEntity(this);
 					--playerLife;
 					game.notifyDeath();
 				} else {
+					game.notifyDeath(2);
+				}
+				else{
 					game.removeEntity(other);
-					game.notifyHit((LifeEntity) game.LifeCounter[2+playerLife]);
+					game.notifyHit(game.LifeCounter[2+playerLife]);
 					--playerLife;
 				}
 			} else if (other instanceof level2alienEntity) {
@@ -101,12 +111,21 @@ public class ShipEntity extends Entity {
 			if (other instanceof AlienEntity) {
 				if (playerLife == 1) {
 					game.notifyHit((LifeEntity) game.LifeCounter[playerLife-1]);
+			}
+		}
+		else {
+			if (other instanceof AlienEntity){
+				if(playerLife == 1){
+					game.notifyHit(game.LifeCounter[playerLife-1]);
 					game.removeEntity(this);
 					--playerLife;
 					game.notifyDeath();
 				} else {
+					game.notifyDeath(1);
+				}
+				else{
 					game.removeEntity(other);
-					game.notifyHit((LifeEntity) game.LifeCounter[playerLife-1]);
+					game.notifyHit(game.LifeCounter[playerLife-1]);
 					--playerLife;
 				}
 			} else if (other instanceof level2alienEntity) {
