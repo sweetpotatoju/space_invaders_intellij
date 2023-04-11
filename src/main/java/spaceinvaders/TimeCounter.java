@@ -8,10 +8,11 @@ public class TimeCounter extends JLabel implements Runnable {
     int width = 75, height = 75;
     int x = 350, y = 50;
 
-    int second;
+    int second=0;
+    boolean isStartGame=false;
 
-
-    public TimeCounter(int second) {
+    public TimeCounter(int second, Game game) {
+        isStartGame = game.isGameStart;
         setOpaque(true);
         setBounds(x, y, width, height);
         setForeground(Color.BLUE);
@@ -26,20 +27,22 @@ public class TimeCounter extends JLabel implements Runnable {
     public void run() {
         while (true) {
             try {
-                Thread.sleep(10000);	// 0.1초
+                Thread.sleep(1000);	// 1초
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             if (second >= 0) {
-                second += 0.1;		// 0.1초씩 증가
-                setText(String.format("%.2f", second / 1000.0));
+                second += 1;		// 1초씩 증가
+                System.out.println(second);
+                setText(String.valueOf(second / 1000));
                 repaint();
                 revalidate();
-            } else {
-                //System.out.println("종료");
-                break;
             }
+//            else {
+//                //System.out.println("종료");
+//                break;
+//            }
         }
     }
 }

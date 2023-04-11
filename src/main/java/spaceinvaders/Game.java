@@ -3,11 +3,15 @@ package spaceinvaders;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 import spaceinvaders.entity.*;
@@ -86,7 +90,7 @@ public class Game extends Canvas
 
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
-	private boolean isGameStart = false;
+	public boolean isGameStart = false;
 	/** The last time at which we recorded the frame rate */
 	private long lastFpsTime;
 	/** The current number of frames recorded */
@@ -98,10 +102,14 @@ public class Game extends Canvas
 
 	public Entity[] LifeCounter = {p1Life1, p1Life2, p1Life3, p2Life1, p2Life2, p2Life3};
 
+	private TimeCounter timeCounter;
+	private Image imageBack;
+
 	/**
 	 * Construct our game and set it running.
 	 */
 	public Game(String option) {
+
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
 
@@ -109,6 +117,14 @@ public class Game extends Canvas
 		JPanel panel = (JPanel) container.getContentPane();
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
+
+
+		TimeCounter timeCounter = new TimeCounter(0,this);
+		panel.add(timeCounter);
+
+		Thread timerThread = new Thread(timeCounter);
+		timerThread.start();
+		System.out.println(timeCounter.second);
 
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
@@ -163,6 +179,9 @@ public class Game extends Canvas
 		// clear out any existing entities and intialise a new set
 		entities.clear();
 		initEntities();
+
+
+
 
 		// blank out any keyboard settings we might currently have
 		leftPressed = false;
@@ -243,6 +262,7 @@ public class Game extends Canvas
 			}
 			entities.add(Life);
 			idx+=20;
+			new Music();
 		}
 
 		/** 아래 함수에 int 중복선언하고 나서, 값 할당이 initGame로컬변수 취급받다보니 중괄호 범위 넘어간 이후로 값이 틀어지는것 같습니다.
@@ -259,6 +279,7 @@ public class Game extends Canvas
 		int maxY = 200; // maximum y-coordinate
 		int delay = 1000; // time delay between each batch of aliens (in milliseconds)
 
+//		final Set<Point> points = new HashSet<>(); // set to keep track of the generated points
 		final Set<Point> points = new HashSet<>(); // set to keep track of the generated points
 		Random random = new Random();
 
@@ -754,6 +775,13 @@ public class Game extends Canvas
 	public void LifeCounter(){
 
 	}
+
+
+
+
+
+
+
 	/**
 	 * The entry point into the game. We'll simply create an
 	 * instance of class which will start the display and game
@@ -763,6 +791,7 @@ public class Game extends Canvas
 	 */
 	public static void main(String argv[]) {
 		Game g = new Game("");
+
 
 		// Start the main game loop, note: this method will not
 		// return until the game has finished running. Hence we are
