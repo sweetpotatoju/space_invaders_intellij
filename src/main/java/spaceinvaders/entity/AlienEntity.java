@@ -102,15 +102,16 @@ public class AlienEntity extends Entity {
 		}
 	}
 
+	@Override
+	public void collidedWith(Entity other) {
+
+	}
 
 
-	
 	/**
 	 * Notification that this alien has collided with another entity
 	 * 
 	 * @param other The other entity
 	 */
-	public void collidedWith(Entity other) {
-		// collisions with aliens are handled elsewhere
-	}
+
 }

@@ -305,6 +305,11 @@ public class Game extends Canvas
 		}
 
 		// create the aliens
+
+
+
+
+
 		createAliens();
 
 	}
@@ -382,9 +387,15 @@ public class Game extends Canvas
 			});
 		}
 		else if (level == 3) {
+			alienCount=100;
+
+			System.out.println(alienCount );
+			// set alien count to 1 for the boss
 			// create the boss entity
-			bosseEntity boss = new bosseEntity(this, 800, 50);
-			entities.add(boss); }
+			bosseEntity boss = new bosseEntity(this, "sprites/level2alien.png", getWidth() / 2, 50);
+			entities.add(boss);
+		}
+
 
 
 		timer.setInitialDelay(1000);
@@ -410,7 +421,10 @@ public class Game extends Canvas
 	 */
 	public void notifyHit(LifeEntity Life){
 		Life.LifeDecrease();
+
+
 	}
+
 	/**
 	 * Notification that the player has died.
 	 */
@@ -437,7 +451,7 @@ public class Game extends Canvas
 		
 		if(level==4){
 			message = "missioncopmlete";
-			waitingForKeyPress = true;
+			waitingForKeyPress =  true;
 			isGameStart = false;
 
 		}
@@ -451,13 +465,13 @@ public class Game extends Canvas
 
 	public void notifyAlienKilled() {
 		// reduce the alient count, if there are none left, the player has won!
-		alienCount--;
 
+			// reduce the alien count, if there are none left, the player has won!
+			alienCount--;
 
-		if (alienCount <= 0) {
-			notifyWin();
-
-		}
+			if (alienCount <=0) {
+				notifyWin();
+			}
 
 //
 		// if there are still some aliens left then they all need to get faster, so

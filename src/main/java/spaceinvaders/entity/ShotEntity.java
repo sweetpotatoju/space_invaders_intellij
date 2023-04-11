@@ -69,5 +69,12 @@ public class ShotEntity extends Entity {
 			game.notifyAlienKilled();
 			used = true;
 	  	}
+		else if (other instanceof bosseEntity){
+			game.removeEntity(this);
+			game.notifyAlienKilled();
+			used = true;
+
+
+		}
 	 }
 }

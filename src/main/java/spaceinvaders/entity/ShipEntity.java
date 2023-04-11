@@ -76,17 +76,27 @@ public class ShipEntity extends Entity {
 					game.notifyHit((LifeEntity) game.LifeCounter[2+playerLife]);
 					--playerLife;
 				}
-			} else if (other instanceof level2shotEntity) {
+			} else if (other instanceof level2alienEntity) {
 				if (playerLife == 1) {
-					game.notifyHit((LifeEntity) game.LifeCounter[2+playerLife]);
+					game.notifyHit((LifeEntity) game.LifeCounter[playerLife-1]);
 					game.removeEntity(this);
 					--playerLife;
 					game.notifyDeath();
 				} else {
 					game.removeEntity(other);
-					game.notifyHit((LifeEntity) game.LifeCounter[2+playerLife]);
-					--playerLife;}
-			}
+					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+					--playerLife;
+				} }  else if (other instanceof bosseEntity) {
+				 if (playerLife > 1) {
+					game.notifyHit((LifeEntity) game.LifeCounter[playerLife-1]);
+					--playerLife;
+				} else if (playerLife == 1) {
+					game.notifyHit((LifeEntity) game.LifeCounter[playerLife-1]);
+					--playerLife;
+					game.notifyDeath();
+					game.removeEntity(this); {
+
+					}}
 		} else {
 			if (other instanceof AlienEntity) {
 				if (playerLife == 1) {
@@ -99,21 +109,32 @@ public class ShipEntity extends Entity {
 					game.notifyHit((LifeEntity) game.LifeCounter[playerLife-1]);
 					--playerLife;
 				}
-			} else if (other instanceof level2shotEntity) {
-				game.notifyHit((LifeEntity) game.LifeCounter[2+playerLife]);
+			} else if (other instanceof level2alienEntity) {
+				if (playerLife == 1) {
+				game.notifyHit((LifeEntity) game.LifeCounter[playerLife-1]);
 				game.removeEntity(this);
 				--playerLife;
 				game.notifyDeath();
-			} else {
+			}   else {
 				game.removeEntity(other);
-				game.notifyHit((LifeEntity) game.LifeCounter[2+playerLife]);
-				--playerLife;
-			}
+				game.notifyHit((LifeEntity) game.LifeCounter[playerLife-1]);
+				--playerLife;}
+
+
+		    } else if (other instanceof bosseEntity) {
+				if (playerLife > 1) {
+					game.notifyHit((LifeEntity) game.LifeCounter[playerLife-1]);
+					--playerLife;
+				} else if (playerLife == 1) {
+					game.notifyHit((LifeEntity) game.LifeCounter[playerLife-1]);
+					--playerLife;
+					game.notifyDeath();
+					game.removeEntity(this); {
 
 			}
-		}
-	}
 
+
+	}   } } } } }
 
 
 
