@@ -383,7 +383,7 @@ public class Game extends Canvas
 
 		// if we waited long enough, create the shot entity, and record the time.
 		lastFire = System.currentTimeMillis();
-		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ship.getX(),ship.getY()-30);//총알 발사 위치 바꿈
+		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ship1.getX(),ship1.getY()-30);//총알 발사 위치 바꿈
 		entities.add(shot);
 	}
 
