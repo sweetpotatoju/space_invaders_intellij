@@ -97,14 +97,14 @@ public class Game extends Canvas {
 		JPanel panel = (JPanel) container.getContentPane();
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
-		TimeCounter timeCounter = new TimeCounter((int) 0);
-		panel.add(timeCounter);
+		/*TimeCounter timeCounter = new TimeCounter((int) 0);*/
+		//panel.add(timeCounter);
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
 		panel.add(this);
 		// TimeCounter 객체를 실행하는 Thread를 생성하고 시작합니다.
-		timeCounterThread = new Thread(timeCounter);
-		timeCounterThread.start();
+		/*timeCounterThread = new Thread(timeCounter);
+		timeCounterThread.start();*/
 		// Tell AWT not to bother repainting our canvas since we're
 		// going to do that our self in accelerated mode
 		setIgnoreRepaint(true);
@@ -233,13 +233,12 @@ public class Game extends Canvas {
 		}
 		ShipCounter[0] = new ShipEntity(this, "sprites/ship1.gif",350, 550, false);
 		entities.add(ShipCounter[0]);
-		/** 아래 함수에 int 중복선언하고 나서, 값 할당이 initGame로컬변수 취급받다보니 중괄호 범위 넘어간 이후로 값이 틀어지는것 같습니다.
-		 *
-		 *
-		 *
-		 *
-		 * */
-		alienCount = 6; killCount = 0;
+		killCount = 0;
+		createAliens();
+	}
+	private void createAliens() {
+		// determine the parameters for the aliens based on the current level
+		alienCount = 8 + (level - 1) * 2; // increase the number of aliens by 2 for each level
 		int alienWidth = 50; // width of each alien
 		int alienHeight = 30; // height of each alien
 		int minY = 10; // minimum y-coordinate
@@ -281,6 +280,7 @@ public class Game extends Canvas {
 							Point[] pointArray = points.toArray(new Point[0]); // convert set to array
 							Entity alien = new AlienEntity(Game.this, pointArray[count].x, pointArray[count].y);
 							entities.add(alien);
+							System.out.println("alien appear");
 							count += 2; // increase count by 2 to prevent two aliens being added at once
 						}
 					} else {
@@ -323,7 +323,6 @@ public class Game extends Canvas {
 		timer.setDelay(1000);
 		timer.start();
 	}
-
 	// start timer }
 //             * Notification from a game entity that the logic of the game
 //             * should be run at the next opportunity (normally as a result of some
@@ -594,7 +593,7 @@ public class Game extends Canvas {
 			// resolve the movement of the ship. First assume the ship
 			// isn't moving. If either cursor key is pressed then
 			// update the movement appropraitely
-			//1P Control
+			//1P Controlb
 			shipControl1();
 			//2P control
 			shipControl2();

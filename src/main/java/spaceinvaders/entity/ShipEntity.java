@@ -34,7 +34,6 @@ public class ShipEntity extends Entity {
 		fireRatio = 500;
 		playerLifes = new LifeCounter(game, null, this);
 	}
-
 	/**
 	 * Request that the ship move itself based on an elapsed ammount of
 	 * time
@@ -59,9 +58,8 @@ public class ShipEntity extends Entity {
 		if ((dy > 0) && (y > 550)) {
 			return;
 		}
-
 		super.move(delta);
-	}
+		}
 
 	/**
 	 * Notification that the player's ship has collided with something
@@ -163,36 +161,33 @@ public class ShipEntity extends Entity {
 //		}
 //	}
 //}
-
-
-		if (player2) {
-			if (other instanceof AlienEntity) {
-				if (getLife() == 1) {
-					game.removeEntity(this);
-					LifeDecrase();
-					game.notifyDeath(2);
-				} else {
-					game.removeEntity(other);
-					LifeDecrase();
-				}
-			}
-			else if (other instanceof ItemEntity){
-				if (getLife() == 3) return;
+		if (other instanceof AlienEntity) {
+			if (getLife() == 0)return;
+			if (getLife() == 1) {
+				game.removeEntity(this);
+				LifeDecrease();
+				if (is2P()) game.notifyDeath(2);
+				else game.notifyDeath(1);
+			} else {
 				game.removeEntity(other);
-				LifeIncrease();
+				LifeDecrease();
 			}
-		} else {
-		else {
-			if (other instanceof AlienEntity){
-				if(getLife() == 1){
-					LifeDecrase();
-					game.removeEntity(this);
-					game.notifyDeath(1);
-				}
-				else{
-					game.removeEntity(other);
-					LifeDecrase();
-				}
+		}
+		else if (other instanceof ItemEntity){
+			if (getLife() == 3) return;
+			game.removeEntity(other);
+			LifeIncrease();
+		}
+		else if (other instanceof bosseEntity) {
+			if (getLife() > 1) {
+				LifeDecrease();
+			}
+			else if (getLife() == 1) {
+				LifeDecrease();
+				game.notifyDeath(2);
+				game.removeEntity(this);
+			}
+		}
 				/** 					game.notifyHit(game.LifeCounter[2+playerLife]);
 				 --playerLife;
 				 }
@@ -247,39 +242,17 @@ public class ShipEntity extends Entity {
 				 game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
 				 --playerLife;
 				 } */
-
-
-			} else if (other instanceof bosseEntity) {
-				if (playerLife > 1) {
-					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-					--playerLife;
-				} else if (playerLife == 1) {
-					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-					--playerLife;
-					game.notifyDeath(2);
-					game.removeEntity(this);
-
-
-				} else if (other instanceof ItemEntity) {
-					if (getLife() == 3) return;
-					game.removeEntity(other);
-					LifeIncrease();
-				}
-			}
-
-
-		}
-		public boolean is2P () {
-			return player2;
-		}
-		public void LifeIncrease () {
-			playerLifes.LifeIncrease();
-		}
-		public void LifeDecrase () {
-			playerLifes.LifeDecrease();
-		}
-		public int getLife () {
-			return playerLifes.getEntityLife();
-		}
+	}
+	public boolean is2P () {
+		return player2;
+	}
+	public void LifeIncrease () {
+		playerLifes.LifeIncrease();
+	}
+	public void LifeDecrease () {
+		playerLifes.LifeDecrease();
+	}
+	public int getLife () {
+		return playerLifes.getEntityLife();
 	}
 }
