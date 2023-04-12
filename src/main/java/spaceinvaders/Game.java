@@ -275,6 +275,7 @@ public class Game extends Canvas {
 	private void createAliens() {
 		// determine the parameters for the aliens based on the current level
 		alienCount = 3 + (level - 1) * 2; // increase the number of aliens by 2 for each level
+		int killCount = 0;
 		int alienWidth = 50; // width of each alien
 		int alienHeight = 30; // height of each alien
 		int minY = 10; // minimum y-coordinate

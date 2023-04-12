@@ -3,11 +3,16 @@ package spaceinvaders;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import spaceinvaders.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,7 +33,6 @@ public class RegisterPage extends JFrame {
         setTitle("resister");
         setSize(450, 300);
         setVisible(true);
-
         Dimension frameSize = getSize();
         Dimension windowSize = Toolkit.getDefaultToolkit().getScreenSize();
         //화면 중앙에 띄우기
@@ -45,6 +49,18 @@ public class RegisterPage extends JFrame {
                             .setEmail(tResisterID.getText())
                             .setEmailVerified(false)
                             .setDisplayName(String.valueOf(tResisterPw.getPassword())));
+
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference ref = database.getReference();
+                    String encodedEmail = null;
+                    DatabaseReference usersRef = ref.child(encodedEmail);
+
+                    int score = 0;
+
+                    Map<String, User> users = new HashMap<>();
+                    users.put(encodedEmail, new User(tResisterID.getText(),String.valueOf(tResisterPw.getPassword()),"someValue",score));
+
+                    usersRef.setValueAsync(users);
 
                     Logger.getLogger(RegisterPage.class.getName()).log(Level.INFO, "유저 생성 성공");
                     JOptionPane.showMessageDialog(null, "유저 생성 성공");
