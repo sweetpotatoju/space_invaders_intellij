@@ -9,41 +9,29 @@ import spaceinvaders.SpriteStore;
  *
  * @author Kevin Glass
  */
-public class shotalienEntity extends Entity {
-    /**
-     * The speed at which the alient moves horizontally
-     */
+public class level2alienEntity extends Entity {
+    /** The speed at which the alient moves horizontally */
     private double moveSpeed = 75;
-    /**
-     * The game in which the entity exists
-     */
+    /** The game in which the entity exists */
     private Game game;
-    /**
-     * The animation frames
-     */
+    /** The animation frames */
     private Sprite[] frames = new Sprite[4];
-    /**
-     * The time since the last frame change took place
-     */
+    /** The time since the last frame change took place */
     private long lastFrameChange;
-    /**
-     * The frame duration in milliseconds, i.e. how long any given frame of animation lasts
-     */
+    /** The frame duration in milliseconds, i.e. how long any given frame of animation lasts */
     private long frameDuration = 250;
-    /**
-     * The current frame of animation being displayed
-     */
+    /** The current frame of animation being displayed */
     private int frameNumber;
 
     /**
      * Create a new alien entity
      *
      * @param game The game in which this entity is being created
-     * @param x    The intial x location of this alien
-     * @param y    The intial y location of this alient
+     * @param x The intial x location of this alien
+     * @param y The intial y location of this alient
      */
-    public void shotalienEntity(Game game, int x, int y) {
-
+    public level2alienEntity(Game game,int x,int y) {
+        super("sprites/alien.gif",x,y);
 
         // setup the animatin frames
         frames[0] = sprite;
@@ -53,19 +41,6 @@ public class shotalienEntity extends Entity {
 
         this.game = game;
         dx = -moveSpeed;
-    }
-
-    /**
-     * Construct a entity based on a sprite image and a location.
-     *
-     * @param ref The reference to the image to be displayed for this entity
-     * @param x   The initial x location of this entity
-     *
-     *
-     * @param y   The initial y location of this entity
-     */
-    public shotalienEntity(String ref, int x, int y) {
-        super(ref, x, y);
     }
 
     /**
@@ -121,7 +96,7 @@ public class shotalienEntity extends Entity {
         // if we've reached the bottom of the screen then the player
         // dies
         if (y > 570) {
-            game.notifyRetire();
+            game.notifyDeath(2);
         }
     }
 
@@ -134,4 +109,3 @@ public class shotalienEntity extends Entity {
         // collisions with aliens are handled elsewhere
     }
 }
-

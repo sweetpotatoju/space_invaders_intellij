@@ -22,32 +22,41 @@ public class bosseEntity extends Entity {
     private long frameDuration = 250;
     /** The current frame of animation being displayed */
     private int frameNumber;
+    private int bossLife = 100 ;
+
 
     /**
      * Create a new alien entity
      *
      * @param game The game in which this entity is being created
-     * @param x The intial x location of this alien
-     * @param y The intial y location of this alient
+     * @param s
+     * @param x    The intial x location of this alien
+     * @param y    The intial y location of this alient
      */
-    public bosseEntity (Game game,int x,int y) {
-        super("sprites/alien.gif",x,y);
+    public bosseEntity (Game game, String s, int x, int y) {
+        super("sprites/level2alien.png", x, y);
 
-        // setup the animatin frames
+
+
         frames[0] = sprite;
-        frames[1] = SpriteStore.get().getSprite("sprites/alien2.gif");
+        frames[1] = SpriteStore.get().getSprite("sprites/level2alien.png");
         frames[2] = sprite;
-        frames[3] = SpriteStore.get().getSprite("sprites/alien3.gif");
+        frames[3] = SpriteStore.get().getSprite("sprites/level2alien.png");
+
 
         this.game = game;
         dx = -moveSpeed;
     }
 
-    /**
-     * Request that this alien moved based on time elapsed
-     *
-     * @param delta The time that has elapsed since last move
-     */
+
+
+
+
+
+//     * Request that this alien moved based on time elapsed
+//     *
+//     * @param delta The time that has elapsed since last move
+//     */
     public void move(long delta) {
         // since the move tells us how much time has passed
         // by we can use it to drive the animation, however
@@ -100,12 +109,25 @@ public class bosseEntity extends Entity {
         }
     }
 
+
     /**
      * Notification that this alien has collided with another entity
      *
      * @param other The other entity
      */
     public void collidedWith(Entity other) {
-        // collisions with aliens are handled elsewhere
+        // if we've hit an alien, kill it!
+        if (other instanceof ShotEntity) {
+            // remove the affected entities
+            bossLife--;
+            sprite = SpriteStore.get().getSprite("sprites/level2alien.png");
+            System.out.println(bossLife);
+            if (bossLife <= 0) {
+                // notify the game that the boss has been killed
+                game.notifyAlienKilled();
+            }
+        }
     }
+
+
 }
