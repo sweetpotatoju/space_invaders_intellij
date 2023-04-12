@@ -60,7 +60,7 @@
         <dependency>
             <groupId>com.google.firebase</groupId>
             <artifactId>firebase-admin</artifactId>
-            <version>8.1.0</version>
+            <version>9.1.1</version>
         </dependency>
 
         <dependency>
@@ -73,7 +73,7 @@
         <dependency>
             <groupId>com.google.gms</groupId>
             <artifactId>google-services</artifactId>
-            <version>3.1.1</version>
+            <version>4.3.15</version>
             <scope>runtime</scope>
         </dependency>
 

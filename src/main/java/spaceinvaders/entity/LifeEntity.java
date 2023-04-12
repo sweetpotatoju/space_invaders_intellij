@@ -20,10 +20,9 @@ public class LifeEntity extends Entity{
         status[0] = sprite;
         status[1] = SpriteStore.get().getSprite("sprites/lostHeart.gif");
         this.game = game;
-    }
-    public void LifeDecrease() { sprite = status[1]; }
-    public void LifeIncrease() { sprite = status[0]; }
-
+        }
+    public void onIt() { sprite = status[0]; }
+    public void offIt() { sprite = status[1]; }
     @Override
     public void collidedWith(Entity other) {
     }
