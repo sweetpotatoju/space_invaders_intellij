@@ -10,7 +10,8 @@ import spaceinvaders.Game;
 public class ShipEntity extends Entity {
 	/** The game in which the ship exists */
 	private Game game;
-	private boolean player2; private int playerLife; private long moveSpeed, fireTime, fireRatio;
+	private boolean player2; private long moveSpeed, fireTime, fireRatio;
+	private LifeCounter playerLifes;
 
 	/**
 	 * Create a new entity to represent the players ship
@@ -23,11 +24,12 @@ public class ShipEntity extends Entity {
 	//boolean can make decision to multi play
 	public ShipEntity(Game game,String ref,int x,int y,boolean player) {
 		super(ref,x,y);
+		System.out.println("Ship making");
 		this.player2 = player;
 		this.game = game;
-		this.playerLife = 3;
 		moveSpeed = 300;
 		fireRatio = 500;
+		playerLifes = new LifeCounter(game, null, this);
 	}
 
 	/**
@@ -68,33 +70,51 @@ public class ShipEntity extends Entity {
 		// is dead
 		if (player2){
 			if (other instanceof AlienEntity){
-				if(playerLife == 1){
-					game.notifyHit(game.LifeCounter[2+playerLife]);
+				if(getLife() == 1){
 					game.removeEntity(this);
-					--playerLife;
+					LifeDecrase();
 					game.notifyDeath(2);
 				}
 				else{
 					game.removeEntity(other);
-					game.notifyHit(game.LifeCounter[2+playerLife]);
-					--playerLife;
+					LifeDecrase();
 				}
+			}
+			else if (other instanceof ItemEntity){
+				if (getLife() == 3) return;
+				game.removeEntity(other);
+				LifeIncrease();
 			}
 		}
 		else {
 			if (other instanceof AlienEntity){
-				if(playerLife == 1){
-					game.notifyHit(game.LifeCounter[playerLife-1]);
+				if(getLife() == 1){
+					LifeDecrase();
 					game.removeEntity(this);
-					--playerLife;
 					game.notifyDeath(1);
 				}
 				else{
 					game.removeEntity(other);
-					game.notifyHit(game.LifeCounter[playerLife-1]);
-					--playerLife;
+					LifeDecrase();
 				}
 			}
+			else if (other instanceof ItemEntity){
+				if (getLife()==3) return;
+				game.removeEntity(other);
+				LifeIncrease();
+			}
 		}
+	}
+	public boolean is2P(){
+		return player2;
+	}
+	public void LifeIncrease(){
+		playerLifes.LifeIncrease();
+	}
+	public void LifeDecrase(){
+		playerLifes.LifeDecrease();
+	}
+	public int getLife(){
+		return playerLifes.getEntityLife();
 	}
 }
