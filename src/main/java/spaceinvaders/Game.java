@@ -91,6 +91,8 @@ public class Game extends Canvas {
 	 * Construct our game and set it running.
 	 */
 	public Game(String option) {
+
+
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
 		// get hold the content of the frame and set up the resolution of the game
@@ -133,7 +135,12 @@ public class Game extends Canvas {
 		if (option.equals("2p")) {
 			System.out.println("2p");
 		}
+
+
 		initEntities();
+
+
+
 	}
 
 	/**
@@ -141,6 +148,9 @@ public class Game extends Canvas {
 	 * create a new set.
 	 */
 	private void startGame() {
+
+
+
 		// clear out any existing entities and intialise a new set
 		entities.clear();
 		initEntities();
@@ -158,6 +168,9 @@ public class Game extends Canvas {
 		down2Pressed = false;
 		fire2Pressed = false;
 		player2Dead = false;
+
+		new BackgroundMusic();
+
 	}
 
 	/**
@@ -235,6 +248,7 @@ public class Game extends Canvas {
 		entities.add(ShipCounter[0]);
 		killCount = 0;
 		createAliens();
+
 	}
 	private void createAliens() {
 		// determine the parameters for the aliens based on the current level
@@ -609,6 +623,8 @@ public class Game extends Canvas {
 			// to this and then factor in the current time to give
 			// us our final value to wait for
 			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
+
+
 		}
 	}
 
