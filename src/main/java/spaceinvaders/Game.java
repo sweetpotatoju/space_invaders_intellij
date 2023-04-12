@@ -588,7 +588,7 @@ public class Game extends Canvas {
 			}
 			// finally, we've completed drawing so clear up the graphics
 			// and flip the buffer over
-			g.dispose();
+			//g.dispose();
 			strategy.show();
 			// resolve the movement of the ship. First assume the ship
 			// isn't moving. If either cursor key is pressed then
