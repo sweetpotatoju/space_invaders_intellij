@@ -8,21 +8,25 @@ import spaceinvaders.Game;
  * @author Kevin Glass
  */
 public class ShipEntity extends Entity {
-	/** The game in which the ship exists */
+	/**
+	 * The game in which the ship exists
+	 */
 	private Game game;
-	private boolean player2; private int playerLife; private long moveSpeed, fireTime, fireRatio;
+	private boolean player2;
+	private int playerLife;
+	private long moveSpeed, fireTime, fireRatio;
 
 	/**
 	 * Create a new entity to represent the players ship
 	 *
 	 * @param game The game in which the ship is being created
-	 * @param ref The reference to the sprite to show for the ship
-	 * @param x The initial x location of the player's ship
-	 * @param y The initial y location of the player's ship
+	 * @param ref  The reference to the sprite to show for the ship
+	 * @param x    The initial x location of the player's ship
+	 * @param y    The initial y location of the player's ship
 	 */
 	//boolean can make decision to multi play
-	public ShipEntity(Game game,String ref,int x,int y,boolean player) {
-		super(ref,x,y);
+	public ShipEntity(Game game, String ref, int x, int y, boolean player) {
+		super(ref, x, y);
 		this.player2 = player;
 		this.game = game;
 		this.playerLife = 3;
@@ -64,8 +68,102 @@ public class ShipEntity extends Entity {
 	 * @param other The entity with which the ship has collided
 	 */
 	public void collidedWith(Entity other) {
-		// if its an alien, notify the game that the player
-		// is dead
+		// if its an alien, notify the game that the player is dead
+
+//		if (player2) {
+//			if (other instanceof AlienEntity) {
+//				if (playerLife == 1) {
+//					game.notifyHit(game.LifeCounter[2 + playerLife]);
+//					game.removeEntity(this);
+//					--playerLife;
+//					game.notifyDeath(2);
+//				} else {
+//					game.notifyDeath(2);
+//				}
+//				else{
+//					game.removeEntity(other);
+//					game.notifyHit(game.LifeCounter[2 + playerLife]);
+//					--playerLife;
+//				}
+//			} else if (other instanceof level2alienEntity) {
+////				if (playerLife == 1) {
+////					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+////					game.removeEntity(this);
+////					--playerLife;
+////					game.notifyDeath(2);
+////				} else {
+////					game.removeEntity(other);
+////					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+////					--playerLife;
+////				}
+////			} else if (other instanceof bosseEntity) {
+////				if (playerLife > 1) {
+////					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+////					--playerLife;
+////				} else if (playerLife == 1) {
+////					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+////					--playerLife;
+////					game.notifyDeath(2);
+////					game.removeEntity(this);
+////					{
+////
+//					}
+//				}
+//			} else {
+//				if (other instanceof AlienEntity) {
+//					if (playerLife == 1) {
+//						game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+//					}
+//				} else {
+//					if (other instanceof AlienEntity) {
+//						if (playerLife == 1) {
+//							game.notifyHit(game.LifeCounter[playerLife - 1]);
+//							game.removeEntity(this);
+//							--playerLife;
+//							game.notifyDeath(2);
+//						} else {
+//							game.notifyDeath(1);
+//						}
+//					} else {
+//						game.removeEntity(other);
+//						game.notifyHit(game.LifeCounter[playerLife - 1]);
+//						--playerLife;
+//					}
+//				}
+//			} else if (other instanceof level2alienEntity) {
+//				if (playerLife == 1) {
+//					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+//					game.removeEntity(this);
+//					--playerLife;
+//					game.notifyDeath(2);
+//				} else {
+//					game.removeEntity(other);
+//					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+//					--playerLife;
+//				}
+//
+//
+//			} else if (other instanceof bosseEntity) {
+//				if (playerLife > 1) {
+//					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+//					--playerLife;
+//				} else if (playerLife == 1) {
+//					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+//					--playerLife;
+//					game.notifyDeath(2);
+//					game.removeEntity(this);
+//					{
+//
+//					}
+//
+//
+//				}
+//			}
+//		}
+//	}
+//}
+
+
 		if (player2){
 			if (other instanceof AlienEntity){
 				if(playerLife == 1){
@@ -79,22 +177,74 @@ public class ShipEntity extends Entity {
 					game.notifyHit(game.LifeCounter[2+playerLife]);
 					--playerLife;
 				}
-			}
+			}else if (other instanceof level2alienEntity) {
+				if (playerLife == 1) {
+					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+					game.removeEntity(this);
+					--playerLife;
+					game.notifyDeath(2);
+				} else {
+					game.removeEntity(other);
+					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+					--playerLife;
+				}
+			} else if (other instanceof bosseEntity) {
+				if (playerLife > 1) {
+					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+					--playerLife;
+				} else if (playerLife == 1) {
+					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+					--playerLife;
+					game.notifyDeath(2);
+					game.removeEntity(this);
+				}}
+
+
+
 		}
-		else {
-			if (other instanceof AlienEntity){
-				if(playerLife == 1){
-					game.notifyHit(game.LifeCounter[playerLife-1]);
+
+               else {
+					if (other instanceof AlienEntity) {
+						if (playerLife == 1) {
+							game.notifyHit(game.LifeCounter[playerLife - 1]);
+							game.removeEntity(this);
+							--playerLife;
+							game.notifyDeath(1);
+						}
+					    else{
+							game.removeEntity(other);
+							game.notifyHit(game.LifeCounter[playerLife - 1]);
+							--playerLife;
+						}
+					}
+			    else if (other instanceof level2alienEntity) {
+				  if (playerLife == 1) {
+					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
 					game.removeEntity(this);
 					--playerLife;
 					game.notifyDeath(1);
-				}
-				else{
+				} else {
 					game.removeEntity(other);
-					game.notifyHit(game.LifeCounter[playerLife-1]);
+					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
 					--playerLife;
 				}
+
+
+			} else if (other instanceof bosseEntity) {
+				if (playerLife > 1) {
+					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+					--playerLife;
+				} else if (playerLife == 1) {
+					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+					--playerLife;
+					game.notifyDeath(2);
+					game.removeEntity(this);
+
+
+
 			}
 		}
+
+
 	}
-}
+} }

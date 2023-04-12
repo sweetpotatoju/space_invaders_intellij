@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 
+import java.util.Iterator;
+
 /**
  * An entity which represents one of our space invader aliens.
  * 
@@ -32,7 +34,7 @@ public class AlienEntity extends Entity {
 
 
 
-	
+
 	/**
 	 * Create a new alien entity
 	 * 

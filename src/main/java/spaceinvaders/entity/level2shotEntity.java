@@ -60,7 +60,7 @@ public class level2shotEntity extends Entity {
         }
 
         // if we've hit an alien, kill it!
-        if (other instanceof AlienEntity) {
+        if (other instanceof level2shotEntity) {
             // remove the affected entities
             game.removeEntity(this);
             game.removeEntity(other);
