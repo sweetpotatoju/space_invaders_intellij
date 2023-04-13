@@ -1,5 +1,11 @@
 package spaceinvaders;
 
+import com.google.firebase.database.*;
+import com.google.firebase.internal.NonNull;
+import spaceinvaders.entity.*;
+
+import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
@@ -8,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.*;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -67,7 +74,7 @@ public class Game extends Canvas {
 	private boolean firePressed; private boolean fire2Pressed;
 	private boolean player1Dead, player2Dead;
 	private long lastFire = 0; private long last2Fire = 0;
-	private int killCount;
+
 	private long firingInterval = 500; private long firing2Interval = 500;
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
@@ -91,6 +98,12 @@ public class Game extends Canvas {
 	private Thread timeCounterThread;
 	private int level = 1;
 	private Timer timer;
+	private int killCount;
+	private static User User;
+	private static String bestScore = "";
+	private FirebaseTool firebaseTool;
+
+	private GlobalStorage globalStorage;
 
 	private JLabel backgroundMap;
 
@@ -100,6 +113,10 @@ public class Game extends Canvas {
 	 * Construct our game and set it running.
 	 */
 	public Game(String option) {
+
+
+		if (option.equals("2P")) multiPlay = false;
+		else if (option.equals("1P")) multiPlay = true;
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
 		// get hold the content of the frame and set up the resolution of the game
@@ -121,6 +138,7 @@ public class Game extends Canvas {
 		container.pack();
 		container.setResizable(false);
 		container.setVisible(true);
+
 		// add a listener to respond to the user closing the window. If they
 		// do we'd like to exit the game
 		container.addWindowListener(new WindowAdapter() {
@@ -144,20 +162,28 @@ public class Game extends Canvas {
 		}
 
 
+
+		firebaseTool = FirebaseTool.getInstance();
+		globalStorage = GlobalStorage.getInstance();
+
 		initEntities();
 
 
-	}
 
+	}
 
 	/**
 	 * Start a fresh game, this should clear out any old data and
 	 * create a new set.
 	 */
 	private void startGame() {
+
+
+
 		// clear out any existing entities and intialise a new set
 		entities.clear();
 		initEntities();
+
 		// blank out any keyboard settings we might currently have
 		leftPressed = false;
 		rightPressed = false;
@@ -165,6 +191,7 @@ public class Game extends Canvas {
 		downPressed = false;
 		firePressed = false;
 		player1Dead = false;
+
 		//2P key init
 		left2Pressed = false;
 		right2Pressed = false;
@@ -241,26 +268,31 @@ public class Game extends Canvas {
 //			Entity alien = new AlienEntity(this, point.x, point.y);
 //			entities.add(alien);
 //		}}
-		private void initEntities() {
-			if (multiPlay){
-				ShipCounter[1] = new ShipEntity(this, "sprites/ship2.gif",390, 550, true);
-				addEntity(ShipCounter[1]);
-			}
-			ShipCounter[0] = new ShipEntity(this, "sprites/ship1.gif",350, 550, false);
-			entities.add(ShipCounter[0]);
-			killCount = 0;
-			createAliens();
-
+	private void initEntities() {
+		if (multiPlay){
+			ShipCounter[1] = new ShipEntity(this, "sprites/ship2.gif",390, 550, true);
+			addEntity(ShipCounter[1]);
 		}
+		ShipCounter[0] = new ShipEntity(this, "sprites/ship1.gif",350, 550, false);
+		entities.add(ShipCounter[0]);
+		killCount = 0;
 
-		private void createAliens() {
-			// determine the parameters for the aliens based on the current level
-			alienCount = 8 + (level - 1) * 2; // increase the number of aliens by 2 for each level
-			int alienWidth = 50; // width of each alien
-			int alienHeight = 30; // height of each alien
-			int minY = 10; // minimum y-coordinate
-			int maxY = 200; // maximum y-coordinate
-			int delay = 1000; // time delay between each batch of aliens (in milliseconds)
+		// create the aliens
+
+		message = "killCount:"+killCount;
+		createAliens();
+
+	}
+
+	private void createAliens() {
+		// determine the parameters for the aliens based on the current level// increase the number of aliens by 2 for each level
+		alienCount = 10  + (level - 1) * 2;// increase the number of aliens by 2 for each level11
+		int killCount = 0;
+		int alienWidth = 50; // width of each alien
+		int alienHeight = 30; // height of each alien
+		int minY = 10; // minimum y-coordinate
+		int maxY = 200; // maximum y-coordinate
+		int delay = 1000; // time delay between each batch of aliens (in milliseconds)
 
 			final Set<Point> points = new HashSet<>(); // set to keep track of the generated points
 			Random random = new Random();
@@ -292,23 +324,22 @@ public class Game extends Canvas {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 
-						if (isGameStart) {
-							if (count < alienCount) {
-								Point[] pointArray = points.toArray(new Point[0]); // convert set to array
-								Entity alien = new AlienEntity(Game.this, pointArray[count].x, pointArray[count].y);
-								entities.add(alien);
-								System.out.println("alien appear");
-								count += 2; // increase count by 2 to prevent two aliens being added at once
-							}
-						} else {
-							timer.stop(); // stop the timer when the game is over
+					if (isGameStart) {
+						if (count < alienCount) {
+							Point[] pointArray = points.toArray(new Point[0]); // convert set to array
+							Entity alien = new AlienEntity(Game.this, pointArray[count].x, pointArray[count].y);
+							entities.add(alien);
+							count ++ ; // increase count by 2 to prevent two aliens being added at once
 						}
+					} else {
+						timer.stop(); // stop the timer when the game is over
 					}
-				});
-			} else if (level == 2) {
-				System.out.println(alienCount);
-				timer = new Timer(delay, new ActionListener() {
-					int count = 0;
+				}
+			});
+		} else if (level == 2) {
+			System.out.println(alienCount);
+			timer = new Timer(delay, new ActionListener() {
+				int count = 0;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -363,6 +394,28 @@ public class Game extends Canvas {
 		/** This can help you to access entities.add() in other class */
 		public void addEntity(Entity entity){ entities.add(entity); System.out.println("addEntity");}
 
+	/**
+	 * Notification that the player has died.
+	 */
+	public void notifyDeath(int status) {
+		if(status == 1) {player1Dead = true; }
+		if(status == 2) {player2Dead = true; }
+		if(multiPlay){
+			if (player1Dead == true && player2Dead == true) notifyRetire();
+		} else notifyRetire();
+
+
+	}
+	public void notifyRetire(){
+		message = "Oh no! They got you, try again?";
+		waitingForKeyPress = true;
+		isGameStart = false;
+
+		if (killCount > Integer.parseInt(globalStorage.getUserBestScore())) {
+			message = "Oh no!, but  New best score!";
+			String killCountString = Integer.toString(killCount);
+			firebaseTool.SetUserBestScore(globalStorage.getUserID(), killCountString);
+			globalStorage.setUserBestScore(killCountString); // 베스트 스코어 업데이트
 		public void notifyDeath(int status) {
 			if(status == 1) {player1Dead = true; }
 			if(status == 2) {player2Dead = true; }
@@ -376,27 +429,36 @@ public class Game extends Canvas {
 			isGameStart = false;
 		}
 
-		/**
-		 * Notification that the player has won since all the aliens
-		 * are dead.
-		 */
-		public void notifyWin() {
-			message = "Well done! You Win!";
+		}
+	}
+	/**
+	 * Notification that the player has won since all the aliens
+	 * are dead.
+	 */
+	public void notifyWin() {
+		message = "Well done! You Win!";
 
 
-			level++;
-			message = "level" + level;
+		message = "level" + level;
+		waitingForKeyPress = true;
+		isGameStart = false;
+
+		if (level == 4 && killCount > Integer.parseInt(globalStorage.getUserBestScore())) {
+			message = "mission complete! New best score!";
 			waitingForKeyPress = true;
 			isGameStart = false;
-
-
-			if (level == 4) {
-				message = "missioncopmlete";
-				waitingForKeyPress = true;
-				isGameStart = false;
-
-			}
+			String killCountString = Integer.toString(killCount);
+			firebaseTool.SetUserBestScore(globalStorage.getUserID(), killCountString);
+			globalStorage.setUserBestScore(killCountString); // 베스트 스코어 업데이트
+		} else if (level == 4) {
+			message = "mission complete";
+			waitingForKeyPress = true;
+			isGameStart = false;
 		}
+
+
+	}
+
 
 		/**
 		 * Notification that an alien has been killed
@@ -416,15 +478,36 @@ public class Game extends Canvas {
 			killCount++;
 		}
 
-		public void notifyAlienKilled(Entity other) {
-			// reduce the alient count, if there are none left, the player has won!
-			alienCount--;
-			itemDrop(other.getX(), other.getY());
-			System.out.println("notifyAlienKilled() called, alienCount: " + alienCount);
+	public void notifyAlienKilled(Entity other) {
+		// reduce the alient count, if there are none left, the player has won!
+		alienCount--;
+		killCount++;
+		itemDrop(other.getX(), other.getY());
+		System.out.println("notifyAlienKilled() called, alienCount: " + alienCount);
+		System.out.println(killCount);
+
+		if (alienCount <= 0) {
+			notifyWin();
+
+
 			System.out.println(killCount);
-			if (alienCount <= 0) {
-				notifyWin();
+			if (level == 1) {
+				if (alienCount <= 2) {
+					level++;
+					notifyWin();
+				}
+			} else if (level == 2) {
+				if (alienCount <= 2) {
+					level++;
+					notifyWin();
+				}
+			} else if (level == 3) {
+				if (alienCount == 0) {
+					level++;
+					notifyWin();
+				}
 			}
+
 
 //
 			// if there are still some aliens left then they all need to get faster, so
@@ -463,7 +546,7 @@ public class Game extends Canvas {
 //
 			// if there are still some aliens left then they all need to get faster, so
 			// speed up all the existing aliens
-			for (int i=0;i<entities.size();i++) {
+			for (int i = 0; i < entities.size(); i++) {
 				Entity entity = entities.get(i);// 게임의 상태 확인 엔티티
 				if (entity instanceof AlienEntity) {
 					// speed up by 2%
@@ -479,9 +562,12 @@ public class Game extends Canvas {
 							entity.setHorizontalMovement(entity.getHorizontalMovement());
 
 
-						} } } }
+						}
+					}
+				}
+			}
 		}
-
+	}
 
 		/**
 		 * Attempt to fire a shot from the player. Its called "try"
@@ -671,211 +757,145 @@ public class Game extends Canvas {
 			}
 		}
 
+	/**
+	 * A class to handle keyboard input from the user. The class
+	 * handles both dynamic input during game play, i.e. left/right
+	 * and shoot, and more static type input (i.e. press any key to
+	 * continue)
+	 *
+	 * This has been implemented as an inner class more through
+	 * habbit then anything else. Its perfectly normal to implement
+	 * this as seperate class if slight less convienient.
+	 *
+	 * @author Kevin Glass
+	 */
+	private class KeyInputHandler extends KeyAdapter {
 		/**
-		 * A class to handle keyboard input from the user. The class
-		 * handles both dynamic input during game play, i.e. left/right
-		 * and shoot, and more static type input (i.e. press any key to
-		 * continue)
-		 *
-		 * This has been implemented as an inner class more through
-		 * habbit then anything else. Its perfectly normal to implement
-		 * this as seperate class if slight less convienient.
-		 *
-		 * @author Kevin Glass
+		 * The number of key presses we've had while waiting for an "any key" press
 		 */
-		private class KeyInputHandler extends KeyAdapter {
-			/** The number of key presses we've had while waiting for an "any key" press */
-			private int pressCount = 1;
+		private int pressCount = 1;
 
-			/**
-			 * Notification from AWT that a key has been pressed. Note that
-			 * a key being pressed is equal to being pushed down but *NOT*
-			 * released. Thats where keyTyped() comes in.
-			 *
-			 * @param e The details of the key that was pressed
-			 */
-			public void keyPressed(KeyEvent e) {
-				// if we're waiting for an "any key" typed then we don't
-				// want to do anything with just a "press"
-				if (waitingForKeyPress) {
-					return;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-					leftPressed = true;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-					rightPressed = true;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_UP){
-					upPressed = true;
-				}
-				if(e.getKeyCode() == KeyEvent.VK_DOWN){
-					downPressed = true;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					firePressed = true;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_A) {
-					left2Pressed = true;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_D) {
-					right2Pressed = true;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_W){
-					up2Pressed = true;
-				}
-				if(e.getKeyCode() == KeyEvent.VK_S){
-					down2Pressed = true;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_1) {
-					fire2Pressed = true;
-				}
+		/**
+		 * Notification from AWT that a key has been pressed. Note that
+		 * a key being pressed is equal to being pushed down but *NOT*
+		 * released. Thats where keyTyped() comes in.
+		 *
+		 * @param e The details of the key that was pressed
+		 */
+		public void keyPressed(KeyEvent e) {
+			// if we're waiting for an "any key" typed then we don't
+			// want to do anything with just a "press"
+			if (waitingForKeyPress) {
+				return;
 			}
 
-			/**
-			 * Notification from AWT that a key has been released.
-			 *
-			 * @param e The details of the key that was released
-			 */
-			public void keyReleased(KeyEvent e) {
-				// if we're waiting for an "any key" typed then we don't
-				// want to do anything with just a "released"
-				if (waitingForKeyPress) {
-					return;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-					leftPressed = false;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-					rightPressed = false;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_UP){
-					upPressed = false;
-				}
-				if(e.getKeyCode() == KeyEvent.VK_DOWN){
-					downPressed = false;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					firePressed = false;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_A) {
-					left2Pressed = false;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_D) {
-					right2Pressed = false;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_W){
-					up2Pressed = false;
-				}
-				if(e.getKeyCode() == KeyEvent.VK_S){
-					down2Pressed = false;
-				}
-				if (e.getKeyCode() == KeyEvent.VK_1) {
-					fire2Pressed = false;
-				}
-			}
 
-			/**
-			 * Notification from AWT that a key has been typed. Note that
-			 * typing a key means to both press and then release it.
-			 *
-			 * @param e The details of the key that was typed.
-			 */
-			public void keyTyped(KeyEvent e) {
-				// if we're waiting for a "any key" type then
-				// check if we've recieved any recently. We may
-				// have had a keyType() event from the user releasing
-				// the shoot or move keys, hence the use of the "pressCount"
-				// counter.
-				if (waitingForKeyPress) {
-					if (pressCount == 1) {
-						// since we've now recieved our key typed
-						// event we can mark it as such and start
-						// our new game
-						waitingForKeyPress = false;
-						startGame();
-						pressCount = 0;
-					} else {
-						pressCount++;
-					}
-				}
-				// if we hit escape, then quit the game
-				if (e.getKeyChar() == 27) {
-					System.exit(0);
-				}
+			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+				leftPressed = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				rightPressed = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				upPressed = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				downPressed = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				firePressed = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_A) {
+				left2Pressed = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_D) {
+				right2Pressed = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_W) {
+				up2Pressed = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_S) {
+				down2Pressed = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_1) {
+				fire2Pressed = true;
 			}
 		}
 
-		public void shipControl1(){
-			ShipEntity ship = (ShipEntity) ShipCounter[0];
-			ship.setHorizontalMovement(0);
-			ship.setVerticalMovement(0);
-			if ((leftPressed)&&(!rightPressed)&&(!upPressed)&&(!downPressed)){
-				ship.setHorizontalMovement(-moveSpeed);
+		/**
+		 * Notification from AWT that a key has been released.
+		 *
+		 * @param e The details of the key that was released
+		 */
+		public void keyReleased(KeyEvent e) {
+			// if we're waiting for an "any key" typed then we don't
+			// want to do anything with just a "released"
+			if (waitingForKeyPress) {
+				return;
 			}
-			//right unique move
-			else if ((rightPressed)&&(!leftPressed)&&(!upPressed)&&(!downPressed)){
-				ship.setHorizontalMovement(moveSpeed);
+
+			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+				leftPressed = false;
 			}
-			//up unique move
-			else if ((upPressed)&&(!downPressed)&&(!rightPressed)&&(!leftPressed)){
-				ship.setVerticalMovement(-moveSpeed);
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				rightPressed = false;
 			}
-			//down unique move
-			else if ((downPressed)&&(!upPressed)&&(!rightPressed)&&(!leftPressed)){
-				ship.setVerticalMovement(moveSpeed);
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				upPressed = false;
 			}
-			//left&up degree 45
-			else if((leftPressed)&&(upPressed)&&(!rightPressed)&&(!downPressed)){
-				ship.setVerticalMovement(-moveSpeed);
-				ship.setHorizontalMovement(-moveSpeed);
-			} else if((leftPressed)&&(downPressed)&&(!rightPressed)&&(!upPressed)){
-				ship.setVerticalMovement(moveSpeed);
-				ship.setHorizontalMovement(-moveSpeed);
-			} else if((rightPressed)&&(upPressed)&&(!downPressed)&&(!leftPressed)){
-				ship.setVerticalMovement(-moveSpeed);
-				ship.setHorizontalMovement(moveSpeed);
-			} else if((rightPressed)&&(downPressed)&&(!upPressed)&&(!leftPressed)){
-				ship.setVerticalMovement(moveSpeed);
-				ship.setHorizontalMovement(moveSpeed);
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				downPressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				firePressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_A) {
+				left2Pressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_D) {
+				right2Pressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_W) {
+				up2Pressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_S) {
+				down2Pressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_1) {
+				fire2Pressed = false;
 			}
 		}
 
-		public void shipControl2(){
-			ShipEntity ship = (ShipEntity) ShipCounter[1];
-			ship.setHorizontalMovement(0);
-			ship.setVerticalMovement(0);
-			if ((left2Pressed)&&(!right2Pressed)&&(!up2Pressed)&&(!down2Pressed)){
-				ship.setHorizontalMovement(-moveSpeed);
+		/**
+		 * Notification from AWT that a key has been typed. Note that
+		 * typing a key means to both press and then release it.
+		 *
+		 * @param e The details of the key that was typed.
+		 */
+		public void keyTyped(KeyEvent e) {
+			// if we're waiting for a "any key" type then
+			// check if we've recieved any recently. We may
+			// have had a keyType() event from the user releasing
+			// the shoot or move keys, hence the use of the "pressCount"
+			// counter.
+			if (waitingForKeyPress) {
+				if (pressCount == 1) {
+					// since we've now recieved our key typed
+					// event we can mark it as such and start
+					// our new game
+					waitingForKeyPress = false;
+					startGame();
+					pressCount = 0;
+				} else {
+					pressCount++;
+				}
 			}
-			//right unique move
-			else if ((right2Pressed)&&(!left2Pressed)&&(!up2Pressed)&&(!down2Pressed)){
-				ship.setHorizontalMovement(moveSpeed);
-			}
-			//up unique move
-			else if ((up2Pressed)&&(!down2Pressed)&&(!right2Pressed)&&(!left2Pressed)){
-				ship.setVerticalMovement(-moveSpeed);
-			}
-			//down unique move
-			else if ((down2Pressed)&&(!up2Pressed)&&(!right2Pressed)&&(!left2Pressed)){
-				ship.setVerticalMovement(moveSpeed);
-			}
-			//left&up degree 45
-			else if((left2Pressed)&&(up2Pressed)&&(!right2Pressed)&&(!down2Pressed)){
-				ship.setVerticalMovement(-moveSpeed);
-				ship.setHorizontalMovement(-moveSpeed);
-			} else if((left2Pressed)&&(down2Pressed)&&(!right2Pressed)&&(!up2Pressed)){
-				ship.setVerticalMovement(moveSpeed);
-				ship.setHorizontalMovement(-moveSpeed);
-			} else if((right2Pressed)&&(up2Pressed)&&(!down2Pressed)&&(!left2Pressed)){
-				ship.setVerticalMovement(-moveSpeed);
-				ship.setHorizontalMovement(moveSpeed);
-			} else if((right2Pressed)&&(down2Pressed)&&(!up2Pressed)&&(!left2Pressed)){
-				ship.setVerticalMovement(moveSpeed);
-				ship.setHorizontalMovement(moveSpeed);
+
+			// if we hit escape, then quit the game
+			if (e.getKeyChar() == 27) {
+				System.exit(0);
 			}
 		}
-
 		/**
 		 * The entry point into the game. We'll simply create an
 		 * instance of class which will start the display and game
@@ -883,11 +903,81 @@ public class Game extends Canvas {
 		 *
 		 * @param argv The arguments that are passed into our game
 		 */
-		public static void main(String[] argv) {
-			Game g = new Game("");
-			// Start the main game loop, note: this method will not
-			// return until the game has finished running. Hence we are
-			// using the actual main thread to run the game.
-			g.gameLoop();
+	}
+	public void shipControl1() {
+		ShipEntity ship = (ShipEntity) ShipCounter[0];
+		ship.setHorizontalMovement(0);
+		ship.setVerticalMovement(0);
+		if ((leftPressed) && (!rightPressed) && (!upPressed) && (!downPressed)) {
+			ship.setHorizontalMovement(-moveSpeed);
 		}
+		//right unique move
+		else if ((rightPressed) && (!leftPressed) && (!upPressed) && (!downPressed)) {
+			ship.setHorizontalMovement(moveSpeed);
+		}
+		//up unique move
+		else if ((upPressed) && (!downPressed) && (!rightPressed) && (!leftPressed)) {
+			ship.setVerticalMovement(-moveSpeed);
+		}
+		//down unique move
+		else if ((downPressed) && (!upPressed) && (!rightPressed) && (!leftPressed)) {
+			ship.setVerticalMovement(moveSpeed);
+		}
+		//left&up degree 45
+		else if ((leftPressed) && (upPressed) && (!rightPressed) && (!downPressed)) {
+			ship.setVerticalMovement(-moveSpeed);
+			ship.setHorizontalMovement(-moveSpeed);
+		} else if ((leftPressed) && (downPressed) && (!rightPressed) && (!upPressed)) {
+			ship.setVerticalMovement(moveSpeed);
+			ship.setHorizontalMovement(-moveSpeed);
+		} else if ((rightPressed) && (upPressed) && (!downPressed) && (!leftPressed)) {
+			ship.setVerticalMovement(-moveSpeed);
+			ship.setHorizontalMovement(moveSpeed);
+		} else if ((rightPressed) && (downPressed) && (!upPressed) && (!leftPressed)) {
+			ship.setVerticalMovement(moveSpeed);
+			ship.setHorizontalMovement(moveSpeed);
+		}
+	}
+
+	public void shipControl2() {
+		ShipEntity ship = (ShipEntity) ShipCounter[1];
+		ship.setHorizontalMovement(0);
+		ship.setVerticalMovement(0);
+		if ((left2Pressed) && (!right2Pressed) && (!up2Pressed) && (!down2Pressed)) {
+			ship.setHorizontalMovement(-moveSpeed);
+		}
+		//right unique move
+		else if ((right2Pressed) && (!left2Pressed) && (!up2Pressed) && (!down2Pressed)) {
+			ship.setHorizontalMovement(moveSpeed);
+		}
+		//up unique move
+		else if ((up2Pressed) && (!down2Pressed) && (!right2Pressed) && (!left2Pressed)) {
+			ship.setVerticalMovement(-moveSpeed);
+		}
+		//down unique move
+		else if ((down2Pressed) && (!up2Pressed) && (!right2Pressed) && (!left2Pressed)) {
+			ship.setVerticalMovement(moveSpeed);
+		}
+		//left&up degree 45
+		else if ((left2Pressed) && (up2Pressed) && (!right2Pressed) && (!down2Pressed)) {
+			ship.setVerticalMovement(-moveSpeed);
+			ship.setHorizontalMovement(-moveSpeed);
+		} else if ((left2Pressed) && (down2Pressed) && (!right2Pressed) && (!up2Pressed)) {
+			ship.setVerticalMovement(moveSpeed);
+			ship.setHorizontalMovement(-moveSpeed);
+		} else if ((right2Pressed) && (up2Pressed) && (!down2Pressed) && (!left2Pressed)) {
+			ship.setVerticalMovement(-moveSpeed);
+			ship.setHorizontalMovement(moveSpeed);
+		} else if ((right2Pressed) && (down2Pressed) && (!up2Pressed) && (!left2Pressed)) {
+			ship.setVerticalMovement(moveSpeed);
+			ship.setHorizontalMovement(moveSpeed);
+		}
+	}
+	public static void main(String[] argv) {
+		Game g = new Game("");
+		// Start the main game loop, note: this method will not
+		// return until the game has finished running. Hence we are
+		// using the actual main thread to run the game.
+		g.gameLoop();
+	}
 }

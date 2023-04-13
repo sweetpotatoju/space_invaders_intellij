@@ -3,11 +3,17 @@ package spaceinvaders;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,36 +27,35 @@ public class RegisterPage extends JFrame {
     //PW 입력 필드
     private JPasswordField tResisterPw;
 
-    private FirebaseAuth mFirebaseAuth;
+    private FirebaseTool firebaseTool;
+
+    private GlobalStorage globalStorage;
 
     public RegisterPage() {
         setContentPane(resisterPanel);
         setTitle("resister");
         setSize(450, 300);
         setVisible(true);
-
         Dimension frameSize = getSize();
         Dimension windowSize = Toolkit.getDefaultToolkit().getScreenSize();
         //화면 중앙에 띄우기
         setLocation((windowSize.width - frameSize.width) / 2, (windowSize.height - frameSize.height) / 2);
 
-        mFirebaseAuth = FirebaseAuth.getInstance(MFirebaseTool.getFirebaseApp());
+        firebaseTool = FirebaseTool.getInstance();
+        globalStorage = GlobalStorage.getInstance();
 
         //resister 버튼
         btnAddAccount.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    mFirebaseAuth.createUser(new UserRecord.CreateRequest()
-                            .setEmail(tResisterID.getText())
-                            .setEmailVerified(false)
-                            .setDisplayName(String.valueOf(tResisterPw.getPassword())));
+                    String id = tResisterID.getText();
+                    String pw = tResisterPw.getText();
 
-                    Logger.getLogger(RegisterPage.class.getName()).log(Level.INFO, "유저 생성 성공");
-                    JOptionPane.showMessageDialog(null, "유저 생성 성공");
-                }
-                catch (FirebaseAuthException ex){
-                    Logger.getLogger(RegisterPage.class.getName()).log(Level.SEVERE, null, ex);
+                    firebaseTool.Signup(id, pw);
+
+                } catch (NullPointerException exception) {
+                    exception.printStackTrace();
                 }
 
                 new LoginPage();
@@ -58,5 +63,6 @@ public class RegisterPage extends JFrame {
             }
         });
     }
+
 
 }
