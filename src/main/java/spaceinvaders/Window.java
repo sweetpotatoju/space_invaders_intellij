@@ -14,6 +14,8 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
+        new BackgroundMusic();
+
 
 
     }
@@ -52,7 +54,6 @@ public class Window extends JFrame {
 
 //                ImageIcon optionButton = new ImageIcon(getClass().getResource("/sprites/optionButton.png"));
 //                g.drawImage(optionButton.getImage(), 440,430,320,110, null);
-                new BackgroundMusic();
 
 
             }
