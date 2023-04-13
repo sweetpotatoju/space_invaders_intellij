@@ -124,7 +124,7 @@ public class bosseEntity extends Entity {
             System.out.println(bossLife);
             if (bossLife <= 0) {
                 // notify the game that the boss has been killed
-                game.notifyAlienKilled();
+                game.notifyAlienKilled(this);
             }
         }
     }
