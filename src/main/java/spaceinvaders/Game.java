@@ -1,15 +1,15 @@
 package spaceinvaders;
 
+import com.google.firebase.database.*;
+import com.google.firebase.internal.NonNull;
 import spaceinvaders.entity.*;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -66,7 +66,7 @@ public class Game extends Canvas {
 	//1P key set
 	private ShipEntity ship1, ship2;
 	private final ShipEntity[] ShipCounter = new ShipEntity[2];
-	private final boolean multiPlay = true;
+	private boolean multiPlay;
 	private static boolean leftPressed;
 	private static boolean left2Pressed;
 	private static boolean rightPressed;
@@ -107,11 +107,19 @@ public class Game extends Canvas {
 	private Thread timeCounterThread;
 	private int level = 1;
 	private Timer timer;
+	private int killCount;
+	private static User User;
+	private static String bestScore = "";
+	private FirebaseTool firebaseTool;
+
+	private GlobalStorage globalStorage;
 
 	/**
 	 * Construct our game and set it running.
 	 */
 	public Game(String option) {
+		if (option.equals("2P")) multiPlay = false;
+		else if (option.equals("1P")) multiPlay = true;
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
 		// get hold the content of the frame and set up the resolution of the game
@@ -128,6 +136,7 @@ public class Game extends Canvas {
 		container.pack();
 		container.setResizable(false);
 		container.setVisible(true);
+
 		// add a listener to respond to the user closing the window. If they
 		// do we'd like to exit the game
 		container.addWindowListener(new WindowAdapter() {
@@ -144,11 +153,16 @@ public class Game extends Canvas {
 		// to manage our accelerated graphics
 		createBufferStrategy(2);
 		strategy = getBufferStrategy();
+
 		// initialise the entities in our game so there's something
 		// to see at startup
 		if (option.equals("2p")) {
 			System.out.println("2p");
 		}
+
+		firebaseTool = FirebaseTool.getInstance();
+		globalStorage = GlobalStorage.getInstance();
+
 		initEntities();
 	}
 
@@ -250,6 +264,7 @@ public class Game extends Canvas {
 		ship2 = new ShipEntity(this, "sprites/ship2.gif", 390, 550, true);
 		entities.add(ship1);
 		entities.add(ship2);
+		System.out.println(multiPlay);
 
 		// create the life counter
 		int idx = 20;
@@ -267,14 +282,14 @@ public class Game extends Canvas {
 
 		// create the aliens
 
-
+		message = "killCount:"+killCount;
 		createAliens();
 
 	}
 
 	private void createAliens() {
 		// determine the parameters for the aliens based on the current level
-		alienCount = 3 + (level - 1) * 2; // increase the number of aliens by 2 for each level
+		alienCount = 10  + (level - 1) * 2;// increase the number of aliens by 2 for each level11
 		int killCount = 0;
 		int alienWidth = 50; // width of each alien
 		int alienHeight = 30; // height of each alien
@@ -306,6 +321,7 @@ public class Game extends Canvas {
 
 		// create a timer to add aliens every delay milliseconds
 		if (level == 1) {
+
 			timer = new Timer(delay, new ActionListener() {
 				int count = 0;
 
@@ -317,7 +333,7 @@ public class Game extends Canvas {
 							Point[] pointArray = points.toArray(new Point[0]); // convert set to array
 							Entity alien = new AlienEntity(Game.this, pointArray[count].x, pointArray[count].y);
 							entities.add(alien);
-							count += 2; // increase count by 2 to prevent two aliens being added at once
+							count ++ ; // increase count by 2 to prevent two aliens being added at once
 						}
 					} else {
 						timer.stop(); // stop the timer when the game is over
@@ -402,14 +418,23 @@ public class Game extends Canvas {
 		if (multiPlay) {
 			if (player1Dead && player2Dead) notifyRetire();
 		} else notifyRetire();
+
+
 	}
 
 	public void notifyRetire() {
 		message = "Oh no! They got you, try again?";
 		waitingForKeyPress = true;
 		isGameStart = false;
-	}
 
+		if (killCount > Integer.parseInt(globalStorage.getUserBestScore())) {
+			message = "Oh no!, but  New best score!";
+			String killCountString = Integer.toString(killCount);
+			firebaseTool.SetUserBestScore(globalStorage.getUserID(), killCountString);
+			globalStorage.setUserBestScore(killCountString); // 베스트 스코어 업데이트
+
+		}
+	}
 	/**
 	 * Notification that the player has won since all the aliens
 	 * are dead.
@@ -418,20 +443,27 @@ public class Game extends Canvas {
 		message = "Well done! You Win!";
 
 
-		level++;
+
 		message = "level" + level;
 		waitingForKeyPress = true;
 		isGameStart = false;
 
-
-		if (level == 4) {
-			message = "missioncopmlete";
+		if (level == 4 && killCount > Integer.parseInt(globalStorage.getUserBestScore())) {
+			message = "mission complete! New best score!";
 			waitingForKeyPress = true;
 			isGameStart = false;
-
+			String killCountString = Integer.toString(killCount);
+			firebaseTool.SetUserBestScore(globalStorage.getUserID(), killCountString);
+			globalStorage.setUserBestScore(killCountString); // 베스트 스코어 업데이트
+		} else if (level == 4) {
+			message = "mission complete";
+			waitingForKeyPress = true;
+			isGameStart = false;
 		}
-	}
 
+
+
+	}
 	/**
 	 * Notification that an alien has been killed
 	 */
@@ -446,10 +478,29 @@ public class Game extends Canvas {
 	public void notifyAlienKilled() {
 		// reduce the alient count, if there are none left, the player has won!
 		alienCount--;
+		killCount++;
 
-		if (alienCount <= 0) {
-			notifyWin();
+
+		System.out.println(killCount);
+		if (level==1){
+			if(alienCount<=2)
+			{
+				level++;
+				notifyWin();} }
+
+			else if(level==2){
+				if(alienCount<=2){
+					level++;
+					notifyWin();
+				}
+			}
+
+		 else if (level == 3){
+			 if(alienCount==0){
+			level++;
+				 notifyWin();}
 		}
+
 
 //
 		// if there are still some aliens left then they all need to get faster, so
@@ -503,7 +554,8 @@ public class Game extends Canvas {
 						// speed up by 2%
 						entity.setHorizontalMovement(entity.getHorizontalMovement());
 
-
+						waitingForKeyPress = true;  // 추가
+						isGameStart = false;  // 추가
 					} } } }	 }
 
 
@@ -894,6 +946,9 @@ public class Game extends Canvas {
 	 *
 	 * @param argv The arguments that are passed into our game
 	 */
+
+
+
 	public static void main(String[] argv) {
 		Game g = new Game("");
 
