@@ -15,7 +15,7 @@ public class BackgroundMusic extends Thread{
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 
             //볼륨조정
-            gainControl.setValue(-30.0f);
+            gainControl.setValue(-20.0f);
 
             clip.start();
 
