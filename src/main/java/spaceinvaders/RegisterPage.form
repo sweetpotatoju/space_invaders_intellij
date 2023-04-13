@@ -63,7 +63,9 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <text value=""/>
+        </properties>
       </component>
       <component id="d5d8b" class="javax.swing.JButton" binding="btnAddAccount">
         <constraints>

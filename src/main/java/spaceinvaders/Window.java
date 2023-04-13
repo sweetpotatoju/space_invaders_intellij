@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 
 public class Window extends JFrame {
+    private FirebaseTool firebaseTool;
+
+    private GlobalStorage globalStorage;
 
     public Window() {
 
@@ -14,6 +17,8 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
+
+
 
 
     }
@@ -115,6 +120,23 @@ public class Window extends JFrame {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
+
+                        Game game = new Game("1p");
+                        game.gameLoop();
+                    }
+                });
+                thread.start();
+            }
+        });
+
+        button1.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
                         Game game = new Game("2p");
                         game.gameLoop();
                     }
@@ -156,22 +178,19 @@ public class Window extends JFrame {
 
 
     public static void main(String[] args) {
-//        SwingUtilities.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                LoginPage loginPage = new LoginPage();
-//                new MFirebaseTool().hashCode();
-//                loginPage.setLoginLiscctener(new LoginPage.LoginListener() {
-//                    @Override
-//                    public void loginSuccess(String email) {
-//                        Window window = new Window();
-//                        window.showWindow();
-//
-//                    }
-//                });
-//            }
-//        });
-        Window window = new Window();
-        window.showWindow();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                LoginPage loginPage = new LoginPage();
+                loginPage.setLoginLiscctener(new LoginPage.LoginListener() {
+                    @Override
+                    public void loginSuccess(String email) {
+                        Window window = new Window();
+                        window.showWindow();
+
+                    }
+                });
+            }
+        });
     }
 }

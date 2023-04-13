@@ -35,6 +35,10 @@ public class LoginPage extends JFrame {
     private char[] pw = null;
     private LoginListener loginListener;
 
+    private FirebaseTool firebaseTool;
+
+    private GlobalStorage globalStorage;
+
 
     public LoginPage() {
         setContentPane(loginPanel);
@@ -48,6 +52,9 @@ public class LoginPage extends JFrame {
         //화면을 중앙에 띄우기
         setLocation((windowSize.width - frameSize.width) / 2, (windowSize.height - frameSize.height) / 2);
 
+        firebaseTool = FirebaseTool.getInstance();
+        globalStorage = GlobalStorage.getInstance();
+
         //OK버튼
         btnOK.addActionListener(new ActionListener() {
             @Override
@@ -55,10 +62,9 @@ public class LoginPage extends JFrame {
                 ID = tID.getText();
                 pw = tpw.getPassword();
 
-                if (ID.isEmpty() || Arrays.toString(pw).isEmpty()){
+                if (ID.isEmpty() || Arrays.toString(pw).isEmpty()) {
                     message.setText("아이디 또는 비밀번호를 입력하세요");
-                }
-                else {
+                } else {
                     getDataByEmail();
                 }
             }
@@ -83,51 +89,29 @@ public class LoginPage extends JFrame {
         });
     }
 
-    private void getDataByEmail(){
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance(MFirebaseTool.getFirebaseApp());
-        UserRecord userRecord = null;
+    private void getDataByEmail() {
         try {
-            userRecord = firebaseAuth.getUserByEmail(tID.getText());
-            String email = userRecord.getEmail();
-            String uid = userRecord.getUid();
-            String password = userRecord.getDisplayName();
+            String id = tID.getText();
+            String pw = tpw.getText();
 
-
-            if (password.equals(String.valueOf(tpw.getPassword()))){
-                JOptionPane.showMessageDialog(null, "Hello" + " " + email);
+            if (firebaseTool.Login(id, pw)) {
+                JOptionPane.showMessageDialog(null, "Hello" + " " + id);
                 setVisible(false);
-              ;
                 new Window();
 
                 // 로그인 성공시 LoginListener의 loginSuccess 메소드 호출하여 처리할 로직 구현
                 if (loginListener != null) {
-                    loginListener.loginSuccess(email);
+                    loginListener.loginSuccess(id);
                 }
-
 
             } else {
                 JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.");
             }
 
-            recoverUserData(uid);
-        } catch (FirebaseAuthException ex) {
+        } catch (NullPointerException ex) {
             Logger.getLogger(RegisterPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    private void recoverUserData(String uid){
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance(MFirebaseTool.getFirebaseApp());
-        UserRecord userRecord = null;
-        try {
-            userRecord = firebaseAuth.getUser(uid);
-
-            Logger.getLogger(LoginPage.class.getName()).log(Level.INFO, "유저 데이터를 성공적으로 Fetch:");
-            Logger.getLogger(LoginPage.class.getName()).log(Level.INFO, userRecord.getUid());
-        } catch (FirebaseAuthException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     public void setLoginLiscctener(LoginListener loginListener) {
         this.loginListener = loginListener;
@@ -137,4 +121,4 @@ public class LoginPage extends JFrame {
     public interface LoginListener {
         void loginSuccess(String email);
     }
-    }
+}
