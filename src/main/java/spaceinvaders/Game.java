@@ -65,7 +65,7 @@ public class Game extends Canvas {
 	private boolean firePressed; private boolean fire2Pressed;
 	private boolean player1Dead, player2Dead;
 	private long lastFire = 0; private long last2Fire = 0;
-	private int killCount;
+
 	private long firingInterval = 500; private long firing2Interval = 500;
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
@@ -423,7 +423,6 @@ public class Game extends Canvas {
 		message = "Well done! You Win!";
 
 
-
 		message = "level" + level;
 		waitingForKeyPress = true;
 		isGameStart = false;
@@ -442,9 +441,8 @@ public class Game extends Canvas {
 		}
 
 
-
-		}
 	}
+
 
 	/**
 	 * Notification that an alien has been killed
@@ -476,83 +474,84 @@ public class Game extends Canvas {
 			notifyWin();
 
 
-
-		System.out.println(killCount);
-		if (level==1){
-			if(alienCount<=2)
-			{
-				level++;
-				notifyWin();} }
-
-			else if(level==2){
-				if(alienCount<=2){
+			System.out.println(killCount);
+			if (level == 1) {
+				if (alienCount <= 2) {
+					level++;
+					notifyWin();
+				}
+			} else if (level == 2) {
+				if (alienCount <= 2) {
+					level++;
+					notifyWin();
+				}
+			} else if (level == 3) {
+				if (alienCount == 0) {
 					level++;
 					notifyWin();
 				}
 			}
 
-		 else if (level == 3){
-			 if(alienCount==0){
-			level++;
-				 notifyWin();}
-		}
-
 
 //
-		// if there are still some aliens left then they all need to get faster, so
-		// speed up all the existing aliens
-		for (int i = 0; i < entities.size(); i++) {
-			Entity entity = (Entity) entities.get(i);// 게임의 상태 확인 엔티티
-			if (level == 1) {
-				if (entity instanceof AlienEntity) {
-					// speed up by 2%
-					entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.00);
-				}
-			} else if (level == 2) {
-				if (entity instanceof AlienEntity) {
-					// speed up by 2%
-					entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.00);
-
-
-				}
-			}
-		}
-		for (int i = 0; i < entities.size(); i++) {
-			Entity entity = (Entity) entities.get(i);// 게임의 상태 확인 엔티티
-			if (level == 1) {
-				if (entity instanceof level2alienEntity) {
-					// speed up by 2%
-					entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.00);
-				}
-			} else if (level == 2) {
-				if (entity instanceof level2alienEntity) {
-					// speed up by 2%
-					entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.00);
-				}
-			}
-		}
-
-//
-		// if there are still some aliens left then they all need to get faster, so
-		// speed up all the existing aliens
-		for (int i=0;i<entities.size();i++) {
-			Entity entity = entities.get(i);// 게임의 상태 확인 엔티티
-			if (entity instanceof AlienEntity) {
-				// speed up by 2%
-				entity.setHorizontalMovement(entity.getHorizontalMovement());
+			// if there are still some aliens left then they all need to get faster, so
+			// speed up all the existing aliens
+			for (int i = 0; i < entities.size(); i++) {
+				Entity entity = (Entity) entities.get(i);// 게임의 상태 확인 엔티티
 				if (level == 1) {
 					if (entity instanceof AlienEntity) {
 						// speed up by 2%
-						entity.setHorizontalMovement(entity.getHorizontalMovement());
+						entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.00);
 					}
 				} else if (level == 2) {
 					if (entity instanceof AlienEntity) {
 						// speed up by 2%
-						entity.setHorizontalMovement(entity.getHorizontalMovement());
+						entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.00);
 
 
-					} } } }	 }
+					}
+				}
+			}
+			for (int i = 0; i < entities.size(); i++) {
+				Entity entity = (Entity) entities.get(i);// 게임의 상태 확인 엔티티
+				if (level == 1) {
+					if (entity instanceof level2alienEntity) {
+						// speed up by 2%
+						entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.00);
+					}
+				} else if (level == 2) {
+					if (entity instanceof level2alienEntity) {
+						// speed up by 2%
+						entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.00);
+					}
+				}
+			}
 
+//
+			// if there are still some aliens left then they all need to get faster, so
+			// speed up all the existing aliens
+			for (int i = 0; i < entities.size(); i++) {
+				Entity entity = entities.get(i);// 게임의 상태 확인 엔티티
+				if (entity instanceof AlienEntity) {
+					// speed up by 2%
+					entity.setHorizontalMovement(entity.getHorizontalMovement());
+					if (level == 1) {
+						if (entity instanceof AlienEntity) {
+							// speed up by 2%
+							entity.setHorizontalMovement(entity.getHorizontalMovement());
+						}
+					} else if (level == 2) {
+						if (entity instanceof AlienEntity) {
+							// speed up by 2%
+							entity.setHorizontalMovement(entity.getHorizontalMovement());
+
+
+						}
+					}
+				}
+			}
+		}
+	}
 
 	/**
 	 * Attempt to fire a shot from the player. Its called "try"
@@ -725,7 +724,9 @@ public class Game extends Canvas {
 	 * @author Kevin Glass
 	 */
 	private class KeyInputHandler extends KeyAdapter {
-		/** The number of key presses we've had while waiting for an "any key" press */
+		/**
+		 * The number of key presses we've had while waiting for an "any key" press
+		 */
 		private int pressCount = 1;
 
 		/**
@@ -749,10 +750,10 @@ public class Game extends Canvas {
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				rightPressed = true;
 			}
-			if (e.getKeyCode() == KeyEvent.VK_UP){
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
 				upPressed = true;
 			}
-			if(e.getKeyCode() == KeyEvent.VK_DOWN){
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 				downPressed = true;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
@@ -764,16 +765,17 @@ public class Game extends Canvas {
 			if (e.getKeyCode() == KeyEvent.VK_D) {
 				right2Pressed = true;
 			}
-			if (e.getKeyCode() == KeyEvent.VK_W){
+			if (e.getKeyCode() == KeyEvent.VK_W) {
 				up2Pressed = true;
 			}
-			if(e.getKeyCode() == KeyEvent.VK_S){
+			if (e.getKeyCode() == KeyEvent.VK_S) {
 				down2Pressed = true;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_1) {
 				fire2Pressed = true;
 			}
 		}
+
 		/**
 		 * Notification from AWT that a key has been released.
 		 *
@@ -792,10 +794,10 @@ public class Game extends Canvas {
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				rightPressed = false;
 			}
-			if (e.getKeyCode() == KeyEvent.VK_UP){
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
 				upPressed = false;
 			}
-			if(e.getKeyCode() == KeyEvent.VK_DOWN){
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 				downPressed = false;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
@@ -807,16 +809,17 @@ public class Game extends Canvas {
 			if (e.getKeyCode() == KeyEvent.VK_D) {
 				right2Pressed = false;
 			}
-			if (e.getKeyCode() == KeyEvent.VK_W){
+			if (e.getKeyCode() == KeyEvent.VK_W) {
 				up2Pressed = false;
 			}
-			if(e.getKeyCode() == KeyEvent.VK_S){
+			if (e.getKeyCode() == KeyEvent.VK_S) {
 				down2Pressed = false;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_1) {
 				fire2Pressed = false;
 			}
 		}
+
 		/**
 		 * Notification from AWT that a key has been typed. Note that
 		 * typing a key means to both press and then release it.
@@ -847,90 +850,88 @@ public class Game extends Canvas {
 				System.exit(0);
 			}
 		}
+		/**
+		 * The entry point into the game. We'll simply create an
+		 * instance of class which will start the display and game
+		 * loop.
+		 *
+		 * @param argv The arguments that are passed into our game
+		 */
 	}
-
-	public static void shipControl(ShipEntity ship){
+	public void shipControl1() {
+		ShipEntity ship = (ShipEntity) ShipCounter[0];
 		ship.setHorizontalMovement(0);
 		ship.setVerticalMovement(0);
-		if ((leftPressed)&&(!rightPressed)&&(!upPressed)&&(!downPressed)){
+		if ((leftPressed) && (!rightPressed) && (!upPressed) && (!downPressed)) {
 			ship.setHorizontalMovement(-moveSpeed);
 		}
 		//right unique move
-		else if ((rightPressed)&&(!leftPressed)&&(!upPressed)&&(!downPressed)){
+		else if ((rightPressed) && (!leftPressed) && (!upPressed) && (!downPressed)) {
 			ship.setHorizontalMovement(moveSpeed);
 		}
 		//up unique move
-		else if ((upPressed)&&(!downPressed)&&(!rightPressed)&&(!leftPressed)){
+		else if ((upPressed) && (!downPressed) && (!rightPressed) && (!leftPressed)) {
 			ship.setVerticalMovement(-moveSpeed);
 		}
 		//down unique move
-		else if ((downPressed)&&(!upPressed)&&(!rightPressed)&&(!leftPressed)){
+		else if ((downPressed) && (!upPressed) && (!rightPressed) && (!leftPressed)) {
 			ship.setVerticalMovement(moveSpeed);
 		}
 		//left&up degree 45
-		else if((leftPressed)&&(upPressed)&&(!rightPressed)&&(!downPressed)){
+		else if ((leftPressed) && (upPressed) && (!rightPressed) && (!downPressed)) {
 			ship.setVerticalMovement(-moveSpeed);
 			ship.setHorizontalMovement(-moveSpeed);
-		} else if((leftPressed)&&(downPressed)&&(!rightPressed)&&(!upPressed)){
+		} else if ((leftPressed) && (downPressed) && (!rightPressed) && (!upPressed)) {
 			ship.setVerticalMovement(moveSpeed);
 			ship.setHorizontalMovement(-moveSpeed);
-		} else if((rightPressed)&&(upPressed)&&(!downPressed)&&(!leftPressed)){
+		} else if ((rightPressed) && (upPressed) && (!downPressed) && (!leftPressed)) {
 			ship.setVerticalMovement(-moveSpeed);
 			ship.setHorizontalMovement(moveSpeed);
-		} else if((rightPressed)&&(downPressed)&&(!upPressed)&&(!leftPressed)){
+		} else if ((rightPressed) && (downPressed) && (!upPressed) && (!leftPressed)) {
 			ship.setVerticalMovement(moveSpeed);
 			ship.setHorizontalMovement(moveSpeed);
 		}
 	}
 
-	public void shipControl2(){
+	public void shipControl2() {
 		ShipEntity ship = (ShipEntity) ShipCounter[1];
 		ship.setHorizontalMovement(0);
 		ship.setVerticalMovement(0);
-		if ((left2Pressed)&&(!right2Pressed)&&(!up2Pressed)&&(!down2Pressed)){
+		if ((left2Pressed) && (!right2Pressed) && (!up2Pressed) && (!down2Pressed)) {
 			ship.setHorizontalMovement(-moveSpeed);
 		}
 		//right unique move
-		else if ((right2Pressed)&&(!left2Pressed)&&(!up2Pressed)&&(!down2Pressed)){
+		else if ((right2Pressed) && (!left2Pressed) && (!up2Pressed) && (!down2Pressed)) {
 			ship.setHorizontalMovement(moveSpeed);
 		}
 		//up unique move
-		else if ((up2Pressed)&&(!down2Pressed)&&(!right2Pressed)&&(!left2Pressed)){
+		else if ((up2Pressed) && (!down2Pressed) && (!right2Pressed) && (!left2Pressed)) {
 			ship.setVerticalMovement(-moveSpeed);
 		}
 		//down unique move
-		else if ((down2Pressed)&&(!up2Pressed)&&(!right2Pressed)&&(!left2Pressed)){
+		else if ((down2Pressed) && (!up2Pressed) && (!right2Pressed) && (!left2Pressed)) {
 			ship.setVerticalMovement(moveSpeed);
 		}
 		//left&up degree 45
-		else if((left2Pressed)&&(up2Pressed)&&(!right2Pressed)&&(!down2Pressed)){
+		else if ((left2Pressed) && (up2Pressed) && (!right2Pressed) && (!down2Pressed)) {
 			ship.setVerticalMovement(-moveSpeed);
 			ship.setHorizontalMovement(-moveSpeed);
-		} else if((left2Pressed)&&(down2Pressed)&&(!right2Pressed)&&(!up2Pressed)){
+		} else if ((left2Pressed) && (down2Pressed) && (!right2Pressed) && (!up2Pressed)) {
 			ship.setVerticalMovement(moveSpeed);
 			ship.setHorizontalMovement(-moveSpeed);
-		} else if((right2Pressed)&&(up2Pressed)&&(!down2Pressed)&&(!left2Pressed)){
+		} else if ((right2Pressed) && (up2Pressed) && (!down2Pressed) && (!left2Pressed)) {
 			ship.setVerticalMovement(-moveSpeed);
 			ship.setHorizontalMovement(moveSpeed);
-		} else if((right2Pressed)&&(down2Pressed)&&(!up2Pressed)&&(!left2Pressed)){
+		} else if ((right2Pressed) && (down2Pressed) && (!up2Pressed) && (!left2Pressed)) {
 			ship.setVerticalMovement(moveSpeed);
 			ship.setHorizontalMovement(moveSpeed);
 		}
 	}
-
-	/**
-	 * The entry point into the game. We'll simply create an
-	 * instance of class which will start the display and game
-	 * loop.
-	 *
-	 * @param argv The arguments that are passed into our game
-	 */
-
-
-
 	public static void main(String[] argv) {
 		Game g = new Game("");
 		// Start the main game loop, note: this method will not
 		// return until the game has finished running. Hence we are
 		// using the actual main thread to run the game.
-		g.gameLoop() } }
+		g.gameLoop();
+	}
+}
