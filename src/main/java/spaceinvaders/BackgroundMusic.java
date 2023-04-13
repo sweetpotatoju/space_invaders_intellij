@@ -28,4 +28,14 @@ public class BackgroundMusic extends Thread{
             throw new RuntimeException(e);
         }
     }
+
+    public static void pause() {
+        Clip clip = null;
+        try {
+            clip = AudioSystem.getClip();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+        clip.stop();
+    }
 }

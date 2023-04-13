@@ -169,7 +169,9 @@ public class Game extends Canvas {
 		fire2Pressed = false;
 		player2Dead = false;
 
-		new BackgroundMusic();
+
+		//윈도우랑 게임창 노래 겹쳐들림
+//		new BackgroundMusic();
 
 	}
 
