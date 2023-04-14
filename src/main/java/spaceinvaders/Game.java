@@ -23,7 +23,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 
-import spaceinvaders.entity.*;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -483,7 +482,7 @@ public class Game extends Canvas {
 				}
 			} else if (level == 2) {
 				if(alienCount%2 == 0){
-					level2shotEntity();
+					level2shot();
 				}
 				if (alienCount == 2) {
 					notifyWin();
@@ -556,7 +555,7 @@ public class Game extends Canvas {
 				}
 			}
 		}
-	}
+
 
 		/**
 		 * Attempt to fire a shot from the player. Its called "try"
@@ -590,13 +589,10 @@ public class Game extends Canvas {
 		}
 
 		public void level2shot(){
-			if (System.currentTimeMillis() - lastFire < firingInterval) {
-				return;
-			}
-			// if we waited long enough, create the shot entity, and record the time.
-			lastFire = System.currentTimeMillis();
-			level2shotEntity shot = new level2shotEntity(this, "sprites/shot.gif",ShipCounter[0].getX()+10,ShipCounter[0].getY()-30);
-			entities.add(shot);
+
+			int randomX = new Random().nextInt(600); // 0부터 599까지의 랜덤한 x좌표 생성
+			bossacttackentity bossshot = new bossacttackentity(this, "sprites/shot.gif", randomX, 100);
+			entities.add(bossshot);
 
 			try {
 				AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audio/shot.wav"));
@@ -612,8 +608,12 @@ public class Game extends Canvas {
 			}
 		}
 
+	public void bossAttack() {
 
-
+		int randomX = new Random().nextInt(600); // 0부터 599까지의 랜덤한 x좌표 생성
+		bossacttackentity bossshot = new bossacttackentity(this, "sprites/bossattack.png", randomX, 100);
+		entities.add(bossshot);
+	}
 	public void tryToFire2() {
 		if ( player2Dead == true ) return;
 		// check that we have waiting long enough to fire
@@ -637,132 +637,119 @@ public class Game extends Canvas {
 	 * - Checking Input
 	 * <p>
 	 */
-	public void gameLoop() {
+   public void gameLoop() {
 		long lastLoopTime = SystemTimer.getTime();
+
 		// keep looping round til the game ends
 		while (gameRunning) {
-			// work out how long its been since the last update, this
-			// will be used to calculate how far the entities should
-			// move this loop
-			long delta = SystemTimer.getTime() - lastLoopTime;
-			lastLoopTime = SystemTimer.getTime();
-			// update the frame counter
-			lastFpsTime += delta;
-			fps++;
-			// update our FPS counter if a second has passed since
-			// we last recorded
-			if (lastFpsTime >= 1000) {
-				container.setTitle(windowTitle+" (FPS: "+fps+")");
-				lastFpsTime = 0;
-				fps = 0;
-			}
-			// Get hold of a graphics context for the accelerated
-			// surface and blank it out
-			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-			g.setColor(Color.black);
-			g.fillRect(0,0,800,600);
-			// cycle round asking each entity to move itself
-			if (!waitingForKeyPress) {
-				for (int i=0;i<entities.size();i++) {
-					Entity entity = (Entity) entities.get(i);
-					entity.move(delta);
-				}
-			}
+		// work out how long its been since the last update, this
+		// will be used to calculate how far the entities should
+		// move this loop
+		long delta = SystemTimer.getTime() - lastLoopTime;
+		lastLoopTime = SystemTimer.getTime();
 
-			// cycle round drawing all the entities we have in the game
-			for (int i=0;i<entities.size();i++) {
-				Entity entity = (Entity) entities.get(i);
-				entity.draw(g);
-			}
+		// update the frame counter
+		lastFpsTime += delta;
+		fps++;
 
-			// brute force collisions, compare every entity against
-			// every other entity. If any of them collide notify
-			// both entities that the collision has occured
-			for (int p=0;p<entities.size();p++) {
-				for (int s=p+1;s<entities.size();s++) {
-					Entity me = (Entity) entities.get(p);
-					Entity him = (Entity) entities.get(s);
-					if (me.collidesWith(him)) {
-						me.collidedWith(him);
-						him.collidedWith(me);
-					}
-				}
-			}
-
-			// remove any entity that has been marked for clear up
-			entities.removeAll(removeList);
-			removeList.clear();
-
-			// if a game event has indicated that game logic should
-			// be resolved, cycle round every entity requesting that
-			// their personal logic should be considered.
-			if (logicRequiredThisLoop) {
-				for (int i=0;i<entities.size();i++) {
-					Entity entity = entities.get(i);
-					entity.doLogic();
-				}
-
-				logicRequiredThisLoop = false;
-			}
-
-			// if we're waiting for an "any key" press then draw the
-			// current message
-			if (waitingForKeyPress) {
-				g.setColor(Color.white);
-				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
-				g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
-			} else {
-				isGameStart = true;
-			}
-
-			// finally, we've completed drawing so clear up the graphics
-			// and flip the buffer over
-			//g.dispose();
-			strategy.show();
-
-			// resolve the movement of the ship. First assume the ship
-			// isn't moving. If either cursor key is pressed then
-			// update the movement appropraitely
-			//1P Controlb
-			shipControl1();
-			//2P control
-			shipControl2();
-			// if we're pressing fire, attempt to fire
-			if (firePressed) {
-				tryToFire();
-			}
-			if (fire2Pressed){
-				tryToFire2();
-			}
-			// we want each frame to take 10 milliseconds, to do this
-			// we've recorded when we started the frame. We add 10 milliseconds
-			// to this and then factor in the current time to give
-			// us our final value to wait for
-			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
-		public void tryToFire2() {
-			if ( player2Dead == true ) return;
-			// check that we have waiting long enough to fire
-			if (System.currentTimeMillis() - last2Fire < firing2Interval) {
-				return;
-			}
-			// if we waited long enough, create the shot entity, and record the time.
-			last2Fire = System.currentTimeMillis();
-			ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ShipCounter[1].getX()+10,ShipCounter[1].getY()-30);
-			entities.add(shot);
-
-			try {
-				AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audio/shot.wav"));
-				Clip clip = AudioSystem.getClip();
-				clip.open(audioInputStream);
-				clip.setFramePosition(0);
-				//볼륨조정
-				FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-				gainControl.setValue(-20.0f);
-				clip.start();
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+		// update our FPS counter if a second has passed since
+		// we last recorded
+		if (lastFpsTime >= 1000) {
+		container.setTitle(windowTitle+" (FPS: "+fps+")");
+		lastFpsTime = 0;
+		fps = 0;
 		}
+
+		// Get hold of a graphics context for the accelerated
+		// surface and blank it out
+		Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
+		g.setColor(Color.black);
+		g.fillRect(0,0,800,600);
+
+		// cycle round asking each entity to move itself
+		if (!waitingForKeyPress) {
+		for (int i=0;i<entities.size();i++) {
+		Entity entity = entities.get(i);
+
+		entity.move(delta);
+		}
+		}
+
+		// cycle round drawing all the entities we have in the game
+		for (int i=0;i<entities.size();i++) {
+		Entity entity = entities.get(i);
+
+		entity.draw(g);
+		}
+
+		// brute force collisions, compare every entity against
+		// every other entity. If any of them collide notify
+		// both entities that the collision has occured
+		for (int p=0;p<entities.size();p++) {
+		for (int s=p+1;s<entities.size();s++) {
+		Entity me = entities.get(p);
+		Entity him = entities.get(s);
+
+		if (me.collidesWith(him)) {
+		me.collidedWith(him);
+		him.collidedWith(me);
+		}
+		}
+		}
+
+		// remove any entity that has been marked for clear up
+		entities.removeAll(removeList);
+		removeList.clear();
+
+		// if a game event has indicated that game logic should
+		// be resolved, cycle round every entity requesting that
+		// their personal logic should be considered.
+		if (logicRequiredThisLoop) {
+		for (int i=0;i<entities.size();i++) {
+		Entity entity = entities.get(i);
+		entity.doLogic();
+		}
+
+		logicRequiredThisLoop = false;
+		}
+
+		// if we're waiting for an "any key" press then draw the
+		// current message
+		if (waitingForKeyPress) {
+		g.setColor(Color.white);
+		g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
+		g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
+		} else {
+		isGameStart = true;
+		}
+
+		// finally, we've completed drawing so clear up the graphics
+		// and flip the buffer over
+		g.dispose();
+		strategy.show();
+
+		// resolve the movement of the ship. First assume the ship
+		// isn't moving. If either cursor key is pressed then
+		// update the movement appropraitely
+
+		//1P Control
+		shipControl1();
+		//2P control
+		shipControl2();
+		// if we're pressing fire, attempt to fire
+		if (firePressed) {
+		tryToFire();
+		}
+		if (fire2Pressed){
+		tryToFire2();
+		}
+		// we want each frame to take 10 milliseconds, to do this
+		// we've recorded when we started the frame. We add 10 milliseconds
+		// to this and then factor in the current time to give
+		// us our final value to wait for
+		SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
+		}
+		 }
 		/**
 		 * The main game loop. This loop is running during all game
 		 * play as is responsible for the following activities:
@@ -774,104 +761,6 @@ public class Game extends Canvas {
 		 * - Checking Input
 		 * <p>
 		 */
-		public void gameLoop() {
-			long lastLoopTime = SystemTimer.getTime();
-			// keep looping round til the game ends
-			while (gameRunning) {
-				// work out how long its been since the last update, this
-				// will be used to calculate how far the entities should
-				// move this loop
-				long delta = SystemTimer.getTime() - lastLoopTime;
-				lastLoopTime = SystemTimer.getTime();
-				// update the frame counter
-				lastFpsTime += delta;
-				fps++;
-				// update our FPS counter if a second has passed since
-				// we last recorded
-				if (lastFpsTime >= 1000) {
-					container.setTitle(windowTitle+" (FPS: "+fps+")");
-					lastFpsTime = 0;
-					fps = 0;
-				}
-				// Get hold of a graphics context for the accelerated
-				// surface and blank it out
-				Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-				g.setColor(Color.black);
-				g.fillRect(0,0,800,600);
-				// cycle round asking each entity to move itself
-				if (!waitingForKeyPress) {
-					for (int i=0;i<entities.size();i++) {
-						Entity entity = (Entity) entities.get(i);
-						entity.move(delta);
-					}
-				}
-				// cycle round drawing all the entities we have in the game
-				for (int i=0;i<entities.size();i++) {
-					Entity entity = (Entity) entities.get(i);
-					entity.draw(g);
-				}
-				// brute force collisions, compare every entity against
-				// every other entity. If any of them collide notify
-				// both entities that the collision has occured
-				for (int p=0;p<entities.size();p++) {
-					for (int s=p+1;s<entities.size();s++) {
-						Entity me = (Entity) entities.get(p);
-						Entity him = (Entity) entities.get(s);
-						if (me.collidesWith(him)) {
-							me.collidedWith(him);
-							him.collidedWith(me);
-						}
-					}
-				}
-				// remove any entity that has been marked for clear up
-				entities.removeAll(removeList);
-				removeList.clear();
-				// if a game event has indicated that game logic should
-				// be resolved, cycle round every entity requesting that
-				// their personal logic should be considered.
-				if (logicRequiredThisLoop) {
-					for (int i=0;i<entities.size();i++) {
-						Entity entity = entities.get(i);
-						entity.doLogic();
-					}
-					logicRequiredThisLoop = false;
-				}
-				// if we're waiting for an "any key" press then draw the
-				// current message
-				if (waitingForKeyPress) {
-					g.setColor(Color.white);
-					g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
-					g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
-				} else {
-					isGameStart = true;
-				}
-				// finally, we've completed drawing so clear up the graphics
-				// and flip the buffer over
-				//g.dispose();
-				strategy.show();
-				// resolve the movement of the ship. First assume the ship
-				// isn't moving. If either cursor key is pressed then
-				// update the movement appropraitely
-				//1P Controlb
-				shipControl1();
-				//2P control
-				shipControl2();
-				// if we're pressing fire, attempt to fire
-				if (firePressed) {
-					tryToFire();
-				}
-				if (fire2Pressed){
-					tryToFire2();
-				}
-				// we want each frame to take 10 milliseconds, to do this
-				// we've recorded when we started the frame. We add 10 milliseconds
-				// to this and then factor in the current time to give
-				// us our final value to wait for
-				SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
-
-
-			}
-		}
 
 	/**
 	 * A class to handle keyboard input from the user. The class
@@ -1012,13 +901,6 @@ public class Game extends Canvas {
 				System.exit(0);
 			}
 		}
-		/**
-		 * The entry point into the game. We'll simply create an
-		 * instance of class which will start the display and game
-		 * loop.
-		 *
-		 * @param argv The arguments that are passed into our game
-		 */
 	}
 	public void shipControl1() {
 		ShipEntity ship = (ShipEntity) ShipCounter[0];
@@ -1089,11 +971,13 @@ public class Game extends Canvas {
 			ship.setHorizontalMovement(moveSpeed);
 		}
 	}
-	public static void main(String[] argv) {
-		Game g = new Game("");
-		// Start the main game loop, note: this method will not
-		// return until the game has finished running. Hence we are
-		// using the actual main thread to run the game.
-		g.gameLoop();
+		public static void main(String[] argv) {
+			Game g = new Game("");
+
+			// Start the main game loop, note: this method will not
+			// return until the game has finished running. Hence we are
+			// using the actual main thread to run the game.
+			g.gameLoop();
+
+		}
 	}
-}
