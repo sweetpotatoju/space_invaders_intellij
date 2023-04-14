@@ -188,60 +188,96 @@ public class ShipEntity extends Entity {
 				game.removeEntity(this);
 			}
 		}
-				/** 					game.notifyHit(game.LifeCounter[2+playerLife]);
-				 --playerLife;
-				 }
-				 }else if (other instanceof level2alienEntity) {
-				 if (playerLife == 1) {
-				 game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-				 game.removeEntity(this);
-				 --playerLife;
-				 game.notifyDeath(2);
-				 } else {
-				 game.removeEntity(other);
-				 game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-				 --playerLife;
-				 }
-				 } else if (other instanceof bosseEntity) {
-				 if (playerLife > 1) {
-				 game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-				 --playerLife;
-				 } else if (playerLife == 1) {
-				 game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-				 --playerLife;
-				 game.notifyDeath(2);
-				 game.removeEntity(this);
-				 }}
+
+		else if (other instanceof level2alienEntity) {
+			if (getLife() > 1) {
+				LifeDecrease();
+			}
+			else if (getLife() == 1) {
+				LifeDecrease();
+				game.notifyDeath(2);
+				game.removeEntity(this);
+			}
+		}
+
+		else if (other instanceof bossacttackentity) {
+			if (getLife() > 1) {
+				LifeDecrease();
+			}
+			else if (getLife() == 1) {
+				LifeDecrease();
+				game.notifyDeath(2);
+				game.removeEntity(this);
+			}
+		}
+
+		else if (other instanceof level2alienEntity) {
+			if (getLife() > 1) {
+				LifeDecrease();
+			}
+			else if (getLife() == 1) {
+				LifeDecrease();
+				game.notifyDeath(2);
+				game.removeEntity(this);
+			}
+		}
 
 
 
-				 }
+		/** 					game.notifyHit(game.LifeCounter[2+playerLife]);
+         --playerLife;
+         }
+         }else if (other instanceof level2alienEntity) {
+         if (playerLife == 1) {
+         game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+         game.removeEntity(this);
+         --playerLife;
+         game.notifyDeath(2);
+         } else {
+         game.removeEntity(other);
+         game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+         --playerLife;
+         }
+         } else if (other instanceof bosseEntity) {
+         if (playerLife > 1) {
+         game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+         --playerLife;
+         } else if (playerLife == 1) {
+         game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+         --playerLife;
+         game.notifyDeath(2);
+         game.removeEntity(this);
+         }}
 
-				 else {
-				 if (other instanceof AlienEntity) {
-				 if (playerLife == 1) {
-				 game.notifyHit(game.LifeCounter[playerLife - 1]);
-				 game.removeEntity(this);
-				 --playerLife;
-				 game.notifyDeath(1);
-				 }
-				 else{
-				 game.removeEntity(other);
-				 game.notifyHit(game.LifeCounter[playerLife - 1]);
-				 --playerLife;
-				 }
-				 }
-				 else if (other instanceof level2alienEntity) {
-				 if (playerLife == 1) {
-				 game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-				 game.removeEntity(this);
-				 --playerLife;
-				 game.notifyDeath(1);
-				 } else {
-				 game.removeEntity(other);
-				 game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-				 --playerLife;
-				 } */
+
+
+         }
+
+         else {
+         if (other instanceof AlienEntity) {
+         if (playerLife == 1) {
+         game.notifyHit(game.LifeCounter[playerLife - 1]);
+         game.removeEntity(this);
+         --playerLife;
+         game.notifyDeath(1);
+         }
+         else{
+         game.removeEntity(other);
+         game.notifyHit(game.LifeCounter[playerLife - 1]);
+         --playerLife;
+         }
+         }
+         else if (other instanceof level2alienEntity) {
+         if (playerLife == 1) {
+         game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+         game.removeEntity(this);
+         --playerLife;
+         game.notifyDeath(1);
+         } else {
+         game.removeEntity(other);
+         game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
+         --playerLife;
+         } */
 	}
 	public boolean is2P () {
 		return player2;

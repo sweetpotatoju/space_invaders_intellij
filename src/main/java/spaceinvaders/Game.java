@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.util.*;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -65,7 +66,8 @@ public class Game extends Canvas {
 	private boolean firePressed; private boolean fire2Pressed;
 	private boolean player1Dead, player2Dead;
 	private long lastFire = 0; private long last2Fire = 0;
-
+	private long level2lastFire = 0; private long level2ShotInterval = 0;
+	private long bossfire= 0; private long bossShotInterval= 0;
 	private long firingInterval = 500; private long firing2Interval = 500;
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
@@ -272,7 +274,7 @@ public class Game extends Canvas {
 
 		// create the aliens
 
-		message = "killCount:"+killCount;
+		message ="Press any key!";
 		createAliens();
 
 	}
@@ -323,7 +325,7 @@ public class Game extends Canvas {
 							Point[] pointArray = points.toArray(new Point[0]); // convert set to array
 							Entity alien = new AlienEntity(Game.this, pointArray[count].x, pointArray[count].y);
 							entities.add(alien);
-							count ++ ; // increase count by 2 to prevent two aliens being added at once
+							count +=2 ; // increase count by 2 to prevent two aliens being added at once
 						}
 					} else {
 						timer.stop(); // stop the timer when the game is over
@@ -331,7 +333,7 @@ public class Game extends Canvas {
 				}
 			});
 		} else if (level == 2) {
-			System.out.println(alienCount);
+
 			timer = new Timer(delay, new ActionListener() {
 				int count = 0;
 
@@ -339,6 +341,7 @@ public class Game extends Canvas {
 				public void actionPerformed(ActionEvent e) {
 
 					if (isGameStart) {
+
 						if (count < alienCount) {
 							Point[] pointArray = points.toArray(new Point[0]); // convert set to array
 							Entity alien = new level2alienEntity(Game.this, pointArray[count].x, pointArray[count].y);
@@ -352,13 +355,10 @@ public class Game extends Canvas {
 			});
 		} else if (level == 3) {
 			alienCount = 100;
-
-			System.out.println(alienCount);
-			// set alien count to 1 for the boss
-			// create the boss entity
 			bosseEntity boss = new bosseEntity(this, "sprites/level2alien.png", getWidth() / 2, 50);
 			entities.add(boss);
 		}
+
 
 
 		timer.setInitialDelay(1000);
@@ -388,7 +388,7 @@ public class Game extends Canvas {
 	}
 
 	/** This can help you to access entities.add() in other class */
-	public void addEntity(Entity entity){ entities.add(entity); System.out.println("addEntity");}
+	public void addEntity(Entity entity){ entities.add(entity); }
 
 	/**
 	 * Notification that the player has died.
@@ -422,7 +422,7 @@ public class Game extends Canvas {
 	public void notifyWin() {
 		message = "Well done! You Win!";
 
-
+		level++;
 		message = "level" + level;
 		waitingForKeyPress = true;
 		isGameStart = false;
@@ -459,35 +459,34 @@ public class Game extends Canvas {
 		if (killCount%3 == 0 && killCount/3 >= 1){
 			addEntity(new ItemEntity(this,x,y));
 		}
-		killCount++;
+
 	}
 
 	public void notifyAlienKilled(Entity other) {
 		// reduce the alient count, if there are none left, the player has won!
 		alienCount--;
 		killCount++;
-		itemDrop(other.getX(), other.getY());
-		System.out.println("notifyAlienKilled() called, alienCount: " + alienCount);
 		System.out.println(killCount);
-
-		if (alienCount <= 0) {
-			notifyWin();
+		itemDrop(other.getX(), other.getY());
 
 
-			System.out.println(killCount);
+
 			if (level == 1) {
-				if (alienCount <= 2) {
-					level++;
+				if (alienCount == 2) {
 					notifyWin();
 				}
 			} else if (level == 2) {
-				if (alienCount <= 2) {
-					level++;
+				if(alienCount%2 == 0){
+					level2shotEntity();
+				}
+				if (alienCount == 2) {
 					notifyWin();
 				}
 			} else if (level == 3) {
+				if(alienCount%5 ==0){
+					bossAttack();
+				}
 				if (alienCount == 0) {
-					level++;
 					notifyWin();
 				}
 			}
@@ -551,7 +550,7 @@ public class Game extends Canvas {
 				}
 			}
 		}
-	}
+
 
 	/**
 	 * Attempt to fire a shot from the player. Its called "try"
@@ -571,15 +570,24 @@ public class Game extends Canvas {
 		entities.add(shot);
 	}
 
-	public void level2shot(){
-		if (System.currentTimeMillis() - lastFire < firingInterval) {
-			return;
-		}
-		// if we waited long enough, create the shot entity, and record the time.
-		lastFire = System.currentTimeMillis();
-		level2shotEntity shot = new level2shotEntity(this, "sprites/shot.gif",ShipCounter[0].getX()+10,ShipCounter[0].getY()-30);
+	public void level2shotEntity(){
+		// check that we have waiting long enough to fire
+		Random random = new Random();
+		int randomX = random.nextInt(401)+100;
+		bossacttackentity shot = new bossacttackentity(this, "sprites/shot.gif", randomX, 100);
 		entities.add(shot);
-	}
+				}
+
+	public void bossAttack() {
+		Random random = new Random();
+
+
+			int randomX = random.nextInt(401)+100;
+			bossacttackentity shot = new bossacttackentity(this, "sprites/bossattack.png", randomX, 100);
+			entities.add(shot);
+		}
+
+
 
 	public void tryToFire2() {
 		if ( player2Dead == true ) return;
