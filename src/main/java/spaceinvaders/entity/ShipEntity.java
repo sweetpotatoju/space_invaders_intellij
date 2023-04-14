@@ -27,7 +27,6 @@ public class ShipEntity extends Entity {
 	//boolean can make decision to multi play
 	public ShipEntity(Game game, String ref, int x, int y, boolean player) {
 		super(ref, x, y);
-		System.out.println("Ship making");
 		this.player2 = player;
 		this.game = game;
 		moveSpeed = 300;

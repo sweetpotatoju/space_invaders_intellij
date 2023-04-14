@@ -19,17 +19,14 @@ public class LifeCounter {
     /** Should be fixed to access in only entity. And need to remove  ship Entity Var */
     public LifeCounter(Game game, Entity entity, ShipEntity ship){
         //setLife(3); error occured; ArrayIndexOutOfBoundsException, breakPoint 0
-        System.out.println("LifeCounter activated");
         this.game = game;
         int posIdx = 20;
         for (int i = 0; i < entityLife; i++){
             if (ship.is2P()){
-                entityLifeArray[i] = new LifeEntity(game, posIdx*(i+1)+655, 580);
-                System.out.println("2P_"+i+1);
+                entityLifeArray[i] = new LifeEntity(game, posIdx*(i+1)+715, 580);
             }
             else {
                 entityLifeArray[i] = new LifeEntity(game, posIdx*(i+1)-15, 580);
-                System.out.println("1P_"+i+1);
             }
             game.addEntity(entityLifeArray[i]);
         }
