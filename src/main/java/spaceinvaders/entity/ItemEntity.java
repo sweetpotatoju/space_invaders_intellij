@@ -2,6 +2,12 @@ package spaceinvaders.entity;
 
 import spaceinvaders.Game;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import java.io.File;
+
 public class ItemEntity extends Entity {
     private long moveSpeed;
     private int players;
@@ -39,5 +45,19 @@ public class ItemEntity extends Entity {
     }
     @Override
     public void collidedWith(Entity other) {
+
+        // 아이템 먹을때 효과음
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audio/loseHeart.wav"));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.setFramePosition(0);
+            //볼륨조정
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(-20.0f);
+            clip.start();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
