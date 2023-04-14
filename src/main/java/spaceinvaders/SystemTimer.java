@@ -34,7 +34,6 @@ public class SystemTimer {
 		// us a nice clear time in milliseconds
 		return (timer.getClockTicks() * 1000) / timerTicksPerSecond;
 	}
-	
 	/**
 	 * Sleep for a fixed number of milliseconds. 
 	 * 
