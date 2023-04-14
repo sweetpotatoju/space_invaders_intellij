@@ -60,9 +60,8 @@ public class Game extends Canvas {
 	private boolean upPressed; private boolean up2Pressed;
 	private boolean downPressed; private boolean down2Pressed;
 	private boolean firePressed; private boolean fire2Pressed;
-	private boolean player1Dead, player2Dead;
+	private boolean player1Dead, player2Dead;			private boolean goGo = false;
 	private long lastFire = 0; private long last2Fire = 0;
-	private int killCount;
 	private long firingInterval = 500; private long firing2Interval = 500;
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
@@ -87,6 +86,13 @@ public class Game extends Canvas {
 	private int level = 1;
 	private Timer timer;
 
+	//Record Variables
+	private int tenToHundMillis, aSecond, aMinute, killCount;
+	/** timedisplay */
+	private String timeStamp="";
+	private long lastLoopTime; private long initTime;
+	private RecordRecorder playBoard = new RecordRecorder(this);
+
 	/**
 	 * Construct our game and set it running.
 	 */
@@ -105,7 +111,7 @@ public class Game extends Canvas {
 		setBounds(0,0,800,600);
 		panel.add(this);
 		// TimeCounter 객체를 실행하는 Thread를 생성하고 시작합니다.
-		/*timeCounterThread = new Thread(timeCounter);
+        /*timeCounterThread = new Thread(timeCounter);
 		timeCounterThread.start();*/
 		// Tell AWT not to bother repainting our canvas since we're
 		// going to do that our self in accelerated mode
@@ -140,7 +146,6 @@ public class Game extends Canvas {
 		initEntities();
 
 
-
 	}
 
 	/**
@@ -148,7 +153,6 @@ public class Game extends Canvas {
 	 * create a new set.
 	 */
 	private void startGame() {
-
 
 
 		// clear out any existing entities and intialise a new set
@@ -168,8 +172,7 @@ public class Game extends Canvas {
 		down2Pressed = false;
 		fire2Pressed = false;
 		player2Dead = false;
-
-
+		tenToHundMillis=0; aSecond=0; aMinute=0;
 		//윈도우랑 게임창 노래 겹쳐들림
 //		new BackgroundMusic();
 
@@ -252,6 +255,7 @@ public class Game extends Canvas {
 		createAliens();
 
 	}
+
 	private void createAliens() {
 		// determine the parameters for the aliens based on the current level
 		alienCount = 8 + (level - 1) * 2; // increase the number of aliens by 2 for each level
@@ -282,7 +286,6 @@ public class Game extends Canvas {
 				points.add(new Point(x, y));
 			}
 		}
-
 		// create a timer to add aliens every delay milliseconds
 		if (level == 1) {
 			timer = new Timer(delay, new ActionListener() {
@@ -292,12 +295,19 @@ public class Game extends Canvas {
 				public void actionPerformed(ActionEvent e) {
 
 					if (isGameStart) {
+						/**
+						 * this section is added by jgs
+						 * */
+						initTime=lastLoopTime;
+						aMinute=0; aSecond=0; tenToHundMillis=0;
+						goGo=true;
+
+
 						if (count < alienCount) {
 							Point[] pointArray = points.toArray(new Point[0]); // convert set to array
 							Entity alien = new AlienEntity(Game.this, pointArray[count].x, pointArray[count].y);
 							entities.add(alien);
-							System.out.println("alien appear");
-							count += 2; // increase count by 2 to prevent two aliens being added at once
+							count += 1; // increase count by 2 to prevent two aliens being added at once
 						}
 					} else {
 						timer.stop(); // stop the timer when the game is over
@@ -314,6 +324,9 @@ public class Game extends Canvas {
 
 					if (isGameStart) {
 						if (count < alienCount) {
+							timer.setInitialDelay(1000);
+							timer.setDelay(1000);
+							timer.start();
 							Point[] pointArray = points.toArray(new Point[0]); // convert set to array
 							Entity alien = new level2alienEntity(Game.this, pointArray[count].x, pointArray[count].y);
 							entities.add(alien);
@@ -360,7 +373,7 @@ public class Game extends Canvas {
 	}
 
 	/** This can help you to access entities.add() in other class */
-	public void addEntity(Entity entity){ entities.add(entity); System.out.println("addEntity");}
+	public void addEntity(Entity entity){ entities.add(entity);}
 
 	public void notifyDeath(int status) {
 		if(status == 1) {player1Dead = true; }
@@ -369,10 +382,12 @@ public class Game extends Canvas {
 			if (player1Dead == true && player2Dead == true) notifyRetire();
 		} else notifyRetire();
 	}
+
 	public void notifyRetire(){
 		message = "Oh no! They got you, try again?";
 		waitingForKeyPress = true;
 		isGameStart = false;
+		playBoard.printRecord();
 	}
 
 	/**
@@ -478,7 +493,8 @@ public class Game extends Canvas {
 						entity.setHorizontalMovement(entity.getHorizontalMovement());
 
 
-					} } } }	 }
+					} } } }
+	}
 
 
 	/**
@@ -520,6 +536,7 @@ public class Game extends Canvas {
 		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ShipCounter[1].getX()+10,ShipCounter[1].getY()-30);
 		entities.add(shot);
 	}
+
 	/**
 	 * The main game loop. This loop is running during all game
 	 * play as is responsible for the following activities:
@@ -532,14 +549,23 @@ public class Game extends Canvas {
 	 * <p>
 	 */
 	public void gameLoop() {
-		long lastLoopTime = SystemTimer.getTime();
+		lastLoopTime = SystemTimer.getTime();
 		// keep looping round til the game ends
 		while (gameRunning) {
 			// work out how long its been since the last update, this
 			// will be used to calculate how far the entities should
 			// move this loop
 			long delta = SystemTimer.getTime() - lastLoopTime;
+			//lastLoopTime = SystemTimer.getTime();
 			lastLoopTime = SystemTimer.getTime();
+            /*System.out.format("%02d", aMinute); System.out.print(':');
+			System.out.format("%02d", aSecond); System.out.print('.');
+			System.out.format("%02d%n", tenToHundMillis);*/
+			/**
+			 * delta could be a second, lastLooptime is 1ms. And its count up about 10ms.
+			 * so we will use this class to get a live time ticks up from down 4 numbers of digits
+			 * */
+			//System.out.println(delta+", "+lastLoopTime);
 			// update the frame counter
 			lastFpsTime += delta;
 			fps++;
@@ -555,6 +581,11 @@ public class Game extends Canvas {
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
 			g.setColor(Color.black);
 			g.fillRect(0,0,800,600);
+			//Status HUD
+			Graphics2D userHUD = (Graphics2D) strategy.getDrawGraphics();
+			userHUD.setColor(Color.white);
+			userHUD.drawString("Score : "+killCount,(800-g.getFontMetrics().stringWidth("Score : "+killCount))/2,20);
+			userHUD.drawString(timeStamp,5,580);
 			// cycle round asking each entity to move itself
 			if (!waitingForKeyPress) {
 				for (int i=0;i<entities.size();i++) {
@@ -602,6 +633,7 @@ public class Game extends Canvas {
 			} else {
 				isGameStart = true;
 			}
+			timeCalc();
 			// finally, we've completed drawing so clear up the graphics
 			// and flip the buffer over
 			//g.dispose();
@@ -628,6 +660,13 @@ public class Game extends Canvas {
 
 
 		}
+	}
+
+	public String giveSurvivalTime() {
+		return String.format("%02d", aMinute) + ":" + String.format("%02d", aSecond) + "." + String.format("%02d", tenToHundMillis);
+	}
+	public int giveKillScore(){
+		return killCount;
 	}
 
 	/**
@@ -690,6 +729,7 @@ public class Game extends Canvas {
 				fire2Pressed = true;
 			}
 		}
+
 		/**
 		 * Notification from AWT that a key has been released.
 		 *
@@ -732,6 +772,7 @@ public class Game extends Canvas {
 				fire2Pressed = false;
 			}
 		}
+
 		/**
 		 * Notification from AWT that a key has been typed. Note that
 		 * typing a key means to both press and then release it.
@@ -831,6 +872,15 @@ public class Game extends Canvas {
 			ship.setVerticalMovement(moveSpeed);
 			ship.setHorizontalMovement(moveSpeed);
 		}
+	}
+
+	public void timeCalc(){//time is spent even not started
+		if(goGo==false)return;
+		else if(player1Dead && player2Dead)return;
+		tenToHundMillis = (int) ((lastLoopTime - initTime) / 10 % 100);//default time duration
+		aSecond = (int) lastLoopTime / 1000 % 60;
+		aMinute = (int) lastLoopTime / 60000 % 60;
+		timeStamp = String.format("%02d", aMinute) + ":" + String.format("%02d", aSecond) + "." + String.format("%02d", tenToHundMillis);
 	}
 
 	/**

@@ -27,11 +27,6 @@ public class HowToPlay extends JFrame {
                 ImageIcon icon = new ImageIcon(getClass().getResource("/sprites/howToPlay.png"));
                 Image image = icon.getImage();
                 g.drawImage(image,2,0,getWidth(),getHeight(),null);
-
-
-
-
-
             }
         };
 
