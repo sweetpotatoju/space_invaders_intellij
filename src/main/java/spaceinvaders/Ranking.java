@@ -28,7 +28,7 @@ public class Ranking extends JFrame {
 
         // Firebase에서 랭킹 데이터 가져오기
         FirebaseTool firebaseTool = new FirebaseTool();
-        firebaseTool.GetAllUserBestScore(new Consumer<ArrayList<HashMap<String, String>>>() {
+        firebaseTool.getAllUserBestScore(new Consumer<ArrayList<HashMap<String, String>>>() {
             @Override
             public void accept(ArrayList<HashMap<String, String>> userAllBestScore) {
                 // 랭킹 데이터를 테이블에 추가
