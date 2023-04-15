@@ -63,7 +63,7 @@ public class Game extends Canvas {
 	/** True if we're holding up game play until a key has been pressed */
 	private boolean waitingForKeyPress = true;
 	/** True if the left cursor key is currently pressed */
-	private Entity[] ShipCounter = new ShipEntity[2]; private boolean multiPlay = true;
+	private Entity[] ShipCounter = new ShipEntity[2]; private boolean multiPlay, loopMode;
 	private boolean leftPressed; private boolean left2Pressed;
 	private boolean rightPressed; private boolean right2Pressed;
 	private boolean upPressed; private boolean up2Pressed;
@@ -84,7 +84,7 @@ public class Game extends Canvas {
 	/**
 	 * The current number of frames recorded
 	 */
-	private int fps;
+	private int fps, cycle;
 	/**
 	 * The normal title of the game window
 	 */
@@ -120,8 +120,7 @@ public class Game extends Canvas {
 	 * Construct our game and set it running.
 	 */
 	public Game(String option) {
-
-
+		cycle = 0;
 		if (option.equals("2p")) multiPlay = true;
 		else if (option.equals("1p")) multiPlay = false;
 		else if (option.equals("loopMode")) {multiPlay =false; loopMode = true;}
@@ -468,7 +467,7 @@ public class Game extends Canvas {
 
 	}
 	public void resultSender(String result){
-		firebaseTool.SetUserBestScore(globalStorage.getUserID(), result);
+		firebaseTool.setUserBestScore(globalStorage.getUserID(), result);
 		globalStorage.setUserBestScore(result); // 베스트 스코어 업데이트
 	}
 
