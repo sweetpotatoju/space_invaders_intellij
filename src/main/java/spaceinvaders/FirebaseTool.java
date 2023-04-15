@@ -103,8 +103,9 @@ public class FirebaseTool {
 
 
             DatabaseReference initReference = FirebaseDatabase.getInstance(firebaseApp).getReference();
-            initReference.child("user").child(id.split("@")[0]).child("profileimage").setValue("1", null);
+            initReference.child("user").child(id.split("@")[0]).child("profileimage").setValue("Profile1", null);
             initReference.child("user").child(id.split("@")[0]).child("bestscore").setValue("0", null);
+            initReference.child("user").child(id.split("@")[0]).child("theme").setValue("Theme", null);
 
             JOptionPane.showMessageDialog(null, "회원가입에 정상적으로 처리되었습니다.");
 
@@ -132,6 +133,41 @@ public class FirebaseTool {
                             String select = dataSnapshot.getValue(String.class);
                             System.out.println("User Profile Data Receivced " + select);
                             globalStorage.setUserProfileImage(select);
+                            Mypage mypage = new Mypage();
+                            mypage. currentProfilePicture = select;
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            System.out.println("User Profile Data Error " + databaseError);
+
+                        }
+                    });
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        return userBestScore;
+    }
+
+    public String GetUserTheme(String id) {
+        String userBestScore = "";
+
+        try {
+            DatabaseReference userProfileImageDatabase = FirebaseDatabase.getInstance(firebaseApp).getReference();
+
+            userProfileImageDatabase.child("user")
+                    .child(id.split("@")[0])
+                    .child("Theme")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String select = dataSnapshot.getValue(String.class);
+                            System.out.println("User Profile Data Receivced " + select);
+                            globalStorage.setUserProfileImage(select);
+                            Mypage mypage = new Mypage();
+                            mypage.currentTheme= select;
                         }
 
                         @Override
@@ -243,6 +279,23 @@ public class FirebaseTool {
             e.printStackTrace();
         }
     }
+
+    public void SetUserTheme(String id, String select) {
+        try {
+            DatabaseReference userProfileImageDatabase = FirebaseDatabase.getInstance(firebaseApp).getReference();
+
+            userProfileImageDatabase.child("user").child(id.split("@")[0]).child("Theme").setValue(select, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    globalStorage.setUserProfileImage(select);
+                }
+            });
+
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }

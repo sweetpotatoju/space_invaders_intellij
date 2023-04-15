@@ -13,6 +13,8 @@ public class GlobalStorage {
 
     private String userProfileImage = "";
 
+    private  String userTheme = "";
+
     private GlobalStorage() {
 
     }
@@ -51,4 +53,9 @@ public class GlobalStorage {
     public void setUserProfileImage(String userProfileImage) {
         this.userProfileImage = userProfileImage;
     }
+    public String getUserTheme() {
+        return userTheme;
+    }
+    public void setUserTheme(String userTheme){this.userTheme = userTheme;}
+
 }
