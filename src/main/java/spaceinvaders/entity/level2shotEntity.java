@@ -34,7 +34,7 @@ public class level2shotEntity extends Entity {
 
         this.game = game;
 
-        dy = moveSpeed;
+        dy = 300;
     }
 
     /**

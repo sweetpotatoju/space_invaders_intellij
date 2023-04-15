@@ -56,9 +56,6 @@ public class Game extends Canvas {
 	 * The list of entities that need to be removed from the game this loop
 	 */
 	private final ArrayList<Entity> removeList = new ArrayList<Entity>();
-	/** The entity representing the player */
-	/** The speed at which the player's ship should move (pixels/sec) */
-	private double moveSpeed = 300;
 	/** The number of aliens left on the screen */
 	private int alienCount;
 	/** The message to display which waiting for a key press */
@@ -73,12 +70,10 @@ public class Game extends Canvas {
 	private boolean downPressed; private boolean down2Pressed;
 	private boolean firePressed; private boolean fire2Pressed;
 	private boolean player1Dead, player2Dead;			private boolean goGo = false;
-	private long lastFire = 0; private long last2Fire = 0;
-	private long level2lastFire = 0; private long level2ShotInterval = 0;
-	private long bossfire= 0; private long bossShotInterval= 0;
-	private long firingInterval = 500; private long firing2Interval = 500;
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
+	private boolean loopMode = false;
+	private int cycle = 0;
 	private boolean isGameStart = false;
 	/**
 	 * The last time at which we recorded the frame rate
@@ -117,14 +112,17 @@ public class Game extends Canvas {
 	private long lastLoopTime; private long initTime;
 	private RecordRecorder playBoard = new RecordRecorder(this);
 
+	private int levelSpeedControl=75;
+
 	/**
 	 * Construct our game and set it running.
 	 */
 	public Game(String option) {
 
 
-		if (option.equals("2P")) multiPlay = false;
-		else if (option.equals("1P")) multiPlay = true;
+		if (option.equals("2p")) multiPlay = true;
+		else if (option.equals("1p")) multiPlay = false;
+		else if (option.equals("loopMode")) {multiPlay =false; loopMode = true;}
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
 		// get hold the content of the frame and set up the resolution of the game
@@ -281,11 +279,15 @@ public class Game extends Canvas {
 //		}}
 	private void initEntities() {
 		if (multiPlay){
+			ShipCounter[0] = new ShipEntity(this, "sprites/ship1.gif",350, 550, false);
+			entities.add(ShipCounter[0]);
 			ShipCounter[1] = new ShipEntity(this, "sprites/ship2.gif",390, 550, true);
 			addEntity(ShipCounter[1]);
 		}
-		ShipCounter[0] = new ShipEntity(this, "sprites/ship1.gif",350, 550, false);
-		entities.add(ShipCounter[0]);
+		else{
+			ShipCounter[0] = new ShipEntity(this, "sprites/ship1.gif",370, 550, false);
+			entities.add(ShipCounter[0]);
+		}
 		killCount = 0;
 
 		// create the aliens
@@ -345,7 +347,7 @@ public class Game extends Canvas {
 
 						if (count < alienCount) {
 							Point[] pointArray = points.toArray(new Point[0]); // convert set to array
-							Entity alien = new AlienEntity(Game.this, pointArray[count].x, pointArray[count].y);
+							Entity alien = new AlienEntity(Game.this, pointArray[count].x, pointArray[count].y,getAlienSpeed());
 							entities.add(alien);
 							count +=2 ; // increase count by 2 to prevent two aliens being added at once
 						}
@@ -419,13 +421,11 @@ public class Game extends Canvas {
 	 * Notification that the player has died.
 	 */
 	public void notifyDeath(int status) {
-		if(status == 1) {player1Dead = true; }
-		if(status == 2) {player2Dead = true; }
+		if(status == 1) {((ShipEntity)ShipCounter[0]).playerDead(); }
+		if(status == 2) {((ShipEntity)ShipCounter[1]).playerDead(); }
 		if(multiPlay){
-			if (player1Dead == true && player2Dead == true) notifyRetire();
+			if (((ShipEntity)ShipCounter[0]).isDead() && ((ShipEntity)ShipCounter[1]).isDead()) notifyRetire();
 		} else notifyRetire();
-
-
 	}
 
 	public void notifyRetire(){
@@ -436,10 +436,7 @@ public class Game extends Canvas {
 		playBoard.printRecord();
 		if (killCount > Integer.parseInt(globalStorage.getUserBestScore())) {
 			message = "Oh no!, but  New best score!";
-			String killCountString = Integer.toString(killCount);
-			firebaseTool.SetUserBestScore(globalStorage.getUserID(), killCountString);
-			globalStorage.setUserBestScore(killCountString); // 베스트 스코어 업데이트
-
+			resultSender(Integer.toString(killCount));
 		}
 	}
 	/**
@@ -454,14 +451,12 @@ public class Game extends Canvas {
 		message = "level" + level;
 		waitingForKeyPress = true;
 		isGameStart = false;
-
+		if (level == 4 && loopMode){ level = 1; ++cycle; setAlienSpeed(); createAliens();}
 		if (level == 4 && killCount > Integer.parseInt(globalStorage.getUserBestScore())) {
 			message = "mission complete! New best score!";
 			waitingForKeyPress = true;
 			isGameStart = false;
-			String killCountString = Integer.toString(killCount);
-			firebaseTool.SetUserBestScore(globalStorage.getUserID(), killCountString);
-			globalStorage.setUserBestScore(killCountString); // 베스트 스코어 업데이트
+			resultSender(Integer.toString(killCount));
 		} else if (level == 4) {
 			message = "mission complete";
 			waitingForKeyPress = true;
@@ -469,6 +464,10 @@ public class Game extends Canvas {
 		}
 
 
+	}
+	public void resultSender(String result){
+		firebaseTool.SetUserBestScore(globalStorage.getUserID(), result);
+		globalStorage.setUserBestScore(result); // 베스트 스코어 업데이트
 	}
 
 
@@ -527,12 +526,12 @@ public class Game extends Canvas {
 				if (level == 1) {
 					if (entity instanceof AlienEntity) {
 						// speed up by 2%
-						entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.00);
+						entity.setHorizontalMovement(entity.getHorizontalMovement());
 					}
 				} else if (level == 2) {
 					if (entity instanceof AlienEntity) {
 						// speed up by 2%
-						entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.00);
+						entity.setHorizontalMovement(entity.getHorizontalMovement());
 
 
 					}
@@ -543,12 +542,12 @@ public class Game extends Canvas {
 				if (level == 1) {
 					if (entity instanceof level2alienEntity) {
 						// speed up by 2%
-						entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.00);
+						entity.setHorizontalMovement(entity.getHorizontalMovement());
 					}
 				} else if (level == 2) {
 					if (entity instanceof level2alienEntity) {
 						// speed up by 2%
-						entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.00);
+						entity.setHorizontalMovement(entity.getHorizontalMovement());
 					}
 				}
 			}
@@ -585,18 +584,17 @@ public class Game extends Canvas {
 		 * point, i.e. has he/she waited long enough between shots
 		 */
 		public void tryToFire() {
-			if (player1Dead) return;
+			ShipEntity ship = (ShipEntity) ShipCounter[0];
+			if (ship.isDead()) return;
 			// check that we have waiting long enough to fire
-			if (System.currentTimeMillis() - lastFire < firingInterval) {
+			if (System.currentTimeMillis() - ship.getFireTime() < ship.getFireRatio()) {
 				return;
 			}
-
 			// if we waited long enough, create the shot entity, and record the time.
-			lastFire = System.currentTimeMillis();
-			ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ShipCounter[0].getX(),ShipCounter[0].getY()-30);//총알 발사 위치 바꿈
+			ship.setFireTime(System.currentTimeMillis());
+			ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ShipCounter[0].getX()+10,ShipCounter[0].getY()-30);
 			entities.add(shot);
-
-			try {
+			/*try {
 				AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audio/shot.wav"));
 				Clip clip = AudioSystem.getClip();
 				clip.open(audioInputStream);
@@ -607,7 +605,7 @@ public class Game extends Canvas {
 				clip.start();
 			} catch (Exception ex) {
 				ex.printStackTrace();
-			}
+			}*/
 		}
 
 		public void level2shot(){
@@ -637,16 +635,16 @@ public class Game extends Canvas {
 		entities.add(bossshot);
 	}
 	public void tryToFire2() {
-		if ( player2Dead == true ) return;
-		// check that we have waiting long enough to fire
-		if (System.currentTimeMillis() - last2Fire < firing2Interval) {
-			return;
-		}
-
-		// if we waited long enough, create the shot entity, and record the time.
-		last2Fire = System.currentTimeMillis();
-		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ShipCounter[1].getX()+10,ShipCounter[1].getY()-30);
-		entities.add(shot);
+			ShipEntity ship = (ShipEntity) ShipCounter[1];
+			if (ship.isDead()) return;
+			// check that we have waiting long enough to fire
+			if (System.currentTimeMillis() - ship.getFireTime() < ship.getFireRatio()) {
+				return;
+			}
+			// if we waited long enough, create the shot entity, and record the time.
+			ship.setFireTime(System.currentTimeMillis());
+			ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ShipCounter[1].getX()+10,ShipCounter[1].getY()-30);
+			entities.add(shot);
 	}
 
 	/**
@@ -762,6 +760,7 @@ public class Game extends Canvas {
 				tryToFire();
 			}
 			if (fire2Pressed){
+				if(!multiPlay)return;
 				tryToFire2();
 			}
 			// we want each frame to take 10 milliseconds, to do this
@@ -934,72 +933,49 @@ public class Game extends Canvas {
 	}
 	public void shipControl1() {
 		ShipEntity ship = (ShipEntity) ShipCounter[0];
-		ship.setHorizontalMovement(0);
-		ship.setVerticalMovement(0);
-		if ((leftPressed) && (!rightPressed) && (!upPressed) && (!downPressed)) {
-			ship.setHorizontalMovement(-moveSpeed);
-		}
-		//right unique move
-		else if ((rightPressed) && (!leftPressed) && (!upPressed) && (!downPressed)) {
-			ship.setHorizontalMovement(moveSpeed);
-		}
-		//up unique move
-		else if ((upPressed) && (!downPressed) && (!rightPressed) && (!leftPressed)) {
-			ship.setVerticalMovement(-moveSpeed);
-		}
-		//down unique move
-		else if ((downPressed) && (!upPressed) && (!rightPressed) && (!leftPressed)) {
-			ship.setVerticalMovement(moveSpeed);
-		}
-		//left&up degree 45
-		else if ((leftPressed) && (upPressed) && (!rightPressed) && (!downPressed)) {
-			ship.setVerticalMovement(-moveSpeed);
-			ship.setHorizontalMovement(-moveSpeed);
-		} else if ((leftPressed) && (downPressed) && (!rightPressed) && (!upPressed)) {
-			ship.setVerticalMovement(moveSpeed);
-			ship.setHorizontalMovement(-moveSpeed);
-		} else if ((rightPressed) && (upPressed) && (!downPressed) && (!leftPressed)) {
-			ship.setVerticalMovement(-moveSpeed);
-			ship.setHorizontalMovement(moveSpeed);
-		} else if ((rightPressed) && (downPressed) && (!upPressed) && (!leftPressed)) {
-			ship.setVerticalMovement(moveSpeed);
-			ship.setHorizontalMovement(moveSpeed);
-		}
+		if (leftPressed && !rightPressed && !upPressed && !downPressed) ship.movingLogic(9);
+			//right unique move
+		else if (rightPressed && !leftPressed && !upPressed && !downPressed) ship.movingLogic(3);
+			//up unique move
+		else if (upPressed && !downPressed && !rightPressed && !leftPressed) ship.movingLogic(12);
+			//down unique move
+		else if (downPressed && !upPressed && !rightPressed && !leftPressed) ship.movingLogic(6);
+			//left&up degree 45
+		else if (leftPressed && upPressed && !rightPressed && !downPressed) ship.movingLogic(11);
+		else if (leftPressed && downPressed && !rightPressed && !upPressed) ship.movingLogic(7);
+		else if (rightPressed && upPressed && !downPressed && !leftPressed) ship.movingLogic(1);
+		else if (rightPressed && downPressed && !upPressed && !leftPressed) ship.movingLogic(5);
+		else ship.movingLogic(0);
+	}
+	public int getAlienSpeed(){
+		return levelSpeedControl;
+	}
+	public void setAlienSpeed(){
+		levelSpeedControl*=1.02;
 	}
 
 	public void shipControl2() {
+		if(!multiPlay)return;
 		ShipEntity ship = (ShipEntity) ShipCounter[1];
-		ship.setHorizontalMovement(0);
-		ship.setVerticalMovement(0);
-		if ((left2Pressed) && (!right2Pressed) && (!up2Pressed) && (!down2Pressed)) {
-			ship.setHorizontalMovement(-moveSpeed);
-		}
+		if (left2Pressed && !right2Pressed && !up2Pressed && !down2Pressed) ship.movingLogic(9);
 		//right unique move
-		else if ((right2Pressed) && (!left2Pressed) && (!up2Pressed) && (!down2Pressed)) {
-			ship.setHorizontalMovement(moveSpeed);
-		}
+		else if (right2Pressed && !left2Pressed && !up2Pressed && !down2Pressed) ship.movingLogic(3);
 		//up unique move
-		else if ((up2Pressed) && (!down2Pressed) && (!right2Pressed) && (!left2Pressed)) {
-			ship.setVerticalMovement(-moveSpeed);
-		}
+		else if (up2Pressed && !down2Pressed && !right2Pressed && !left2Pressed) ship.movingLogic(12);
 		//down unique move
-		else if ((down2Pressed) && (!up2Pressed) && (!right2Pressed) && (!left2Pressed)) {
-			ship.setVerticalMovement(moveSpeed);
-		}
+		else if (down2Pressed && !up2Pressed && !right2Pressed && !left2Pressed) ship.movingLogic(6);
 		//left&up degree 45
-		else if ((left2Pressed) && (up2Pressed) && (!right2Pressed) && (!down2Pressed)) {
-			ship.setVerticalMovement(-moveSpeed);
-			ship.setHorizontalMovement(-moveSpeed);
-		} else if ((left2Pressed) && (down2Pressed) && (!right2Pressed) && (!up2Pressed)) {
-			ship.setVerticalMovement(moveSpeed);
-			ship.setHorizontalMovement(-moveSpeed);
-		} else if ((right2Pressed) && (up2Pressed) && (!down2Pressed) && (!left2Pressed)) {
-			ship.setVerticalMovement(-moveSpeed);
-			ship.setHorizontalMovement(moveSpeed);
-		} else if ((right2Pressed) && (down2Pressed) && (!up2Pressed) && (!left2Pressed)) {
-			ship.setVerticalMovement(moveSpeed);
-			ship.setHorizontalMovement(moveSpeed);
-		}
+		else if (left2Pressed && up2Pressed && !right2Pressed && !down2Pressed) ship.movingLogic(11);
+		else if (left2Pressed && down2Pressed && !right2Pressed && !up2Pressed) ship.movingLogic(7);
+		else if (right2Pressed && up2Pressed && !down2Pressed && !left2Pressed) ship.movingLogic(1);
+		else if (right2Pressed && down2Pressed && !up2Pressed && !left2Pressed) ship.movingLogic(5);
+		else ship.movingLogic(0);
+	}
+	/*public void shipSpeedControl(Entity entity, long SpeedTgt){
+		entity.setMoveSpeed(SpeedTgt);
+	}*/
+	public void shipFireRatioControl(ShipEntity ship, long RatioTgt){
+		ship.setFireRatio(RatioTgt);
 	}
 
 	public void timeCalc(){//time is spent even not started
@@ -1018,11 +994,11 @@ public class Game extends Canvas {
 	 *
 	 * @param argv The arguments that are passed into our game
 	 */
-	public static void main(String[] argv) {
+	/*public static void main(String[] argv) {
 		Game g = new Game("");
 		// Start the main game loop, note: this method will not
 		// return until the game has finished running. Hence we are
 		// using the actual main thread to run the game.
 		g.gameLoop();
-	}
+	}*/
 }

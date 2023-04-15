@@ -6,7 +6,6 @@ public class bossacttackentity extends Entity {
     /**
      * The vertical speed at which the players shot moves
      */ //총알이 움직이는 수직 속도
-    private double moveSpeed = 300;
     /**
      * The game in which this entity exists
      */
@@ -29,7 +28,7 @@ public class bossacttackentity extends Entity {
 
         this.game = game;
 
-        dy = moveSpeed;
+        dy = 300;
     }
 
     /**

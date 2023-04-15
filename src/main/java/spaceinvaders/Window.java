@@ -42,7 +42,7 @@ public class Window extends JFrame {
     }
 
 
-    public void showWindow(){
+    public void showWindow() {
         setVisible(true);
         JPanel panel = new JPanel() {
 
@@ -74,9 +74,9 @@ public class Window extends JFrame {
         JButton howTo = new JButton();
 
         //버튼 투명하게
-        button1.setOpaque(false);
-        button2.setOpaque(false);
-        button3.setOpaque(false);
+        button1.setOpaque(true);
+        button2.setOpaque(true);
+        button3.setOpaque(true);
         optionButton.setOpaque(false);
         ranking.setOpaque(false);
         howTo.setOpaque(false);
@@ -93,9 +93,9 @@ public class Window extends JFrame {
         button1.setBounds(59, 30, 300, 110);
         button2.setBounds(59, 160, 300, 110);
         button3.setBounds(59, 300, 300, 110);
-        ranking.setBounds(59,430,300,110);
+        ranking.setBounds(59, 430, 300, 110);
         optionButton.setBounds(410, 430, 305, 110);
-        howTo.setBounds(410,300,305, 110 );
+        howTo.setBounds(410, 300, 305, 110);
 
         button1.setFont(new Font("Arial", Font.PLAIN, 60));
         button2.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -105,8 +105,8 @@ public class Window extends JFrame {
         button2.setBackground(new Color(36, 54, 105));
         button3.setBackground(new Color(36, 54, 105));
         optionButton.setBackground(new Color(36, 54, 105));
-        ranking.setBackground(new Color(36,54, 105 ));
-        howTo.setBackground(new Color(36,54, 105 ));
+        ranking.setBackground(new Color(36, 54, 105));
+        howTo.setBackground(new Color(36, 54, 105));
 
         button2.setForeground(Color.WHITE);
         button1.setForeground(Color.WHITE);
@@ -114,14 +114,13 @@ public class Window extends JFrame {
         ranking.setForeground(Color.WHITE);
         howTo.setForeground(Color.WHITE);
 
-        button3.addActionListener(new ActionListener() {
+        button2.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-
                         Game game = new Game("1p");
                         game.gameLoop();
                     }
@@ -137,8 +136,21 @@ public class Window extends JFrame {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-
                         Game game = new Game("2p");
+                        game.gameLoop();
+                    }
+                });
+                thread.start();
+            }
+        });
+        button3.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Game game = new Game("loopMode");
                         game.gameLoop();
                     }
                 });
@@ -174,24 +186,19 @@ public class Window extends JFrame {
 //                    new MFirebaseTool().hashCode();
 
     }
-
-
-
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                LoginPage loginPage = new LoginPage();
-                loginPage.setLoginLiscctener(new LoginPage.LoginListener() {
-                    @Override
-                    public void loginSuccess(String email) {
-                        Window window = new Window();
-                        window.showWindow();
-
-                    }
-                });
-            }
+                    LoginPage loginPage = new LoginPage();
+                    loginPage.setLoginLiscctener(new LoginPage.LoginListener() {
+                        @Override
+                        public void loginSuccess(String email) {
+                            Window window = new Window();
+                            window.showWindow();
+                        }
+                    });
+                }
         });
     }
 }

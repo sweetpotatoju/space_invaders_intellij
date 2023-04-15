@@ -12,9 +12,10 @@ public class ShipEntity extends Entity {
 	 * The game in which the ship exists
 	 */
 	private Game game;
-	private boolean player2;
-	private long moveSpeed, fireTime, fireRatio;
+	private boolean player2, deadSign;
+	private long fireTime, fireRatio;
 	private LifeCounter playerLifes;
+	private int moveSpeed;
 
 	/**
 	 * Create a new entity to represent the players ship
@@ -29,9 +30,10 @@ public class ShipEntity extends Entity {
 		super(ref, x, y);
 		this.player2 = player;
 		this.game = game;
-		moveSpeed = 300;
+		deadSign = false;
 		fireRatio = 500;
 		playerLifes = new LifeCounter(game, null, this);
+		this.moveSpeed=300;
 	}
 	/**
 	 * Request that the ship move itself based on an elapsed ammount of
@@ -65,6 +67,17 @@ public class ShipEntity extends Entity {
 	 *
 	 * @param other The entity with which the ship has collided
 	 */
+	public void movingLogic(int direction){
+		if(direction == 9)this.setHorizontalMovement(-getMoveSpeed());
+		else if(direction == 11){this.setHorizontalMovement(-getMoveSpeed());this.setVerticalMovement(-getMoveSpeed());}
+		else if(direction == 12)this.setVerticalMovement(-getMoveSpeed());
+		else if(direction == 1){this.setVerticalMovement(-getMoveSpeed());this.setHorizontalMovement(getMoveSpeed());}
+		else if(direction == 3)this.setHorizontalMovement(getMoveSpeed());
+		else if(direction == 5){this.setHorizontalMovement(getMoveSpeed()); this.setVerticalMovement(getMoveSpeed());}
+		else if(direction == 6)this.setVerticalMovement(getMoveSpeed());
+		else if(direction == 7){this.setVerticalMovement(getMoveSpeed());this.setHorizontalMovement(-getMoveSpeed());}
+		else{this.setHorizontalMovement(0);this.setVerticalMovement(0);}
+	}
 	public void collidedWith(Entity other) {
 		// if its an alien, notify the game that the player is dead
 
@@ -278,16 +291,36 @@ public class ShipEntity extends Entity {
          --playerLife;
          } */
 	}
-	public boolean is2P () {
-		return player2;
-	}
 	public void LifeIncrease () {
 		playerLifes.LifeIncrease();
 	}
 	public void LifeDecrease () {
 		playerLifes.LifeDecrease();
 	}
+	public boolean is2P () {
+		return player2;
+	}
 	public int getLife () {
 		return playerLifes.getEntityLife();
 	}
+	public long getFireTime (){
+		return fireTime;
+	}
+	public void setFireTime (long fireTimeStmp){
+		this.fireTime = fireTimeStmp;
+	}
+	public long getFireRatio (){
+		return fireRatio;
+	}
+	public void setFireRatio(long fireRatioTgt){
+		this.fireRatio = fireRatioTgt;
+	}
+	public boolean isDead(){
+		return deadSign;
+	}
+	public void playerDead(){
+		this.deadSign = true;
+	}
+	public int getMoveSpeed(){ return moveSpeed; }
+	public void setMoveSpeed(int tgt){ moveSpeed=tgt; }
 }
