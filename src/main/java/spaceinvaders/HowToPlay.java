@@ -36,11 +36,10 @@ public class HowToPlay extends JFrame {
 
 
         getContentPane().add(panel);
-    }
+    } }
 //    public static void main(String[] args) {
-//        HowToPlay howToPlay = new HowToPlay();
-//        howToPlay.showHowToPlay();
-//    }
-
-
-}
+///        HowToPlay howToPlay = new HowToPlay();
+////        howToPlay.showHowToPlay();
+////    }
+//
+//

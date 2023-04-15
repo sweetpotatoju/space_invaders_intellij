@@ -72,8 +72,9 @@ public class FirebaseTool {
             if (userRecord != null) {
                 if (userRecord.getEmail().equals(id)) {
                     globalStorage.setUserID(id);
-                    GetUserBestScore(id);
-                    GetUserProfileImage(id);
+                    getUserBestScore(id);
+                    getUserProfileImage(id);
+                    getUserTheme(id);
                     JOptionPane.showMessageDialog(null, "로그인이 정상적으로 처리되었습니다.");
                     return true;
                 }
@@ -101,10 +102,11 @@ public class FirebaseTool {
                     .setPassword(password)
                     .setDisplayName(id));
 
-
             DatabaseReference initReference = FirebaseDatabase.getInstance(firebaseApp).getReference();
+
             initReference.child("user").child(id.split("@")[0]).child("profileimage").setValue("1", null);
             initReference.child("user").child(id.split("@")[0]).child("bestscore").setValue("0", null);
+            initReference.child("user").child(id.split("@")[0]).child("theme").setValue("1", null);
 
             JOptionPane.showMessageDialog(null, "회원가입에 정상적으로 처리되었습니다.");
 
@@ -117,8 +119,8 @@ public class FirebaseTool {
         }
     }
 
-    public String GetUserProfileImage(String id) {
-        String userBestScore = "";
+    public String getUserProfileImage(String id) {
+        String userProfileSelect = "1";
 
         try {
             DatabaseReference userProfileImageDatabase = FirebaseDatabase.getInstance(firebaseApp).getReference();
@@ -137,6 +139,36 @@ public class FirebaseTool {
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
                             System.out.println("User Profile Data Error " + databaseError);
+                        }
+                    });
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        return userProfileSelect;
+    }
+
+    public String getUserTheme(String id) {
+        String userThemeSelect = "1";
+
+        try {
+            DatabaseReference userThemeDatabase = FirebaseDatabase.getInstance(firebaseApp).getReference();
+
+            userThemeDatabase.child("user")
+                    .child(id.split("@")[0])
+                    .child("theme")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String select = dataSnapshot.getValue(String.class);
+                            System.out.println("User Theme Data Receivced " + select);
+                            globalStorage.setUserTheme(select);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            System.out.println("User Theme Data Error " + databaseError);
 
                         }
                     });
@@ -145,11 +177,11 @@ public class FirebaseTool {
             e.printStackTrace();
         }
 
-        return userBestScore;
+        return userThemeSelect;
     }
 
-    public String GetUserBestScore(String id) {
-        String userBestScore = "";
+    public String getUserBestScore(String id) {
+        String userBestScore = "1";
 
         try {
             DatabaseReference userScoreDatabase = FirebaseDatabase.getInstance(firebaseApp).getReference();
@@ -179,7 +211,7 @@ public class FirebaseTool {
         return userBestScore;
     }
 
-    public void GetAllUserBestScore(Consumer<ArrayList<HashMap<String, String>>> callback) {
+    public void getAllUserBestScore(Consumer<ArrayList<HashMap<String, String>>> callback) {
         DatabaseReference userAllScoreDatabase = FirebaseDatabase.getInstance(firebaseApp).getReference();
 
         userAllScoreDatabase.child("user")
@@ -212,7 +244,8 @@ public class FirebaseTool {
                     }
                 });
     }
-    public void SetUserBestScore(String id, String bestscore) {
+
+    public void setUserBestScore(String id, String bestscore) {
         try {
             DatabaseReference userScoreDatabase = FirebaseDatabase.getInstance(firebaseApp).getReference();
 
@@ -228,7 +261,7 @@ public class FirebaseTool {
         }
     }
 
-    public void SetUserProfileImage(String id, String select) {
+    public void setUserProfileImage(String id, String select) {
         try {
             DatabaseReference userProfileImageDatabase = FirebaseDatabase.getInstance(firebaseApp).getReference();
 
@@ -243,6 +276,23 @@ public class FirebaseTool {
             e.printStackTrace();
         }
     }
+
+    public void setUserTheme(String id, String select) {
+        try {
+            DatabaseReference userProfileImageDatabase = FirebaseDatabase.getInstance(firebaseApp).getReference();
+
+            userProfileImageDatabase.child("user").child(id.split("@")[0]).child("theme").setValue(select, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    globalStorage.setUserTheme(select);
+                }
+            });
+
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }
