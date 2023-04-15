@@ -1,7 +1,5 @@
 package spaceinvaders;
 
-import com.google.firebase.database.*;
-import com.google.firebase.internal.NonNull;
 import spaceinvaders.entity.*;
 
 import javax.swing.*;
@@ -14,14 +12,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import java.util.*;
-import java.util.List;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import javax.swing.*;
 
 
 /**
@@ -437,7 +432,7 @@ public class Game extends Canvas {
 		if (killCount > Integer.parseInt(globalStorage.getUserBestScore())) {
 			message = "Oh no!, but  New best score!";
 			String killCountString = Integer.toString(killCount);
-			firebaseTool.SetUserBestScore(globalStorage.getUserID(), killCountString);
+			firebaseTool.setUserBestScore(globalStorage.getUserID(), killCountString);
 			globalStorage.setUserBestScore(killCountString); // 베스트 스코어 업데이트
 
 		}
@@ -460,7 +455,7 @@ public class Game extends Canvas {
 			waitingForKeyPress = true;
 			isGameStart = false;
 			String killCountString = Integer.toString(killCount);
-			firebaseTool.SetUserBestScore(globalStorage.getUserID(), killCountString);
+			firebaseTool.setUserBestScore(globalStorage.getUserID(), killCountString);
 			globalStorage.setUserBestScore(killCountString); // 베스트 스코어 업데이트
 		} else if (level == 4) {
 			message = "mission complete";

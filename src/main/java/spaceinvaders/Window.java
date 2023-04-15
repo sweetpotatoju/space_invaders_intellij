@@ -12,16 +12,11 @@ public class Window extends JFrame {
     private GlobalStorage globalStorage;
 
     public Window() {
-
         setTitle("Spaceinvaders");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
         new BackgroundMusic();
-
-
-
-
 
     }
 
@@ -152,8 +147,7 @@ public class Window extends JFrame {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        HowToPlay howToPlay = new HowToPlay();
-                        howToPlay.showHowToPlay();
+                        Mypage mypage = new Mypage();
                     }
                 });
                 thread.start();
@@ -170,8 +164,6 @@ public class Window extends JFrame {
 
         getContentPane().add(panel);
 
-//                    new LoginPage();
-//                    new MFirebaseTool().hashCode();
 
     }
 
