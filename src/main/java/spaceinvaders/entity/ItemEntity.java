@@ -9,7 +9,7 @@ import javax.sound.sampled.FloatControl;
 import java.io.File;
 
 public class ItemEntity extends Entity {
-    private long moveSpeed;
+    private int moveSpeed=100;
     private int players;
     private Game game;
 
@@ -23,7 +23,6 @@ public class ItemEntity extends Entity {
     public ItemEntity(Game game, int x, int y) {
         super("sprites/heart.gif", x, y);
         this.game = game;
-        moveSpeed = 200;
         this.setHorizontalMovement(moveSpeed);
         this.setVerticalMovement(moveSpeed);
     }
@@ -47,7 +46,7 @@ public class ItemEntity extends Entity {
     public void collidedWith(Entity other) {
 
         // 아이템 먹을때 효과음
-        try {
+        /*try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audio/loseHeart.wav"));
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
@@ -58,6 +57,6 @@ public class ItemEntity extends Entity {
             clip.start();
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
+        }*/
     }
 }
