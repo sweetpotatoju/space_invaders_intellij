@@ -11,7 +11,6 @@ import spaceinvaders.SpriteStore;
  */
 public class bosseEntity extends Entity {
     /** The speed at which the alient moves horizontally */
-    private double moveSpeed = 75;
     /** The game in which the entity exists */
     private Game game;
     /** The animation frames */
@@ -45,7 +44,7 @@ public class bosseEntity extends Entity {
 
 
         this.game = game;
-        dx = -moveSpeed;
+        dx = -game.getAlienSpeed();
     }
 
 

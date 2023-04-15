@@ -34,7 +34,7 @@ public abstract class Entity {
 	private Rectangle me = new Rectangle();
 	/** The rectangle used for other entities during collision resolution */
 	private Rectangle him = new Rectangle();
-	
+	private long moveSpeed;
 	/**
 	 * Construct a entity based on a sprite image and a location.
 	 * 
@@ -47,7 +47,6 @@ public abstract class Entity {
 		this.x = x;
 		this.y = y;
 	}
-	
 	/**
 	 * Request that this entity move itself based on a certain ammount
 	 * of time passing.
