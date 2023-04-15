@@ -64,33 +64,32 @@ public class Window extends JFrame {
         JButton button1 = new JButton();
         JButton button2 = new JButton();
         JButton button3 = new JButton();
-        JButton optionButton = new JButton();
         JButton ranking = new JButton();
-        JButton howTo = new JButton();
+        JButton mypage = new JButton();
+        JButton Info = new JButton();
 
         //버튼 투명하게
         button1.setOpaque(false);
         button2.setOpaque(false);
         button3.setOpaque(false);
-        optionButton.setOpaque(false);
         ranking.setOpaque(false);
-        howTo.setOpaque(false);
-
+        mypage.setOpaque(false);
+        Info.setOpaque(false);
 
         //버튼 테투리 없애기
-        optionButton.setBorderPainted(false);
         button1.setBorderPainted(false);
         button2.setBorderPainted(false);
         button3.setBorderPainted(false);
         ranking.setBorderPainted(false);
-        howTo.setBorderPainted(false);
+        mypage.setBorderPainted(false);
+        Info.setBorderPainted(false);
 
         button1.setBounds(59, 30, 300, 110);
         button2.setBounds(59, 160, 300, 110);
         button3.setBounds(59, 300, 300, 110);
         ranking.setBounds(59,430,300,110);
-        optionButton.setBounds(410, 430, 305, 110);
-        howTo.setBounds(410,300,305, 110 );
+        mypage.setBounds(410,300,305, 110 );
+        Info.setBounds(410,490,305, 110 );
 
         button1.setFont(new Font("Arial", Font.PLAIN, 60));
         button2.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -99,15 +98,16 @@ public class Window extends JFrame {
         button1.setBackground(new Color(36, 54, 105));
         button2.setBackground(new Color(36, 54, 105));
         button3.setBackground(new Color(36, 54, 105));
-        optionButton.setBackground(new Color(36, 54, 105));
         ranking.setBackground(new Color(36,54, 105 ));
-        howTo.setBackground(new Color(36,54, 105 ));
+        mypage.setBackground(new Color(36,54, 105 ));
+        Info.setBackground(new Color(36,54, 105 ));
 
         button2.setForeground(Color.WHITE);
         button1.setForeground(Color.WHITE);
         button3.setForeground(Color.WHITE);
         ranking.setForeground(Color.WHITE);
-        howTo.setForeground(Color.WHITE);
+        mypage.setForeground(Color.WHITE);
+        Info.setForeground(Color.WHITE);
 
         button3.addActionListener(new ActionListener() {
 
@@ -141,7 +141,20 @@ public class Window extends JFrame {
             }
         });
 
-        howTo.addActionListener(new ActionListener() {
+        ranking.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Ranking ranking = new Ranking();
+                    }
+                });
+                thread.start();
+            }
+        });
+
+        mypage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Thread thread = new Thread(new Runnable() {
@@ -155,12 +168,25 @@ public class Window extends JFrame {
         });
 
 
+        Info.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                        HowToPlay howToPlay = new HowToPlay();
+                        howToPlay.showHowToPlay();
+                    }
+        });
+
+
+
+
+
         panel.add(button1);
         panel.add(button2);
         panel.add(button3);
-        panel.add(optionButton);
+        panel.add(Info);
         panel.add(ranking);
-        panel.add(howTo);
+        panel.add(mypage);
 
         getContentPane().add(panel);
 
