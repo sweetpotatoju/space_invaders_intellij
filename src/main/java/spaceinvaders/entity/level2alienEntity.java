@@ -40,7 +40,7 @@ public class level2alienEntity extends Entity {
         frames[3] = SpriteStore.get().getSprite("sprites/alien3.gif");
 
         this.game = game;
-        dx = -moveSpeed;
+        dx = -game.getAlienSpeed();
     }
 
     /**

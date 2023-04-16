@@ -9,7 +9,6 @@ import spaceinvaders.Game;
  */
 public class ShotEntity extends Entity {
 	/** The vertical speed at which the players shot moves */
-	private double moveSpeed = -300;
 	/** The game in which this entity exists */
 	private Game game;
 	/** True if this shot has been "used", i.e. its hit something */
@@ -28,7 +27,7 @@ public class ShotEntity extends Entity {
 		
 		this.game = game;
 		
-		dy = moveSpeed;
+		dy = -300;
 	}
 
 	/**

@@ -20,7 +20,6 @@ import java.util.Iterator;
  */
 public class AlienEntity extends Entity {
 	/** The speed at which the alient moves horizontally */
-	private double moveSpeed = 75;
 	/** The game in which the entity exists */
 	private Game game;
 	/** The animation frames */
@@ -31,10 +30,6 @@ public class AlienEntity extends Entity {
 	private long frameDuration = 250;
 	/** The current frame of animation being displayed */
 	private int frameNumber;
-
-
-
-
 	/**
 	 * Create a new alien entity
 	 * 
@@ -42,19 +37,17 @@ public class AlienEntity extends Entity {
 	 * @param x The intial x location of this alien
 	 * @param y The intial y location of this alient
 	 */
-	public AlienEntity(Game game, int x, int y) {
-		super("sprites/munG1.png", x, y);
+	public AlienEntity(Game game, int x, int y,int moveSpeed) {
+	super("sprites/ufoo1.png", x, y);
 
 		// setup the animatin frames
 		frames[0] = sprite;
-		frames[1] = SpriteStore.get().getSprite("sprites/munG2.png");
+		frames[1] = SpriteStore.get().getSprite("sprites/ufoo2.png");
 		frames[2] = sprite;
-		frames[3] = SpriteStore.get().getSprite("sprites/munG3.png");
-
+		frames[3] = SpriteStore.get().getSprite("sprites/ufoo3.png");
 		this.game = game;
 		dx = -moveSpeed;
 	}
-
 
 	/**
 	 * Request that this alien moved based on time elapsed

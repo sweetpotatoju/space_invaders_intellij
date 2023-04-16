@@ -4,7 +4,7 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 
-public class BackgroundMusic extends Thread{
+public class BackgroundMusic {
     public BackgroundMusic(){
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audio/backgroundmusic.wav"));
