@@ -4,10 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 
 
 public class Mypage extends JFrame {
+    private Mypage mypage = this;
     private FirebaseTool firebaseTool;
     private GlobalStorage globalStorage;
     private String currentTheme;
@@ -16,8 +19,12 @@ public class Mypage extends JFrame {
     private JLabel background;
     private JComboBox<String> pictureSelector;
     private JLabel profileLabel;
+    private String themeImagePath = "";
+    private String profileImagePath = "";
+    private Window window;
 
-    public Mypage() {
+    public Mypage(Window window) {
+        this.window = window;
         setTitle("Spaceinvaders");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
@@ -64,6 +71,14 @@ public class Mypage extends JFrame {
         JButton apply = new JButton("적용");
         apply.setBounds(650,510,80,30);
         apply.setBackground(Color.WHITE);
+        apply.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                mypage.dispose();
+                new Window(mypage.themeImagePath, mypage.profileImagePath);
+
+            }
+        });
 
         panel.add(apply);
         background = new JLabel();
@@ -84,23 +99,22 @@ public class Mypage extends JFrame {
 
 
     private void applyTheme(String theme) {
-        String imagePath = "/sprites/Theme1.jpg";
         int width = 800; // 원하는 이미지 폭
         int height = 600; // 원하는 이미지 높이
 
         if (theme.equals("1")) {
-            imagePath = "/sprites/Theme1.jpg";
+            this.themeImagePath = "src/main/resources/sprites/Theme1.jpg";
         } else if (theme.equals("2")) {
-            imagePath = "/sprites/Theme2.jpg";
+            this.themeImagePath = "src/main/resources/sprites/Theme2.jpg";
         } else if (theme.equals("3")) {
-            imagePath = "/sprites/Theme3.jpg";
+            this.themeImagePath = "src/main/resources/sprites/Theme3.jpg";
         } else if (theme.equals("4")) {
-            imagePath = "/sprites/Theme4.jpg";
+            this.themeImagePath = "src/main/resources/sprites/Theme4.jpg";
         } else if (theme.equals("5")) {
-            imagePath = "/sprites/Theme5.jpg";
+            this.themeImagePath = "src/main/resources/sprites/Theme5.jpg";
         }
 
-        ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
+        ImageIcon icon = new ImageIcon(this.themeImagePath);
         Image image = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         icon = new ImageIcon(image);
         background.setIcon(icon);
@@ -108,25 +122,26 @@ public class Mypage extends JFrame {
 
 
     private void applyProfilePicture(String picture) {
-        String imagePath = "/sprites/Profile1.jpg"; // 기본 프로필 사진 경로
+//        this.profileImagePath = "/sprites/Profile1.jpg"; // 기본 프로필 사진 경로
         int profileWidth = 100; // 프로필 사진 폭
         int profileHeight = 100; // 프로필 사진 높이
 
         if (picture.equals("1")) {
-            imagePath = "/sprites/Profile1.jpg";
+            this.profileImagePath = "/sprites/Profile1.jpg";
         } else if (picture.equals("2")) {
-            imagePath = "/sprites/Profile2.jpg";
+            this.profileImagePath = "/sprites/Profile2.jpg";
         } else if (picture.equals("3")) {
-            imagePath = "/sprites/Profile3.jpg";
+            this.profileImagePath = "/sprites/Profile3.png";
         } else if (picture.equals("4")) {
-            imagePath = "/sprites/Profile4.jpg";
+            this.profileImagePath = "/sprites/Profile4.png";
         } else if (picture.equals("5")) {
-            imagePath = "/sprites/Profile5.jpg";
+            this.profileImagePath = "/sprites/Profile5.png";
         }
 
-        ImageIcon profileIcon = new ImageIcon(getClass().getResource(imagePath));
+        ImageIcon profileIcon = new ImageIcon(getClass().getResource(this.profileImagePath));
         Image profileImage = profileIcon.getImage().getScaledInstance(profileWidth, profileHeight, Image.SCALE_SMOOTH);
         profileIcon = new ImageIcon(profileImage);
+//        background.setIcon(profileIcon);
 
         /*// 기존에 추가된 프로필 사진 라벨이 있다면 먼저 제거합니다.
         if (profileLabel != null) {
@@ -135,18 +150,18 @@ public class Mypage extends JFrame {
 
 */
         profileLabel = new JLabel(profileIcon);
-        profileLabel.setBounds(550, 200, profileWidth, profileHeight);
+        profileLabel.setBounds(550, 100, profileWidth, profileHeight);
 
         background.add(profileLabel); // background 라벨 위에 새로운 프로필 사진을 추가
         background.setComponentZOrder(profileLabel, 0); // profileLabel 라벨이 background 라벨 위에 나타나도록 설정
         background.validate();
         //applyTheme(currentTheme);
     }
-    public static void main(String[] args){
-
-        Mypage mypage = new Mypage();
-
-
-    }
+//    public static void main(String[] args){
+//
+//        Mypage mypage = new Mypage();
+//
+//
+//    }
 
 }

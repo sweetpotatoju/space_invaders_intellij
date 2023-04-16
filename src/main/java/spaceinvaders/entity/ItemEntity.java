@@ -1,5 +1,6 @@
 package spaceinvaders.entity;
 
+import spaceinvaders.BackgroundMusic;
 import spaceinvaders.Game;
 
 import javax.sound.sampled.AudioInputStream;
@@ -7,6 +8,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ItemEntity extends Entity {
     private int moveSpeed=100;
@@ -44,6 +47,10 @@ public class ItemEntity extends Entity {
     }
     @Override
     public void collidedWith(Entity other) {
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        BackgroundMusic gain = new BackgroundMusic("src/main/resources/audio/itemGain.wav", executorService);
+        executorService.execute(gain);
 
         // 아이템 먹을때 효과음
         /*try {
