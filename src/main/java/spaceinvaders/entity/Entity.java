@@ -71,7 +71,7 @@ public abstract class Entity {
 	/**
 	 * Set the vertical speed of this entity
 	 * 
-	 * @param dx The vertical speed of this entity (pixels/sec)
+	 * @param = The vertical speed of this entity (pixels/sec)
 	 */
 	public void setVerticalMovement(double dy) {
 		this.dy = dy;
