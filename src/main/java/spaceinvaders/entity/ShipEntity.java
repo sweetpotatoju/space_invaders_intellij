@@ -186,51 +186,64 @@ public class ShipEntity extends Entity {
 			}
 		}
 		else if (other instanceof ItemEntity){
-			if (getLife() == 3) return;
-			game.removeEntity(other);
-			LifeIncrease();
-		}
+			if (getLife() == 0)return;
+			if (getLife() == 1) {
+				game.removeEntity(this);
+				LifeDecrease();
+				if (is2P()) game.notifyDeath(2);
+				else game.notifyDeath(1);
+			} else {
+				game.removeEntity(other);
+				LifeDecrease();
+		}}
 		else if (other instanceof bosseEntity) {
-			if (getLife() > 1) {
-				LifeDecrease();
-			}
-			else if (getLife() == 1) {
-				LifeDecrease();
-				game.notifyDeath(2);
-				game.removeEntity(this);
+				if (getLife() == 0)return;
+				if (getLife() == 1) {
+					game.removeEntity(this);
+					LifeDecrease();
+					if (is2P()) game.notifyDeath(2);
+					else game.notifyDeath(1);
+				} else {
+					game.removeEntity(other);
+					LifeDecrease();
 			}
 		}
 
 		else if (other instanceof level2alienEntity) {
-			if (getLife() > 1) {
-				LifeDecrease();
-			}
-			else if (getLife() == 1) {
-				LifeDecrease();
-				game.notifyDeath(2);
+			if (getLife() == 0) return;
+			if (getLife() == 1) {
 				game.removeEntity(this);
+				LifeDecrease();
+				if (is2P()) game.notifyDeath(2);
+				else game.notifyDeath(1);
+			} else {
+				game.removeEntity(other);
+				LifeDecrease();
 			}
 		}
-
 		else if (other instanceof bossacttackentity) {
-			if (getLife() > 1) {
-				LifeDecrease();
-			}
-			else if (getLife() == 1) {
-				LifeDecrease();
-				game.notifyDeath(2);
+			if (getLife() == 0)return;
+			if (getLife() == 1) {
 				game.removeEntity(this);
+				LifeDecrease();
+				if (is2P()) game.notifyDeath(2);
+				else game.notifyDeath(1);
+			} else {
+				game.removeEntity(other);
+				LifeDecrease();;
 			}
 		}
 
-		else if (other instanceof level2alienEntity) {
-			if (getLife() > 1) {
-				LifeDecrease();
-			}
-			else if (getLife() == 1) {
-				LifeDecrease();
-				game.notifyDeath(2);
+		else if (other instanceof level2shotEntity) {
+			if (getLife() == 0)return;
+			if (getLife() == 1) {
 				game.removeEntity(this);
+				LifeDecrease();
+				if (is2P()) game.notifyDeath(2);
+				else game.notifyDeath(1);
+			} else {
+				game.removeEntity(other);
+				LifeDecrease();
 			}
 		}
 
