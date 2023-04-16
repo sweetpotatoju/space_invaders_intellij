@@ -11,6 +11,10 @@ public class Window extends JFrame {
 
     private GlobalStorage globalStorage;
 
+    private JLabel label;
+    private JLabel label2;
+
+
     public Window() {
         setTitle("Spaceinvaders");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -20,24 +24,12 @@ public class Window extends JFrame {
 
     }
 
-    public void showHowTo(){
-        Frame ht = new Frame();
-        ht.setSize(500, 400);
 
-
-//        JPanel panel = new JPanel(){
-//            public void paintComponent(Graphics g){
-//                super.paintComponent(g);
-//
-//
-//                g.setColor(Color.BLACK);
-//                g.fillRect(150, 100, 500, 400);
-//            }
-//        };
-    }
 
 
     public void showWindow(){
+        label = new JLabel();
+        label2 = new JLabel();
         setVisible(true);
         JPanel panel = new JPanel() {
 
@@ -45,32 +37,60 @@ public class Window extends JFrame {
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 // 이미지 파일 경로를 적절히 수정하세요.
-                ImageIcon icon = new ImageIcon(getClass().getResource("/sprites/windowBackground.png"));
+                ImageIcon icon = new ImageIcon(getClass().getResource("/sprites/windowBack.png"));
                 Image image = icon.getImage();
                 g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 
-                ImageIcon btImage = new ImageIcon(getClass().getResource("/sprites/windowButtons.png"));
-                g.drawImage(btImage.getImage(), 59, 30, 690, 510, null);
+//                ImageIcon btImage = new ImageIcon(getClass().getResource("/sprites/buttons1.jpg"));
+//                g.drawImage(btImage.getImage(), 59, 30, 690, 510, null);
 
 //                ImageIcon optionButton = new ImageIcon(getClass().getResource("/sprites/optionButton.png"));
 //                g.drawImage(optionButton.getImage(), 440,430,320,110, null);
-
+                ImageIcon basicProfile = new ImageIcon(getClass().getResource("/sprites/basicProfile.png"));
+                g.drawImage(basicProfile.getImage(), 440,100,100,100,null);
 
             }
         };
 
+
+
+
+
         panel.setLayout(null);
 
-        JButton button1 = new JButton();
-        JButton button2 = new JButton();
-        JButton button3 = new JButton();
+//        JLabel playerName = new JLabel(); //플레이어 아이디
+//        JLabel playerBC = new JLabel(); //플레이어 최고점수
+//
+
+        label.setFont(new Font("Arial", Font.BOLD, 20));
+        label.setForeground(Color.WHITE);
+        label.setBounds(560, 110, 200, 30);
+//        panel.add(label);
+
+        label2.setFont(new Font("Arial", Font.BOLD, 20));
+        label2.setForeground(Color.WHITE);
+        label2.setBounds(560, 150, 200, 30);
+//        panel.add(label2);
+
+//        FirebaseTool firebaseTool1 = new FirebaseTool();
+//        firebaseTool1.GetUserProfileImage(GlobalStorage.getInstance().getUserID());
+
+        label.setText(GlobalStorage.getInstance().getUserID()+"님");
+        label2.setText("My Best Score: " + GlobalStorage.getInstance().getUserBestScore());
+        panel.add(label);
+        panel.add(label2);
+
+
+        JButton button1 = new JButton(); //score
+//        JButton button2 = new JButton();
+        JButton button3 = new JButton(); //2p
         JButton ranking = new JButton();
         JButton mypage = new JButton();
-        JButton Info = new JButton();
+        JButton Info = new JButton(); //howtoP lay 버튼
 
         //버튼 투명하게
         button1.setOpaque(false);
-        button2.setOpaque(false);
+//        button2.setOpaque(false);
         button3.setOpaque(false);
         ranking.setOpaque(false);
         mypage.setOpaque(false);
@@ -78,38 +98,38 @@ public class Window extends JFrame {
 
         //버튼 테투리 없애기
         button1.setBorderPainted(false);
-        button2.setBorderPainted(false);
+//        button2.setBorderPainted(false);
         button3.setBorderPainted(false);
         ranking.setBorderPainted(false);
         mypage.setBorderPainted(false);
         Info.setBorderPainted(false);
 
-        button1.setBounds(59, 30, 300, 110);
-        button2.setBounds(59, 160, 300, 110);
-        button3.setBounds(59, 300, 300, 110);
-        ranking.setBounds(59,430,300,110);
-        mypage.setBounds(410,300,305, 110 );
-        Info.setBounds(410,490,305, 110 );
+        button1.setBounds(59, 50, 311, 103);
+//        button2.setBounds(59, 160, 300, 110);
+        button3.setBounds(59, 230, 311, 103);
+        ranking.setBounds(59,405,311,103);
+        Info.setBounds(423,230,311, 103 ); //howtoplay
+        mypage.setBounds(423,405,311, 103 );
 
         button1.setFont(new Font("Arial", Font.PLAIN, 60));
-        button2.setFont(new Font("Arial", Font.PLAIN, 20));
+//        button2.setFont(new Font("Arial", Font.PLAIN, 20));
         button3.setFont(new Font("Arial", Font.PLAIN, 20));
 
         button1.setBackground(new Color(36, 54, 105));
-        button2.setBackground(new Color(36, 54, 105));
+//        button2.setBackground(new Color(36, 54, 105));
         button3.setBackground(new Color(36, 54, 105));
         ranking.setBackground(new Color(36,54, 105 ));
         mypage.setBackground(new Color(36,54, 105 ));
         Info.setBackground(new Color(36,54, 105 ));
 
-        button2.setForeground(Color.WHITE);
+//        button2.setForeground(Color.WHITE);
         button1.setForeground(Color.WHITE);
         button3.setForeground(Color.WHITE);
         ranking.setForeground(Color.WHITE);
         mypage.setForeground(Color.WHITE);
         Info.setForeground(Color.WHITE);
 
-        button3.addActionListener(new ActionListener() {
+        button1.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -125,7 +145,7 @@ public class Window extends JFrame {
             }
         });
 
-        button1.addActionListener(new ActionListener() {
+        button3.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -182,7 +202,7 @@ public class Window extends JFrame {
 
 
         panel.add(button1);
-        panel.add(button2);
+//        panel.add(button2);
         panel.add(button3);
         panel.add(Info);
         panel.add(ranking);
@@ -197,19 +217,22 @@ public class Window extends JFrame {
 
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                LoginPage loginPage = new LoginPage();
-                loginPage.setLoginLiscctener(new LoginPage.LoginListener() {
-                    @Override
-                    public void loginSuccess(String email) {
-                        Window window = new Window();
-                        window.showWindow();
+//        SwingUtilities.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                LoginPage loginPage = new LoginPage();
+//                loginPage.setLoginLiscctener(new LoginPage.LoginListener() {
+//                    @Override
+//                    public void loginSuccess(String email) {
+//                        Window window = new Window();
+//                        window.showWindow();
+//
+//                    }
+//                });
+//            }
+//        });
 
-                    }
-                });
-            }
-        });
+        Window window = new Window();
+        window.showWindow();
     }
 }

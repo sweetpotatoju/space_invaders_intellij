@@ -115,6 +115,7 @@ public class Game extends Canvas {
 	private RecordRecorder playBoard = new RecordRecorder(this);
 
 	private int levelSpeedControl=75;
+	private JLabel backLabel;
 
 	/**
 	 * Construct our game and set it running.
@@ -130,6 +131,14 @@ public class Game extends Canvas {
 		JPanel panel = (JPanel) container.getContentPane();
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
+
+		// Add background image
+		ImageIcon backgroundImage = new ImageIcon("sprites/rankingPage.png");
+		JLabel background = new JLabel(backgroundImage);
+		container.add(background,BorderLayout.CENTER);
+
+
+
 		/*TimeCounter timeCounter = new TimeCounter((int) 0);*/
 		//panel.add(timeCounter);
 		// setup our canvas size and put it into the content of the frame
@@ -280,13 +289,13 @@ public class Game extends Canvas {
 //		}}
 	private void initEntities() {
 		if (multiPlay){
-			ShipCounter[0] = new ShipEntity(this, "sprites/ship1.gif",350, 550, false);
+			ShipCounter[0] = new ShipEntity(this, "sprites/ship1p.png",350, 550, false);
 			entities.add(ShipCounter[0]);
-			ShipCounter[1] = new ShipEntity(this, "sprites/ship2.gif",390, 550, true);
+			ShipCounter[1] = new ShipEntity(this, "sprites/ship2p.png",390, 550, true);
 			addEntity(ShipCounter[1]);
 		}
 		else{
-			ShipCounter[0] = new ShipEntity(this, "sprites/ship1.gif",370, 550, false);
+			ShipCounter[0] = new ShipEntity(this, "sprites/ship2p.png",370, 550, false);
 			entities.add(ShipCounter[0]);
 		}
 		killCount = 0;
@@ -593,7 +602,7 @@ public class Game extends Canvas {
 			}
 			// if we waited long enough, create the shot entity, and record the time.
 			ship.setFireTime(System.currentTimeMillis());
-			ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ShipCounter[0].getX()+10,ShipCounter[0].getY()-30);
+			ShotEntity shot = new ShotEntity(this, "sprites/shot.png",ShipCounter[0].getX()+10,ShipCounter[0].getY()-30);
 			entities.add(shot);
 			/*try {
 				AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audio/shot.wav"));

@@ -33,14 +33,14 @@ public class bosseEntity extends Entity {
      * @param y    The intial y location of this alient
      */
     public bosseEntity (Game game, String s, int x, int y) {
-        super("sprites/level2alien.png", x, y);
+        super("sprites/boss1.png", x, y);
 
 
 
         frames[0] = sprite;
-        frames[1] = SpriteStore.get().getSprite("sprites/level2alien.png");
+        frames[1] = SpriteStore.get().getSprite("sprites/boss2.png");
         frames[2] = sprite;
-        frames[3] = SpriteStore.get().getSprite("sprites/level2alien.png");
+        frames[3] = SpriteStore.get().getSprite("sprites/boss3.png");
 
 
         this.game = game;
