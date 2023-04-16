@@ -1,6 +1,10 @@
 package spaceinvaders.entity;
 
 import spaceinvaders.Game;
+import spaceinvaders.ItemSlotMachine;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * The entity that represents the players ship
@@ -13,9 +17,9 @@ public class ShipEntity extends Entity {
 	 */
 	private Game game;
 	private boolean player2, deadSign;
-	private long fireTime, fireRatio;
+	private long fireTime;
 	private LifeCounter playerLifes;
-	private int moveSpeed;
+	private int moveSpeed, fireRatio;
 
 	/**
 	 * Create a new entity to represent the players ship
@@ -79,102 +83,8 @@ public class ShipEntity extends Entity {
 		else{this.setHorizontalMovement(0);this.setVerticalMovement(0);}
 	}
 	public void collidedWith(Entity other) {
-		// if its an alien, notify the game that the player is dead
-
-//		if (player2) {
-//			if (other instanceof AlienEntity) {
-//				if (playerLife == 1) {
-//					game.notifyHit(game.LifeCounter[2 + playerLife]);
-//					game.removeEntity(this);
-//					--playerLife;
-//					game.notifyDeath(2);
-//				} else {
-//					game.notifyDeath(2);
-//				}
-//				else{
-//					game.removeEntity(other);
-//					game.notifyHit(game.LifeCounter[2 + playerLife]);
-//					--playerLife;
-//				}
-//			} else if (other instanceof level2alienEntity) {
-////				if (playerLife == 1) {
-////					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-////					game.removeEntity(this);
-////					--playerLife;
-////					game.notifyDeath(2);
-////				} else {
-////					game.removeEntity(other);
-////					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-////					--playerLife;
-////				}
-////			} else if (other instanceof bosseEntity) {
-////				if (playerLife > 1) {
-////					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-////					--playerLife;
-////				} else if (playerLife == 1) {
-////					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-////					--playerLife;
-////					game.notifyDeath(2);
-////					game.removeEntity(this);
-////					{
-////
-//					}
-//				}
-//			} else {
-//				if (other instanceof AlienEntity) {
-//					if (playerLife == 1) {
-//						game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-//					}
-//				} else {
-//					if (other instanceof AlienEntity) {
-//						if (playerLife == 1) {
-//							game.notifyHit(game.LifeCounter[playerLife - 1]);
-//							game.removeEntity(this);
-//							--playerLife;
-//							game.notifyDeath(2);
-//						} else {
-//							game.notifyDeath(1);
-//						}
-//					} else {
-//						game.removeEntity(other);
-//						game.notifyHit(game.LifeCounter[playerLife - 1]);
-//						--playerLife;
-//					}
-//				}
-//			} else if (other instanceof level2alienEntity) {
-//				if (playerLife == 1) {
-//					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-//					game.removeEntity(this);
-//					--playerLife;
-//					game.notifyDeath(2);
-//				} else {
-//					game.removeEntity(other);
-//					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-//					--playerLife;
-//				}
-//
-//
-//			} else if (other instanceof bosseEntity) {
-//				if (playerLife > 1) {
-//					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-//					--playerLife;
-//				} else if (playerLife == 1) {
-//					game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-//					--playerLife;
-//					game.notifyDeath(2);
-//					game.removeEntity(this);
-//					{
-//
-//					}
-//
-//
-//				}
-//			}
-//		}
-//	}
-//}
 		if (other instanceof AlienEntity) {
-			if (getLife() == 0)return;
+			if (getLife() == 0) return;
 			if (getLife() == 1) {
 				game.removeEntity(this);
 				LifeDecrease();
@@ -184,112 +94,47 @@ public class ShipEntity extends Entity {
 				game.removeEntity(other);
 				LifeDecrease();
 			}
-		}
-		else if (other instanceof ItemEntity){
-			if (getLife() == 3) return;
+		} else if (other instanceof ItemEntity) {
+			ItemSlotMachine itemGet = new ItemSlotMachine(game, this);
+			itemGet.spinItem();
 			game.removeEntity(other);
-			LifeIncrease();
-		}
-		else if (other instanceof bosseEntity) {
+		} else if (other instanceof bosseEntity) {
 			if (getLife() > 1) {
 				LifeDecrease();
-			}
-			else if (getLife() == 1) {
+			} else if (getLife() == 1) {
 				LifeDecrease();
-				game.notifyDeath(2);
+				if (is2P()) game.notifyDeath(2);
+				else game.notifyDeath(1);
+				game.removeEntity(this);
+			}
+		} else if (other instanceof level2alienEntity) {
+			if (getLife() > 1) {
+				LifeDecrease();
+			} else if (getLife() == 1) {
+				LifeDecrease();
+				if (is2P()) game.notifyDeath(2);
+				else game.notifyDeath(1);
+				game.removeEntity(this);
+			}
+		} else if (other instanceof bossacttackentity) {
+			if (getLife() > 1) {
+				LifeDecrease();
+			} else if (getLife() == 1) {
+				LifeDecrease();
+				if (is2P()) game.notifyDeath(2);
+				else game.notifyDeath(1);
+				game.removeEntity(this);
+			}
+		} else if (other instanceof level2alienEntity) {
+			if (getLife() > 1) {
+				LifeDecrease();
+			} else if (getLife() == 1) {
+				LifeDecrease();
+				if (is2P()) game.notifyDeath(2);
+				else game.notifyDeath(1);
 				game.removeEntity(this);
 			}
 		}
-
-		else if (other instanceof level2alienEntity) {
-			if (getLife() > 1) {
-				LifeDecrease();
-			}
-			else if (getLife() == 1) {
-				LifeDecrease();
-				game.notifyDeath(2);
-				game.removeEntity(this);
-			}
-		}
-
-		else if (other instanceof bossacttackentity) {
-			if (getLife() > 1) {
-				LifeDecrease();
-			}
-			else if (getLife() == 1) {
-				LifeDecrease();
-				game.notifyDeath(2);
-				game.removeEntity(this);
-			}
-		}
-
-		else if (other instanceof level2alienEntity) {
-			if (getLife() > 1) {
-				LifeDecrease();
-			}
-			else if (getLife() == 1) {
-				LifeDecrease();
-				game.notifyDeath(2);
-				game.removeEntity(this);
-			}
-		}
-
-
-
-		/** 					game.notifyHit(game.LifeCounter[2+playerLife]);
-         --playerLife;
-         }
-         }else if (other instanceof level2alienEntity) {
-         if (playerLife == 1) {
-         game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-         game.removeEntity(this);
-         --playerLife;
-         game.notifyDeath(2);
-         } else {
-         game.removeEntity(other);
-         game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-         --playerLife;
-         }
-         } else if (other instanceof bosseEntity) {
-         if (playerLife > 1) {
-         game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-         --playerLife;
-         } else if (playerLife == 1) {
-         game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-         --playerLife;
-         game.notifyDeath(2);
-         game.removeEntity(this);
-         }}
-
-
-
-         }
-
-         else {
-         if (other instanceof AlienEntity) {
-         if (playerLife == 1) {
-         game.notifyHit(game.LifeCounter[playerLife - 1]);
-         game.removeEntity(this);
-         --playerLife;
-         game.notifyDeath(1);
-         }
-         else{
-         game.removeEntity(other);
-         game.notifyHit(game.LifeCounter[playerLife - 1]);
-         --playerLife;
-         }
-         }
-         else if (other instanceof level2alienEntity) {
-         if (playerLife == 1) {
-         game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-         game.removeEntity(this);
-         --playerLife;
-         game.notifyDeath(1);
-         } else {
-         game.removeEntity(other);
-         game.notifyHit((LifeEntity) game.LifeCounter[playerLife - 1]);
-         --playerLife;
-         } */
 	}
 	public void LifeIncrease () {
 		playerLifes.LifeIncrease();
@@ -309,10 +154,10 @@ public class ShipEntity extends Entity {
 	public void setFireTime (long fireTimeStmp){
 		this.fireTime = fireTimeStmp;
 	}
-	public long getFireRatio (){
+	public int getFireRatio (){
 		return fireRatio;
 	}
-	public void setFireRatio(long fireRatioTgt){
+	public void setFireRatio(int fireRatioTgt){
 		this.fireRatio = fireRatioTgt;
 	}
 	public boolean isDead(){
@@ -323,4 +168,28 @@ public class ShipEntity extends Entity {
 	}
 	public int getMoveSpeed(){ return moveSpeed; }
 	public void setMoveSpeed(int tgt){ moveSpeed=tgt; }
+	public void accelation(){
+		int originMoveSpeed = getMoveSpeed();
+		int originFireRatio = getFireRatio();
+		long startTime = System.currentTimeMillis();
+		System.out.println("accel");
+		Timer timer = new Timer();
+		int accelMove = getMoveSpeed()*2;
+		int accelShot = getFireRatio()/2;
+		TimerTask task = new TimerTask() {
+			long durationtime = System.currentTimeMillis();
+			@Override
+			public void run() {
+				while(durationtime - startTime<5000){
+					durationtime = System.currentTimeMillis();
+					setMoveSpeed(accelMove);
+					setFireRatio(accelShot);
+				}
+			}
+		};
+		timer.schedule(task, 0, 500);
+		setMoveSpeed(originMoveSpeed);
+		setFireRatio(originFireRatio);
+		System.out.println("done");
+	}
 }

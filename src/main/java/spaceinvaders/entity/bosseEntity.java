@@ -44,7 +44,8 @@ public class bosseEntity extends Entity {
 
 
         this.game = game;
-        dx = -game.getAlienSpeed();
+        dx = -game.getAlienHoriSpeed();
+        dy = game.getAlienVertSpeed();
     }
 
 
@@ -107,8 +108,6 @@ public class bosseEntity extends Entity {
             game.notifyRetire();
         }
     }
-
-
     /**
      * Notification that this alien has collided with another entity
      *
@@ -116,17 +115,5 @@ public class bosseEntity extends Entity {
      */
     public void collidedWith(Entity other) {
         // if we've hit an alien, kill it!
-        if (other instanceof ShotEntity) {
-            // remove the affected entities
-            bossLife--;
-            sprite = SpriteStore.get().getSprite("sprites/level2alien.png");
-            System.out.println(bossLife);
-            if (bossLife <= 0) {
-                // notify the game that the boss has been killed
-                game.notifyAlienKilled(this);
-            }
-        }
     }
-
-
 }
