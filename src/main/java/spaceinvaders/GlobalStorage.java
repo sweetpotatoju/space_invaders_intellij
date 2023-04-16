@@ -1,9 +1,6 @@
 package spaceinvaders;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class GlobalStorage {
     private static GlobalStorage globalStorage = null;
 
