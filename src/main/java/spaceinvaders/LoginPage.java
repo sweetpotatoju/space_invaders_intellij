@@ -38,9 +38,12 @@ public class LoginPage extends JFrame {
     private FirebaseTool firebaseTool;
 
     private GlobalStorage globalStorage;
+    private String themeImagePath;
+    private String profileImagePath;
 
-
-    public LoginPage() {
+    public LoginPage(String themeImagePath, String profileImagePath) {
+        this.themeImagePath = themeImagePath;
+        this.profileImagePath = profileImagePath;
         setContentPane(loginPanel);
         setTitle("Login");
         setSize(450, 300);
@@ -83,7 +86,7 @@ public class LoginPage extends JFrame {
         btnResister.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new RegisterPage();
+                new RegisterPage(themeImagePath, profileImagePath);
                 dispose();
             }
         });
@@ -97,7 +100,7 @@ public class LoginPage extends JFrame {
             if (firebaseTool.Login(id, pw)) {
                 JOptionPane.showMessageDialog(null, "Hello" + " " + id);
                 setVisible(false);
-                new Window();
+//                new Window(themeImagePath, profileImagePath);
 
                 // 로그인 성공시 LoginListener의 loginSuccess 메소드 호출하여 처리할 로직 구현
                 if (loginListener != null) {

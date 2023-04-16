@@ -30,8 +30,13 @@ public class RegisterPage extends JFrame {
     private FirebaseTool firebaseTool;
 
     private GlobalStorage globalStorage;
+    private String themeImagePath;
+    private String profileImagePath;
 
-    public RegisterPage() {
+    public RegisterPage(String themeImagePath, String profileImagePath) {
+        this.themeImagePath = themeImagePath;
+        this.profileImagePath = profileImagePath;
+
         setContentPane(resisterPanel);
         setTitle("resister");
         setSize(450, 300);
@@ -58,7 +63,7 @@ public class RegisterPage extends JFrame {
                     exception.printStackTrace();
                 }
 
-                new LoginPage();
+                new LoginPage(themeImagePath, profileImagePath);
                 dispose();
             }
         });

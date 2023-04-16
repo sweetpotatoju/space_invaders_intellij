@@ -16,6 +16,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -392,7 +394,7 @@ public class Game extends Canvas {
 			});
 		} else if (level == 3) {
 			alienCount = 100;
-			bosseEntity boss = new bosseEntity(this, "sprites/level2alien.png", getWidth() / 2, 50);
+			bosseEntity boss = new bosseEntity(this, "sprites/boss2.png", getWidth() / 2, 50);
 			entities.add(boss);
 		}
 
@@ -604,6 +606,9 @@ public class Game extends Canvas {
 			ship.setFireTime(System.currentTimeMillis());
 			ShotEntity shot = new ShotEntity(this, "sprites/shot.png",ShipCounter[0].getX()+10,ShipCounter[0].getY()-30);
 			entities.add(shot);
+			ExecutorService executorService = Executors.newSingleThreadExecutor();
+			BackgroundMusic ss = new BackgroundMusic("src/main/resources/audio/shot.wav", executorService);
+			executorService.execute(ss);
 			/*try {
 				AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audio/shot.wav"));
 				Clip clip = AudioSystem.getClip();
@@ -641,7 +646,7 @@ public class Game extends Canvas {
 	public void bossAttack() {
 
 		int randomX = new Random().nextInt(600); // 0부터 599까지의 랜덤한 x좌표 생성
-		bossacttackentity bossshot = new bossacttackentity(this, "sprites/bossattack.png", randomX, 100);
+		bossacttackentity bossshot = new bossacttackentity(this, "sprites/bossShot.png", randomX, 100);
 		entities.add(bossshot);
 	}
 	public void tryToFire2() {
@@ -655,6 +660,10 @@ public class Game extends Canvas {
 			ship.setFireTime(System.currentTimeMillis());
 			ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ShipCounter[1].getX()+10,ShipCounter[1].getY()-30);
 			entities.add(shot);
+
+			ExecutorService executorService = Executors.newSingleThreadExecutor();
+			BackgroundMusic ss = new BackgroundMusic("src/main/resources/audio/shot.wav", executorService);
+			executorService.execute(ss);
 	}
 
 	/**
