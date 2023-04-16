@@ -46,7 +46,7 @@ public class Mypage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 currentTheme = (String) themeSelector.getSelectedItem();
                 firebaseTool.setUserTheme(globalStorage.getUserID(), currentTheme);
-                globalStorage.setUserTheme(currentTheme); // 햔재 테마 업데이트
+                globalStorage.setUserTheme(currentTheme); // 현재 테마 업데이트
                 applyTheme(currentTheme);
             }
         });
@@ -61,6 +61,11 @@ public class Mypage extends JFrame {
             }
         });
 
+        JButton apply = new JButton("적용");
+        apply.setBounds(650,510,80,30);
+        apply.setBackground(Color.WHITE);
+
+        panel.add(apply);
         background = new JLabel();
         background.setBounds(0, 0, getWidth(), getHeight());
         panel.add(background);
@@ -72,7 +77,11 @@ public class Mypage extends JFrame {
         applyProfilePicture(globalStorage.getUserProfileImage());
 
         setVisible(true);
+
+
     }
+
+
 
     private void applyTheme(String theme) {
         String imagePath = "/sprites/Theme1.jpg";
@@ -133,11 +142,11 @@ public class Mypage extends JFrame {
         background.validate();
         //applyTheme(currentTheme);
     }
-/*    public static void main(String[] args){
+    public static void main(String[] args){
 
         Mypage mypage = new Mypage();
 
 
-    } */
+    }
 
 }
