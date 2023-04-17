@@ -15,12 +15,17 @@ public class LifeEntity extends Entity{
     private Game game;
     private Sprite[] status = new Sprite[2];
 
-    public LifeEntity(Game game, int x, int y) {
-        super("sprites/heart.gif", x, y);
-        status[0] = sprite;
-        status[1] = SpriteStore.get().getSprite("sprites/lostHeart.gif");
-        this.game = game;
+    public LifeEntity(Game game, String ref, int x, int y,boolean alien) {
+        super(ref, x, y);
+        if (alien) {
+            status[0] = sprite;
+            status[1] = SpriteStore.get().getSprite("sprites/bossLostHp.png");
+        } else {
+            status[0] = sprite;
+            status[1] = SpriteStore.get().getSprite("sprites/lostHeart.gif");
+            this.game = game;
         }
+    }
     public void onIt() { sprite = status[0]; }
     public void offIt() { sprite = status[1]; }
     @Override

@@ -1,11 +1,8 @@
 package spaceinvaders;
 
-import com.google.firebase.database.*;
-import com.google.firebase.internal.NonNull;
 import spaceinvaders.entity.*;
-
 import javax.swing.*;
-import javax.swing.Timer;
+import java.util.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
@@ -23,7 +20,6 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import javax.swing.*;
 
 
 /**
@@ -49,7 +45,7 @@ public class Game extends Canvas {
 	/**
 	 * True if the game is currently "running", i.e. the game loop is looping
 	 */
-	private final boolean gameRunning = true;
+	private final boolean gameRunning = true; private boolean stageRunning = false;
 	/**
 	 * The list of all the entities that exist in our game
 	 */
@@ -58,24 +54,17 @@ public class Game extends Canvas {
 	 * The list of entities that need to be removed from the game this loop
 	 */
 	private final ArrayList<Entity> removeList = new ArrayList<Entity>();
-	/** The number of aliens left on the screen */
-	private int alienCount;
 	/** The message to display which waiting for a key press */
 	private String message = "";
 	/** True if we're holding up game play until a key has been pressed */
 	private boolean waitingForKeyPress = true;
 	/** True if the left cursor key is currently pressed */
-	private Entity[] ShipCounter = new ShipEntity[2]; private boolean multiPlay, loopMode;
-	private boolean leftPressed; private boolean left2Pressed;
-	private boolean rightPressed; private boolean right2Pressed;
-	private boolean upPressed; private boolean up2Pressed;
-	private boolean downPressed; private boolean down2Pressed;
-	private boolean firePressed; private boolean fire2Pressed;
-	private boolean player1Dead, player2Dead;			private boolean goGo = false;
-	private long lastFire = 0; private long last2Fire = 0;
-	private long level2lastFire = 0; private long level2ShotInterval = 0;
-	private long bossfire= 0; private long bossShotInterval= 0;
-	private long firingInterval = 500; private long firing2Interval = 500;
+	private Entity[] ShipCounter = new ShipEntity[2]; private boolean multiPlay;
+	private boolean leftPressed,left2Pressed, rightPressed, right2Pressed;
+	private boolean upPressed, up2Pressed, downPressed, down2Pressed;
+	private int Lonly, Ronly, Uonly, Donly, LnD, RnD, LnU, RnU;
+	private boolean firePressed, fire2Pressed, player1Dead, player2Dead;
+	private boolean goGo, keyP1Reverse, keyP2Reverse;
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
 	private boolean isGameStart = false;
@@ -95,19 +84,14 @@ public class Game extends Canvas {
 	 * The game window that we'll update with the frame count
 	 */
 	private final JFrame container;
-	private Thread timeCounterThread;
 	private int level = 1;
 	private Timer timer;
-	private int killCount;
-	private static User User;
+	private static int genCount, alienCount;
+	public static int killCount;
 	private static String bestScore = "";
 	private FirebaseTool firebaseTool;
 
 	private GlobalStorage globalStorage;
-
-	private JLabel backgroundMap;
-
-	private Clip clip;
 
 	//Record Variables
 	private int tenToHundMillis, aSecond, aMinute;
@@ -116,7 +100,7 @@ public class Game extends Canvas {
 	private long lastLoopTime; private long initTime;
 	private RecordRecorder playBoard = new RecordRecorder(this);
 
-	private int levelSpeedControl=75;
+	private static int alienVertSpeed=10, alienHoriSpeed=75;
 	private JLabel backLabel;
 
 	/**
@@ -124,9 +108,8 @@ public class Game extends Canvas {
 	 */
 	public Game(String option) {
 		cycle = 0;
-		if (option.equals("2p")) multiPlay = true;
-		else if (option.equals("1p")) multiPlay = false;
-		else if (option.equals("loopMode")) {multiPlay =false; loopMode = true;}
+		if (option.equals("2p")) {multiPlay = true; System.out.println("2p");}
+		else {multiPlay = false; System.out.println("1p");}
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
 		// get hold the content of the frame and set up the resolution of the game
@@ -156,7 +139,6 @@ public class Game extends Canvas {
 		container.pack();
 		container.setResizable(false);
 		container.setVisible(true);
-
 		// add a listener to respond to the user closing the window. If they
 		// do we'd like to exit the game
 		container.addWindowListener(new WindowAdapter() {
@@ -173,34 +155,23 @@ public class Game extends Canvas {
 		// to manage our accelerated graphics
 		createBufferStrategy(2);
 		strategy = getBufferStrategy();
-
 		// initialise the entities in our game so there's something
 		// to see at startup
-		if (option.equals("2p")) {
-			System.out.println("2p");
-		}
-
-
-
 		firebaseTool = FirebaseTool.getInstance();
 		globalStorage = GlobalStorage.getInstance();
-
+		genCount = 0;
+		killCount = 0;
+		alienCount = 0;
 		initEntities();
-
-
 	}
-
 	/**
 	 * Start a fresh game, this should clear out any old data and
 	 * create a new set.
 	 */
 	private void startGame() {
-
-
 		// clear out any existing entities and intialise a new set
 		entities.clear();
 		initEntities();
-
 		// blank out any keyboard settings we might currently have
 		leftPressed = false;
 		rightPressed = false;
@@ -219,76 +190,7 @@ public class Game extends Canvas {
 		tenToHundMillis=0; aSecond=0; aMinute=0;
 		//윈도우랑 게임창 노래 겹쳐들림
 //		new BackgroundMusic();
-
 	}
-
-
-	/**
-	 * Initialise the starting state of the entities (ship and aliens). Each
-	 * entitiy will be added to the overall list of entities in the game.
-	 */
-//	private void initEntities() {
-//		// create the player ship and place it roughly in the center of the screen
-//		ship = new ShipEntity(this, "sprites/ship.gif",370,550);
-//		entities.add(ship);
-//		entities.add(ship2);
-//		int idx = 20;
-//		for (Entity Life : LifeCounter){
-//			if (idx > 60) {
-//				Life = new LifeEntity(this, 655+idx, 580);
-//				LifeCounter[idx/20 - 1] = Life;
-//			}
-//			else {
-//				Life = new LifeEntity(this, idx-15, 580);
-//				LifeCounter[idx/20 - 1] = Life;
-//			}
-//			entities.add(Life);
-//			idx+=20;
-//		}
-//
-//		/** 아래 함수에 int 중복선언하고 나서, 값 할당이 initGame로컬변수 취급받다보니 중괄호 범위 넘어간 이후로 값이 틀어지는것 같습니다.
-//		 *
-//		 *
-//		 *
-//		 *
-//		 * */
-//		alienCount = 3;
-//
-//		int alienCount = 50; // number of aliens
-//		int alienWidth = 50; // width of each alien
-//		int alienHeight = 30; // height of each alien
-//		int minY = 10; // minimum y-coordinate
-//		int maxY = 200; // maximum y-coordinate
-//		int delay = 1000; // time delay between each batch of aliens (in milliseconds)
-//
-//		final Set<Point> points = new HashSet<>(); // set to keep track of the generated points
-//		Random random = new Random();
-//
-//		while (points.size() < alienCount) {
-//			int x = random.nextInt(getWidth() - alienWidth);
-//			int y = random.nextInt(maxY - minY) + minY;
-//
-//			// check if the new point overlaps with any existing points
-//			boolean overlapping = false;
-//			for (Point point : points) {
-//				if (Math.abs(point.x - x) < alienWidth && Math.abs(point.y - y) < alienHeight) {
-//					overlapping = true;
-//					break;
-//				}
-//			}
-//
-//			// if not overlapping, add the new point to the set
-//			if (!overlapping) {
-
-	//				points.add(new Point(x, y));
-//			}
-//		}
-//
-//// create aliens for each generated point
-//		for (Point point : points) {
-//			Entity alien = new AlienEntity(this, point.x, point.y);
-//			entities.add(alien);
-//		}}
 	private void initEntities() {
 		if (multiPlay){
 			ShipCounter[0] = new ShipEntity(this, "sprites/ship1p.png",350, 550, false);
@@ -297,7 +199,7 @@ public class Game extends Canvas {
 			addEntity(ShipCounter[1]);
 		}
 		else{
-			ShipCounter[0] = new ShipEntity(this, "sprites/ship2p.png",370, 550, false);
+			ShipCounter[0] = new ShipEntity(this, "sprites/ship1p.png",370, 550, false);
 			entities.add(ShipCounter[0]);
 		}
 		killCount = 0;
@@ -305,27 +207,36 @@ public class Game extends Canvas {
 		// create the aliens
 
 		message ="When you're ready, please press the button!";
-		createAliens();
-
 	}
-
+	public void repeatGame(){
+		if(level==4){
+			setAlienVertSpeed((int)(getAlienVertSpeed()*1.05));
+			setAlienHoriSpeed((int)(getAlienHoriSpeed()*1.05));
+			stageRunning=false;
+			level=1;
+		}
+		else{
+			setAlienHoriSpeed(75);
+			setAlienVertSpeed(10);
+			stageRunning=false;
+			level=1;
+		}
+		genCount=0;
+	}
 	private void createAliens() {
+		if(waitingForKeyPress) return;
+		stageRunning=true;
 		// determine the parameters for the aliens based on the current level// increase the number of aliens by 2 for each level
 		alienCount = 10  + (level - 1) * 2;// increase the number of aliens by 2 for each level11
-		int killCount = 0;
 		int alienWidth = 50; // width of each alien
 		int alienHeight = 30; // height of each alien
 		int minY = 10; // minimum y-coordinate
 		int maxY = 200; // maximum y-coordinate
-		int delay = 1000; // time delay between each batch of aliens (in milliseconds)
-
 			final Set<Point> points = new HashSet<>(); // set to keep track of the generated points
 			Random random = new Random();
-
 			while (points.size() < alienCount) {
 				int x = random.nextInt(getWidth() - alienWidth);
 				int y = random.nextInt(maxY - minY) + minY;
-
 				// check if the new point overlaps with any existing points
 				boolean overlapping = false;
 				for (Point point : points) {
@@ -334,7 +245,6 @@ public class Game extends Canvas {
 						break;
 					}
 				}
-
 			// if not overlapping, add the new point to the set
 			if (!overlapping) {
 				points.add(new Point(x, y));
@@ -342,80 +252,74 @@ public class Game extends Canvas {
 		}
 		// create a timer to add aliens every delay milliseconds
 		if (level == 1) {
-			timer = new Timer(delay, new ActionListener() {
-				int count = 0;
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-
-					if (isGameStart) {
-						/**
-						 * this section is added by jgs
-						 * */
-						initTime=lastLoopTime;
-						aMinute=0; aSecond=0; tenToHundMillis=0;
-						goGo=true;
-
-
-						if (count < alienCount) {
-							Point[] pointArray = points.toArray(new Point[0]); // convert set to array
-							Entity alien = new AlienEntity(Game.this, pointArray[count].x, pointArray[count].y,getAlienSpeed());
-							entities.add(alien);
-							count +=2 ; // increase count by 2 to prevent two aliens being added at once
-						}
-					} else {
-						timer.stop(); // stop the timer when the game is over
+			System.out.println("level 1 intro");
+			if (isGameStart) {
+				/**
+				 * this section is added by jgs
+				 * */
+				initTime = lastLoopTime;
+				aMinute = 0;
+				aSecond = 0;
+				tenToHundMillis = 0;
+				goGo = true;
+			}
+			stageRunning = true;
+			Timer timerLv1 = new Timer();
+			TimerTask taskLv1 = new TimerTask() {
+				@Override
+				public void run() {
+					if(waitingForKeyPress)return;
+					if(genCount<alienCount) {
+						Point[] pointArray = points.toArray(new Point[0]); // convert set to array
+						Entity alien = new AlienEntity(Game.this, pointArray[genCount].x, pointArray[genCount].y);
+						addEntity(alien);
+						System.out.println("level 1 sponed : " + (genCount+1));
+						++genCount;
+					}
+					else {
+						System.out.println("Lv1 All Sponed");
+						timerLv1.cancel();
+						genCount = 0;
 					}
 				}
-			});
-		} else if (level == 2) {
-
-			timer = new Timer(delay, new ActionListener() {
-				int count = 0;
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-
-					if (isGameStart) {
-
-						if (count < alienCount) {
-							timer.setInitialDelay(1000);
-							timer.setDelay(1000);
-							timer.start();
-							Point[] pointArray = points.toArray(new Point[0]); // convert set to array
-							Entity alien = new level2alienEntity(Game.this, pointArray[count].x, pointArray[count].y);
-							entities.add(alien);
-							count++; // increase count by 2 to prevent two aliens being added at once
-						}
-					} else {
-						timer.stop(); // stop the timer when the game is over
+			};
+			timerLv1.schedule(taskLv1, 0, 1000);
+		}
+		else if (level == 2){
+			System.out.println("level 2 intro");
+			stageRunning = true;
+			Timer timerLv2 = new Timer();
+			TimerTask taskLv2 = new TimerTask(){
+				@Override
+				public void run() {
+					if(waitingForKeyPress)return;
+					if (genCount<alienCount) {
+						Point[] pointArray = points.toArray(new Point[0]); // convert set to array
+						Entity alien = new level2alienEntity(Game.this, pointArray[genCount].x, pointArray[genCount].y);
+						addEntity(alien);
+						System.out.println("level 2 gen " + (genCount + 1));
+						++genCount; // increase count by 2 to prevent two aliens being added at once
+					}
+					else {
+						System.out.println("Lv2 All Sponed");
+						timerLv2.cancel();
+						genCount = 0;
 					}
 				}
-			});
-		} else if (level == 3) {
-			alienCount = 100;
+			};timerLv2.schedule(taskLv2, 0,1000);
+			if (genCount+1 > alienCount) {timerLv2.cancel(); taskLv2.cancel(); genCount = 0;}
+		}
+		else if (level == 3) {
+			System.out.println("level 3 intro");
+			if(waitingForKeyPress)return;
+			stageRunning = true;
 			bosseEntity boss = new bosseEntity(this, "sprites/boss2.png", getWidth() / 2, 50);
 			entities.add(boss);
 		}
-
-
-
-		timer.setInitialDelay(1000);
-		timer.setDelay(1000);
-		timer.start();
 	}
-
-
-	// start timer }
-//             * Notification from a game entity that the logic of the game
-//             * should be run at the next opportunity (normally as a result of some
-//             * game event)
-//             */
-
-		public void updateLogic() {
+	public void updateLogic() {
 			logicRequiredThisLoop = true;
 		}
-
 		/**
 		 * Remove an entity from the game. The entity removed will
 		 * no longer move or be drawn.
@@ -425,7 +329,6 @@ public class Game extends Canvas {
 		public void removeEntity(Entity entity) {
 			removeList.add(entity);
 		}
-
 	/** This can help you to access entities.add() in other class */
 	public void addEntity(Entity entity){ entities.add(entity); }
 
@@ -445,11 +348,11 @@ public class Game extends Canvas {
 		waitingForKeyPress = true;
 		isGameStart = false;
 		//for checking println
-		playBoard.printRecord();
 		if (killCount > Integer.parseInt(globalStorage.getUserBestScore())) {
 			message = "Oh no!, but  New best score!";
 			resultSender(Integer.toString(killCount));
 		}
+		repeatGame();
 	}
 	/**
 	 * Notification that the player has won since all the aliens
@@ -457,13 +360,19 @@ public class Game extends Canvas {
 	 */
 	public void notifyWin() {
 		message = "Well done! You Win!";
-
-
 		level++;
 		message = "level" + level;
 		waitingForKeyPress = true;
 		isGameStart = false;
-		if (level == 4 && loopMode){ level = 1; ++cycle; setAlienSpeed(); createAliens();}
+		stageRunning = false;
+		/*if (level == 4){
+			level = 1; ++cycle;
+			message = "Endless cycle... we repeat "+cycle;
+			waitingForKeyPress = true;
+			isGameStart = false;
+			repeatGame();
+		}*/
+		//아래 항목과 비교후 병합해야할 것 같습니다.
 		if (level == 4 && killCount > Integer.parseInt(globalStorage.getUserBestScore())) {
 			message = "mission complete! New best score!";
 			waitingForKeyPress = true;
@@ -481,115 +390,39 @@ public class Game extends Canvas {
 		firebaseTool.setUserBestScore(globalStorage.getUserID(), result);
 		globalStorage.setUserBestScore(result); // 베스트 스코어 업데이트
 	}
-
-
-		/**
-		 * Notification that an alien has been killed
-		 */
-//	public void notifyAlienKilled() {
-//		// reduce the alient count, if there are none left, the player has won!
-//		alienCount--;
-//		System.out.println("notifyAlienKilled() called, alienCount: " + alienCount);
-//
-//		if (alienCount == 0) {
-//			notifyWin();
-//		}
 	public void itemDrop(int x, int y){
 		if (killCount%3 == 0 && killCount/3 >= 1){
-			addEntity(new ItemEntity(this,x,y));
+			addEntity(new ItemEntity(this,"sprites/itemBox.png",x,y));
 		}
 
 	}
 
-	public void notifyAlienKilled(Entity other) {
+	public void notifyAlienKilled(Entity other, int score) {
 		// reduce the alient count, if there are none left, the player has won!
-		alienCount--;
 		killCount++;
+		playBoard.scoreModeAdd(score);
 		itemDrop(other.getX(), other.getY());
 		System.out.println(killCount);
-
-
 			if (level == 1) {
-				if (alienCount == 2) {
+				if (killCount == 10) {
 					notifyWin();
 				}
 			} else if (level == 2) {
 				if(alienCount%2 == 0){
 					level2shot();
 				}
-				if (alienCount == 2) {
+				if (killCount == 12) {
 					notifyWin();
 				}
 			} else if (level == 3) {
 				if(alienCount%5 ==0){
 					bossAttack();
 				}
-				if (alienCount == 0) {
+				if (killCount == 1) {
 					notifyWin();
 				}
 			}
-
-
-//
-			// if there are still some aliens left then they all need to get faster, so
-			// speed up all the existing aliens
-			for (int i = 0; i < entities.size(); i++) {
-				Entity entity = (Entity) entities.get(i);// 게임의 상태 확인 엔티티
-				if (level == 1) {
-					if (entity instanceof AlienEntity) {
-						// speed up by 2%
-						entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.00);
-					}
-				} else if (level == 2) {
-					if (entity instanceof AlienEntity) {
-						// speed up by 2%
-						entity.setHorizontalMovement(entity.getHorizontalMovement());
-
-
-					}
-				}
-			}
-			for (int i = 0; i < entities.size(); i++) {
-				Entity entity = (Entity) entities.get(i);// 게임의 상태 확인 엔티티
-				if (level == 1) {
-					if (entity instanceof level2alienEntity) {
-						// speed up by 2%
-						entity.setHorizontalMovement(entity.getHorizontalMovement());
-					}
-				} else if (level == 2) {
-					if (entity instanceof level2alienEntity) {
-						// speed up by 2%
-						entity.setHorizontalMovement(entity.getHorizontalMovement());
-					}
-				}
-			}
-
-//
-			// if there are still some aliens left then they all need to get faster, so
-			// speed up all the existing aliens
-			for (int i = 0; i < entities.size(); i++) {
-				Entity entity = entities.get(i);// 게임의 상태 확인 엔티티
-				if (entity instanceof AlienEntity) {
-					// speed up by 2%
-					entity.setHorizontalMovement(entity.getHorizontalMovement());
-					if (level == 1) {
-						if (entity instanceof AlienEntity) {
-							// speed up by 2%
-							entity.setHorizontalMovement(entity.getHorizontalMovement());
-						}
-					} else if (level == 2) {
-						if (entity instanceof AlienEntity) {
-							// speed up by 2%
-							entity.setHorizontalMovement(entity.getHorizontalMovement());
-
-
-						}
-					}
-				}
-			}
 		}
-
-
 		/**
 		 * Attempt to fire a shot from the player. Its called "try"
 		 * since we must first check that the player can fire at this
@@ -622,14 +455,13 @@ public class Game extends Canvas {
 				ex.printStackTrace();
 			}*/
 		}
-
 		public void level2shot(){
 
 			int randomX = new Random().nextInt(600); // 0부터 599까지의 랜덤한 x좌표 생성
 			bossacttackentity bossshot = new bossacttackentity(this, "sprites/shot.gif", randomX, 100);
 			entities.add(bossshot);
 
-			try {
+			/** try {
 				AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audio/shot.wav"));
 				Clip clip = AudioSystem.getClip();
 				clip.open(audioInputStream);
@@ -640,9 +472,8 @@ public class Game extends Canvas {
 				clip.start();
 			} catch (Exception ex) {
 				ex.printStackTrace();
-			}
+			} */
 		}
-
 	public void bossAttack() {
 
 		int randomX = new Random().nextInt(600); // 0부터 599까지의 랜덤한 x좌표 생성
@@ -665,7 +496,6 @@ public class Game extends Canvas {
 			BackgroundMusic ss = new BackgroundMusic("src/main/resources/audio/shot.wav", executorService);
 			executorService.execute(ss);
 	}
-
 	/**
 	 * The main game loop. This loop is running during all game
 	 * play as is responsible for the following activities:
@@ -678,130 +508,132 @@ public class Game extends Canvas {
 	 * <p>
 	 */
    public void gameLoop() {
-		lastLoopTime = SystemTimer.getTime();
-		// keep looping round til the game ends
-		while (gameRunning) {
-			// work out how long its been since the last update, this
-			// will be used to calculate how far the entities should
-			// move this loop
-			long delta = SystemTimer.getTime() - lastLoopTime;
-			//lastLoopTime = SystemTimer.getTime();
-			lastLoopTime = SystemTimer.getTime();
-            /*System.out.format("%02d", aMinute); System.out.print(':');
-			System.out.format("%02d", aSecond); System.out.print('.');
-			System.out.format("%02d%n", tenToHundMillis);*/
-			/**
-			 * delta could be a second, lastLooptime is 1ms. And its count up about 10ms.
-			 * so we will use this class to get a live time ticks up from down 4 numbers of digits
-			 * */
-			//System.out.println(delta+", "+lastLoopTime);
-			// update the frame counter
-			lastFpsTime += delta;
-			fps++;
-			// update our FPS counter if a second has passed since
-			// we last recorded
-			if (lastFpsTime >= 1000) {
-				container.setTitle(windowTitle+" (FPS: "+fps+")");
-				lastFpsTime = 0;
-				fps = 0;
-			}
-			// Get hold of a graphics context for the accelerated
-			// surface and blank it out
-			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-			g.setColor(Color.black);
-			g.fillRect(0,0,800,600);
-			//Status HUD
-			Graphics2D userHUD = (Graphics2D) strategy.getDrawGraphics();
-			userHUD.setColor(Color.white);
-			userHUD.drawString("Score : "+killCount,(800-g.getFontMetrics().stringWidth("Score : "+killCount))/2,20);
-			userHUD.drawString(timeStamp,5,580);
-			// cycle round asking each entity to move itself
-			if (!waitingForKeyPress) {
-				for (int i=0;i<entities.size();i++) {
-					Entity entity = (Entity) entities.get(i);
-					entity.move(delta);
-				}
-			}
-			// cycle round drawing all the entities we have in the game
-			for (int i=0;i<entities.size();i++) {
-				Entity entity = (Entity) entities.get(i);
-				entity.draw(g);
-			}
-			// brute force collisions, compare every entity against
-			// every other entity. If any of them collide notify
-			// both entities that the collision has occured
-			for (int p=0;p<entities.size();p++) {
-				for (int s=p+1;s<entities.size();s++) {
-					Entity me = (Entity) entities.get(p);
-					Entity him = (Entity) entities.get(s);
-					if (me.collidesWith(him)) {
-						me.collidedWith(him);
-						him.collidedWith(me);
-					}
-				}
-			}
-			// remove any entity that has been marked for clear up
-			entities.removeAll(removeList);
-			removeList.clear();
-			// if a game event has indicated that game logic should
-			// be resolved, cycle round every entity requesting that
-			// their personal logic should be considered.
-			if (logicRequiredThisLoop) {
-				for (int i=0;i<entities.size();i++) {
-					Entity entity = entities.get(i);
-					entity.doLogic();
-				}
-				logicRequiredThisLoop = false;
-			}
-			// if we're waiting for an "any key" press then draw the
-			// current message
-			if (waitingForKeyPress) {
-				g.setColor(Color.white);
-				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
-				g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
-			} else {
-				isGameStart = true;
-			}
-			timeCalc();
-			// finally, we've completed drawing so clear up the graphics
-			// and flip the buffer over
-			//g.dispose();
-			strategy.show();
-			// resolve the movement of the ship. First assume the ship
-			// isn't moving. If either cursor key is pressed then
-			// update the movement appropraitely
-			//1P Controlb
-			shipControl1();
-			//2P control
-			shipControl2();
-			// if we're pressing fire, attempt to fire
-			if (firePressed) {
-				tryToFire();
-			}
-			if (fire2Pressed){
-				if(!multiPlay)return;
-				tryToFire2();
-			}
-			// we want each frame to take 10 milliseconds, to do this
-			// we've recorded when we started the frame. We add 10 milliseconds
-			// to this and then factor in the current time to give
-			// us our final value to wait for
-			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
+	   lastLoopTime = SystemTimer.getTime();
+	   // keep looping round til the game ends
+	   while (gameRunning) {
+		   // work out how long its been since the last update, this
+		   // will be used to calculate how far the entities should
+		   // move this loop
+		   long delta = SystemTimer.getTime() - lastLoopTime;
+		   //lastLoopTime = SystemTimer.getTime();
+		   lastLoopTime = SystemTimer.getTime();
+		   /*System.out.format("%02d", aMinute); System.out.print(':');
+		System.out.format("%02d", aSecond); System.out.print('.');
+		System.out.format("%02d%n", tenToHundMillis);*/
+		   /**
+			* delta could be a second, lastLooptime is 1ms. And its count up about 10ms.
+			* so we will use this class to get a live time ticks up from down 4 numbers of digits
+			* */
+		   //System.out.println(delta+", "+lastLoopTime);
+		   // update the frame counter
+		   lastFpsTime += delta;
+		   fps++;
+		   // update our FPS counter if a second has passed since
+		   // we last recorded
+		   if (lastFpsTime >= 1000) {
+			   container.setTitle(windowTitle+" (FPS: "+fps+")");
+			   lastFpsTime = 0;
+			   fps = 0;
+		   }
+		   // Get hold of a graphics context for the accelerated
+		   // surface and blank it out
+		   Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
+		   g.setColor(Color.black);
+		   g.fillRect(0,0,800,600);
+		   //Status HUD
+		   Graphics2D userHUD = (Graphics2D) strategy.getDrawGraphics();
+		   userHUD.setColor(Color.white);
+		   userHUD.drawString("Score : "+killCount,(800-g.getFontMetrics().stringWidth("Score : "+killCount))/2,20);
+		   userHUD.drawString(timeStamp,5,580);
+		   // cycle round asking each entity to move itself
+		   if (!stageRunning)createAliens();
+		   if (!waitingForKeyPress) {
+			   for (int i=0;i<entities.size();i++) {
+				   Entity entity = (Entity) entities.get(i);
+				   entity.move(delta);
+			   }
+		   }
+		   // cycle round drawing all the entities we have in the game
+		   for (int i=0;i<entities.size();i++) {
+			   Entity entity = (Entity) entities.get(i);
+			   entity.draw(g);
+		   }
+		   // brute force collisions, compare every entity against
+		   // every other entity. If any of them collide notify
+		   // both entities that the collision has occured
+		   for (int p=0;p<entities.size();p++) {
+			   for (int s=p+1;s<entities.size();s++) {
+				   Entity me = (Entity) entities.get(p);
+				   Entity him = (Entity) entities.get(s);
+				   if (me.collidesWith(him)) {
+					   me.collidedWith(him);
+					   him.collidedWith(me);
+				   }
+			   }
+		   }
+		   // remove any entity that has been marked for clear up
+		   entities.removeAll(removeList);
+		   removeList.clear();
+		   // if a game event has indicated that game logic should
+		   // be resolved, cycle round every entity requesting that
+		   // their personal logic should be considered.
+		   if (logicRequiredThisLoop) {
+			   for (int i=0;i<entities.size();i++) {
+				   Entity entity = entities.get(i);
+				   entity.doLogic();
+			   }
+			   logicRequiredThisLoop = false;
+		   }
+		   // if we're waiting for an "any key" press then draw the
+		   // current message
+		   if (waitingForKeyPress) {
+			   g.setColor(Color.white);
+			   g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
+			   g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
+		   }
+		   else {
+			   isGameStart = true;
+		   }
+		   timeCalc();
+		   // finally, we've completed drawing so clear up the graphics
+		   // and flip the buffer over
+		   //g.dispose();
+		   strategy.show();
+		   // resolve the movement of the ship. First assume the ship
+		   // isn't moving. If either cursor key is pressed then
+		   // update the movement appropraitely
+		   //1P Controlb
+		   shipControl1();
+		   //2P control
+		   shipControl2();
+		   // if we're pressing fire, attempt to fire
+		   if (firePressed) {
+			   tryToFire();
+		   }
+		   if (fire2Pressed){
+			   if(!multiPlay)return;
+			   tryToFire2();
+		   }
+		   // we want each frame to take 10 milliseconds, to do this
+		   // we've recorded when we started the frame. We add 10 milliseconds
+		   // to this and then factor in the current time to give
+		   // us our final value to wait for
+		   SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
 
 
-		}
-		 }
-		/**
-		 * The main game loop. This loop is running during all game
-		 * play as is responsible for the following activities:
-		 * <p>
-		 * - Working out the speed of the game loop to update moves
-		 * - Moving the game entities
-		 * - Drawing the screen contents (entities, text)
-		 * - Updating game events
-		 * - Checking Input
-		 * <p>
-		 */
+	   }
+   }
+   /**
+	* The main game loop. This loop is running during all game
+	* play as is responsible for the following activities:
+	* <p>
+	* - Working out the speed of the game loop to update moves
+	* - Moving the game entities
+	* - Drawing the screen contents (entities, text)
+	* - Updating game events
+	* - Checking Input
+	* <p>
+	*/
 
 	public String giveSurvivalTime() {
 		return String.format("%02d", aMinute) + ":" + String.format("%02d", aSecond) + "." + String.format("%02d", tenToHundMillis);
@@ -809,7 +641,6 @@ public class Game extends Canvas {
 	public int giveKillScore(){
 		return killCount;
 	}
-
 	/**
 	 * A class to handle keyboard input from the user. The class
 	 * handles both dynamic input during game play, i.e. left/right
@@ -950,53 +781,105 @@ public class Game extends Canvas {
 			}
 		}
 	}
+	public void keyReverse(boolean whois) {
+		Timer timerKeyReverse = new Timer();
+		TimerTask task = new TimerTask() {
+			long startTime = System.currentTimeMillis();
+			long durationtime = System.currentTimeMillis();
+			@Override
+			public void run() {
+				while(durationtime - startTime<5000){
+					if(whois)keyP2Reverse=true;
+					else keyP1Reverse=true;
+					durationtime = System.currentTimeMillis();
+				}
+				timerKeyReverse.cancel();
+				if (whois) keyP2Reverse = false;
+				else keyP1Reverse =false;
+			}
+		};
+		timerKeyReverse.schedule(task, 0,10);
+	}
 	public void shipControl1() {
 		ShipEntity ship = (ShipEntity) ShipCounter[0];
-		if (leftPressed && !rightPressed && !upPressed && !downPressed) ship.movingLogic(9);
+		if(keyP1Reverse){
+			Lonly = 3; Ronly = 9; Uonly = 6; Donly = 12; LnD = 1; RnD = 11; LnU = 5; RnU = 7;
+		}
+		else {
+			Lonly = 9; Ronly = 3; Uonly = 12; Donly = 6; LnU = 11; LnD = 7; RnU = 1; RnD = 5;
+		}
+		if (leftPressed && !rightPressed && !upPressed && !downPressed) ship.movingLogic(Lonly);
 			//right unique move
-		else if (rightPressed && !leftPressed && !upPressed && !downPressed) ship.movingLogic(3);
+		else if (rightPressed && !leftPressed && !upPressed && !downPressed) ship.movingLogic(Ronly);
 			//up unique move
-		else if (upPressed && !downPressed && !rightPressed && !leftPressed) ship.movingLogic(12);
+		else if (upPressed && !downPressed && !rightPressed && !leftPressed) ship.movingLogic(Uonly);
 			//down unique move
-		else if (downPressed && !upPressed && !rightPressed && !leftPressed) ship.movingLogic(6);
+		else if (downPressed && !upPressed && !rightPressed && !leftPressed) ship.movingLogic(Donly);
 			//left&up degree 45
-		else if (leftPressed && upPressed && !rightPressed && !downPressed) ship.movingLogic(11);
-		else if (leftPressed && downPressed && !rightPressed && !upPressed) ship.movingLogic(7);
-		else if (rightPressed && upPressed && !downPressed && !leftPressed) ship.movingLogic(1);
-		else if (rightPressed && downPressed && !upPressed && !leftPressed) ship.movingLogic(5);
+		else if (leftPressed && upPressed && !rightPressed && !downPressed) ship.movingLogic(LnU);
+		else if (leftPressed && downPressed && !rightPressed && !upPressed) ship.movingLogic(LnD);
+		else if (rightPressed && upPressed && !downPressed && !leftPressed) ship.movingLogic(RnU);
+		else if (rightPressed && downPressed && !upPressed && !leftPressed) ship.movingLogic(RnD);
 		else ship.movingLogic(0);
 	}
-	public int getAlienSpeed(){
-		return levelSpeedControl;
+	public int getAlienHoriSpeed(){
+		return alienHoriSpeed;
 	}
-	public void setAlienSpeed(){
-		levelSpeedControl*=1.02;
+	public void setAlienHoriSpeed(int Tgt){
+		alienHoriSpeed=Tgt;
 	}
+	public int getAlienVertSpeed(){
+		return alienVertSpeed;
+	}
+	public void setAlienVertSpeed(int Tgt){
+		alienVertSpeed=Tgt;
+	}
+	public void alienInvasion() {
+		int originHoriSpeed = getAlienHoriSpeed();
+		int originVertSpeed = getAlienVertSpeed();
+		long startTimer = SystemTimer.getTime();
+		Timer timerInvasion = new Timer();
+		int targetHoriSpeed = originHoriSpeed * 2;
+		int targetVertSpeed = originVertSpeed * 2;
+		TimerTask taskInvasion = new TimerTask() {
 
+			long durationTimer = SystemTimer.getTime();
+			@Override
+			public void run() {
+				while (durationTimer - startTimer < 5000) {
+					setAlienVertSpeed(targetHoriSpeed);
+					setAlienVertSpeed(targetVertSpeed);
+					durationTimer = SystemTimer.getTime();
+				}
+			}
+		};
+		timerInvasion.schedule(taskInvasion, 0,500);
+		setAlienVertSpeed(originHoriSpeed);
+		setAlienVertSpeed(originVertSpeed);
+	}
 	public void shipControl2() {
 		if(!multiPlay)return;
+		if(keyP2Reverse){
+			Lonly = 3; Ronly = 9; Uonly = 6; Donly = 12; LnD = 1; RnD = 11; LnU = 5; RnU = 7;
+		}
+		else {
+			Lonly = 9; Ronly = 3; Uonly = 12; Donly = 6; LnU = 11; LnD = 7; RnU = 1; RnD = 5;
+		}
 		ShipEntity ship = (ShipEntity) ShipCounter[1];
-		if (left2Pressed && !right2Pressed && !up2Pressed && !down2Pressed) ship.movingLogic(9);
+		if (left2Pressed && !right2Pressed && !up2Pressed && !down2Pressed) ship.movingLogic(Lonly);
 		//right unique move
-		else if (right2Pressed && !left2Pressed && !up2Pressed && !down2Pressed) ship.movingLogic(3);
+		else if (right2Pressed && !left2Pressed && !up2Pressed && !down2Pressed) ship.movingLogic(Ronly);
 		//up unique move
-		else if (up2Pressed && !down2Pressed && !right2Pressed && !left2Pressed) ship.movingLogic(12);
+		else if (up2Pressed && !down2Pressed && !right2Pressed && !left2Pressed) ship.movingLogic(Uonly);
 		//down unique move
-		else if (down2Pressed && !up2Pressed && !right2Pressed && !left2Pressed) ship.movingLogic(6);
+		else if (down2Pressed && !up2Pressed && !right2Pressed && !left2Pressed) ship.movingLogic(Donly);
 		//left&up degree 45
-		else if (left2Pressed && up2Pressed && !right2Pressed && !down2Pressed) ship.movingLogic(11);
-		else if (left2Pressed && down2Pressed && !right2Pressed && !up2Pressed) ship.movingLogic(7);
-		else if (right2Pressed && up2Pressed && !down2Pressed && !left2Pressed) ship.movingLogic(1);
-		else if (right2Pressed && down2Pressed && !up2Pressed && !left2Pressed) ship.movingLogic(5);
+		else if (left2Pressed && up2Pressed && !right2Pressed && !down2Pressed) ship.movingLogic(LnU);
+		else if (left2Pressed && down2Pressed && !right2Pressed && !up2Pressed) ship.movingLogic(LnD);
+		else if (right2Pressed && up2Pressed && !down2Pressed && !left2Pressed) ship.movingLogic(RnU);
+		else if (right2Pressed && down2Pressed && !up2Pressed && !left2Pressed) ship.movingLogic(RnD);
 		else ship.movingLogic(0);
 	}
-	/*public void shipSpeedControl(Entity entity, long SpeedTgt){
-		entity.setMoveSpeed(SpeedTgt);
-	}*/
-	public void shipFireRatioControl(ShipEntity ship, long RatioTgt){
-		ship.setFireRatio(RatioTgt);
-	}
-
 	public void timeCalc(){//time is spent even not started
 		if(goGo==false)return;
 		else if(player1Dead && player2Dead)return;
@@ -1005,7 +888,6 @@ public class Game extends Canvas {
 		aMinute = (int) lastLoopTime / 60000 % 60;
 		timeStamp = String.format("%02d", aMinute) + ":" + String.format("%02d", aSecond) + "." + String.format("%02d", tenToHundMillis);
 	}
-
 	/**
 	 * The entry point into the game. We'll simply create an
 	 * instance of class which will start the display and game
@@ -1013,11 +895,5 @@ public class Game extends Canvas {
 	 *
 	 * @param argv The arguments that are passed into our game
 	 */
-//	public static void main(String[] argv) {
-//		Game g = new Game("");
-//		// Start the main game loop, note: this method will not
-//		// return until the game has finished running. Hence we are
-//		// using the actual main thread to run the game.
-//		g.gameLoop();
-//	}
+
 }

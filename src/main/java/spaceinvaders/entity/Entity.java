@@ -71,7 +71,7 @@ public abstract class Entity {
 	/**
 	 * Set the vertical speed of this entity
 	 * 
-	 * @param dx The vertical speed of this entity (pixels/sec)
+	 * @param = The vertical speed of this entity (pixels/sec)
 	 */
 	public void setVerticalMovement(double dy) {
 		this.dy = dy;
@@ -135,6 +135,7 @@ public abstract class Entity {
 	 * @param other The other entity to check collision against
 	 * @return True if the entities collide with each other
 	 */
+	public void setLocation(int x, int y){ this.x = x; this.y =y; }
 	public boolean collidesWith(Entity other) {
 		me.setBounds((int) x,(int) y,sprite.getWidth(),sprite.getHeight());
 		him.setBounds((int) other.x,(int) other.y,other.sprite.getWidth(),other.sprite.getHeight());
