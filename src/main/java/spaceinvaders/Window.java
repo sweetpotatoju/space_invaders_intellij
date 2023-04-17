@@ -17,7 +17,7 @@ public class Window extends JFrame {
     private JLabel label;
     private JLabel label2;
     private JLabel profileLabel;
-    private String themeImagePath = "src/main/resources/sprites/windowBack.png";
+    private String themeImagePath = "src/main/resources/sprites/windowBack.jpg";
     private String profileImagePath = "/sprites/basicProfile.png";
 
 
@@ -199,7 +199,7 @@ public class Window extends JFrame {
 
 
     public static void main(String[] args) {
-        String defaultThemeImagePath = "src/main/resources/sprites/windowBack.png";
+        String defaultThemeImagePath = "src/main/resources/sprites/windowBack.jpg";
         String defaultProfileImagePath = "/sprites/basicProfile.png";
 
         SwingUtilities.invokeLater(new Runnable() {
