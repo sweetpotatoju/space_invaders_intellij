@@ -882,5 +882,7 @@ public class Game extends Canvas {
 		tenToHundMillis = (int) ((lastLoopTime - initTime) / 10 % 100);//default time duration
 		aSecond = (int) lastLoopTime / 1000 % 60;
 		aMinute = (int) lastLoopTime / 60000 % 60;
+
 		timeStamp = String.format("%02d", aMinute) + ":" + String.format("%02d", aSecond) + "." + String.format("%02d", tenToHundMillis);*/
+
 }

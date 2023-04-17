@@ -1,0 +1,54 @@
+<changelist name="Uncommitted_changes_before_Checkout_at_2023-04-14_오후_8_02_[Changes]1" date="1681470149736" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14_오후_8_02_[Changes]1/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 2023-04-14 오후 8:02 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/spaceinvaders/Game$1.class" />
+    <option name="AFTER_PATH" value="target/classes/spaceinvaders/Game$1.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14_오후_8_02_[Changes]1/Game$1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/spaceinvaders/Game.class" />
+    <option name="AFTER_PATH" value="target/classes/spaceinvaders/Game.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14_오후_8_02_[Changes]1/Game.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/spaceinvaders/entity/LifeCounter.class" />
+    <option name="AFTER_PATH" value="target/classes/spaceinvaders/entity/LifeCounter.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14_오후_8_02_[Changes]1/LifeCounter.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/spaceinvaders/BackgroundMusic.class" />
+    <option name="AFTER_PATH" value="target/classes/spaceinvaders/BackgroundMusic.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14_오후_8_02_[Changes]1/BackgroundMusic.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/spaceinvaders/entity/ShipEntity.class" />
+    <option name="AFTER_PATH" value="target/classes/spaceinvaders/entity/ShipEntity.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14_오후_8_02_[Changes]1/ShipEntity.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/spaceinvaders/entity/ItemEntity.class" />
+    <option name="AFTER_PATH" value="target/classes/spaceinvaders/entity/ItemEntity.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14_오후_8_02_[Changes]1/ItemEntity.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/spaceinvaders/Game$2.class" />
+    <option name="AFTER_PATH" value="target/classes/spaceinvaders/Game$2.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14_오후_8_02_[Changes]1/Game$2.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/spaceinvaders/Game$KeyInputHandler.class" />
+    <option name="AFTER_PATH" value="target/classes/spaceinvaders/Game$KeyInputHandler.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14_오후_8_02_[Changes]1/Game$KeyInputHandler.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/spaceinvaders/Window.class" />
+    <option name="AFTER_PATH" value="target/classes/spaceinvaders/Window.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14_오후_8_02_[Changes]1/Window.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/spaceinvaders/Game$3.class" />
+    <option name="AFTER_PATH" value="target/classes/spaceinvaders/Game$3.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14_오후_8_02_[Changes]1/Game$3.class" />
+  </binary>
+</changelist>
