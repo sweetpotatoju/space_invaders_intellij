@@ -87,7 +87,7 @@ public class Game extends Canvas {
 	private int level = 1;
 	private Timer timer;
 	private static int genCount, alienCount;
-	public static int killCount;
+	public static int killCount, liveCount;
 	private static String bestScore = "";
 	private FirebaseTool firebaseTool;
 
@@ -102,6 +102,7 @@ public class Game extends Canvas {
 
 	private static int alienVertSpeed=10, alienHoriSpeed=75;
 	private JLabel backLabel;
+	private Graphics2D userHUD;
 
 	/**
 	 * Construct our game and set it running.
@@ -162,6 +163,8 @@ public class Game extends Canvas {
 		genCount = 0;
 		killCount = 0;
 		alienCount = 0;
+		liveCount = 0;
+		playBoard.scoreInit();
 		initEntities();
 	}
 	/**
@@ -203,9 +206,7 @@ public class Game extends Canvas {
 			entities.add(ShipCounter[0]);
 		}
 		killCount = 0;
-
 		// create the aliens
-
 		message ="When you're ready, please press the button!";
 	}
 	public void repeatGame(){
@@ -228,6 +229,8 @@ public class Game extends Canvas {
 		stageRunning=true;
 		// determine the parameters for the aliens based on the current level// increase the number of aliens by 2 for each level
 		alienCount = 10  + (level - 1) * 2;// increase the number of aliens by 2 for each level11
+		if (level == 3) liveCount = 1;
+		else liveCount = alienCount;
 		int alienWidth = 50; // width of each alien
 		int alienHeight = 30; // height of each alien
 		int minY = 10; // minimum y-coordinate
@@ -239,6 +242,7 @@ public class Game extends Canvas {
 				int y = random.nextInt(maxY - minY) + minY;
 				// check if the new point overlaps with any existing points
 				boolean overlapping = false;
+				if(level == 3){break;}
 				for (Point point : points) {
 					if (Math.abs(point.x - x) < alienWidth && Math.abs(point.y - y) < alienHeight) {
 						overlapping = true;
@@ -257,11 +261,11 @@ public class Game extends Canvas {
 				/**
 				 * this section is added by jgs
 				 * */
-				initTime = lastLoopTime;
-				aMinute = 0;
-				aSecond = 0;
-				tenToHundMillis = 0;
-				goGo = true;
+				//initTime = lastLoopTime;
+				//aMinute = 0;
+				//aSecond = 0;
+				//tenToHundMillis = 0;
+				//goGo = true;
 			}
 			stageRunning = true;
 			Timer timerLv1 = new Timer();
@@ -288,17 +292,20 @@ public class Game extends Canvas {
 		else if (level == 2){
 			System.out.println("level 2 intro");
 			stageRunning = true;
+			genCount = 0;
+
 			Timer timerLv2 = new Timer();
 			TimerTask taskLv2 = new TimerTask(){
 				@Override
 				public void run() {
-					if(waitingForKeyPress)return;
-					if (genCount<alienCount) {
-						Point[] pointArray = points.toArray(new Point[0]); // convert set to array
+					if(waitingForKeyPress) return;
+
+					if (genCount < alienCount) {
+						Point[] pointArray = points.toArray(new Point[0]);
 						Entity alien = new level2alienEntity(Game.this, pointArray[genCount].x, pointArray[genCount].y);
 						addEntity(alien);
 						System.out.println("level 2 gen " + (genCount + 1));
-						++genCount; // increase count by 2 to prevent two aliens being added at once
+						++genCount;
 					}
 					else {
 						System.out.println("Lv2 All Sponed");
@@ -306,8 +313,8 @@ public class Game extends Canvas {
 						genCount = 0;
 					}
 				}
-			};timerLv2.schedule(taskLv2, 0,1000);
-			if (genCount+1 > alienCount) {timerLv2.cancel(); taskLv2.cancel(); genCount = 0;}
+			};
+			timerLv2.schedule(taskLv2, 0, 1000);
 		}
 		else if (level == 3) {
 			System.out.println("level 3 intro");
@@ -344,15 +351,20 @@ public class Game extends Canvas {
 	}
 
 	public void notifyRetire(){
-		message = "Oh no! They got you, try again?";
-		waitingForKeyPress = true;
-		isGameStart = false;
-		//for checking println
 		if (killCount > Integer.parseInt(globalStorage.getUserBestScore())) {
 			message = "Oh no!, but  New best score!";
 			resultSender(Integer.toString(killCount));
+			killCount = 0;
+			playBoard.scoreInit();
 		}
-		repeatGame();
+		else{
+			message = "Oh no! They got you, try again?";
+			waitingForKeyPress = true;
+			isGameStart = false;
+			repeatGame();
+			killCount=0;
+			playBoard.scoreInit();
+		}
 	}
 	/**
 	 * Notification that the player has won since all the aliens
@@ -365,26 +377,7 @@ public class Game extends Canvas {
 		waitingForKeyPress = true;
 		isGameStart = false;
 		stageRunning = false;
-		/*if (level == 4){
-			level = 1; ++cycle;
-			message = "Endless cycle... we repeat "+cycle;
-			waitingForKeyPress = true;
-			isGameStart = false;
-			repeatGame();
-		}*/
-		//아래 항목과 비교후 병합해야할 것 같습니다.
-		if (level == 4 && killCount > Integer.parseInt(globalStorage.getUserBestScore())) {
-			message = "mission complete! New best score!";
-			waitingForKeyPress = true;
-			isGameStart = false;
-			resultSender(Integer.toString(killCount));
-		} else if (level == 4) {
-			message = "mission complete";
-			waitingForKeyPress = true;
-			isGameStart = false;
-		}
-
-
+		if (level == 4) level = 1;
 	}
 	public void resultSender(String result){
 		firebaseTool.setUserBestScore(globalStorage.getUserID(), result);
@@ -399,26 +392,27 @@ public class Game extends Canvas {
 
 	public void notifyAlienKilled(Entity other, int score) {
 		// reduce the alient count, if there are none left, the player has won!
-		killCount++;
+		++killCount;
+		--liveCount;
 		playBoard.scoreModeAdd(score);
 		itemDrop(other.getX(), other.getY());
 		System.out.println(killCount);
 			if (level == 1) {
-				if (killCount == 10) {
+				if (liveCount == 0) {
 					notifyWin();
 				}
 			} else if (level == 2) {
 				if(alienCount%2 == 0){
 					level2shot();
 				}
-				if (killCount == 12) {
+				if (liveCount == 0) {
 					notifyWin();
 				}
 			} else if (level == 3) {
 				if(alienCount%5 ==0){
 					bossAttack();
 				}
-				if (killCount == 1) {
+				if (liveCount == 0) {
 					notifyWin();
 				}
 			}
@@ -543,8 +537,8 @@ public class Game extends Canvas {
 		   //Status HUD
 		   Graphics2D userHUD = (Graphics2D) strategy.getDrawGraphics();
 		   userHUD.setColor(Color.white);
-		   userHUD.drawString("Score : "+killCount,(800-g.getFontMetrics().stringWidth("Score : "+killCount))/2,20);
-		   userHUD.drawString(timeStamp,5,580);
+		   userHUD.drawString("Score : "+playBoard.getScore(),(800-g.getFontMetrics().stringWidth("Score : "+killCount))/2,20);
+		   /*userHUD.drawString(timeStamp,5,580);*/
 		   // cycle round asking each entity to move itself
 		   if (!stageRunning)createAliens();
 		   if (!waitingForKeyPress) {
@@ -594,7 +588,7 @@ public class Game extends Canvas {
 		   else {
 			   isGameStart = true;
 		   }
-		   timeCalc();
+		   //timeCalc();
 		   // finally, we've completed drawing so clear up the graphics
 		   // and flip the buffer over
 		   //g.dispose();
@@ -635,12 +629,9 @@ public class Game extends Canvas {
 	* <p>
 	*/
 
-	public String giveSurvivalTime() {
+	/*public String giveSurvivalTime() {
 		return String.format("%02d", aMinute) + ":" + String.format("%02d", aSecond) + "." + String.format("%02d", tenToHundMillis);
-	}
-	public int giveKillScore(){
-		return killCount;
-	}
+	}*/
 	/**
 	 * A class to handle keyboard input from the user. The class
 	 * handles both dynamic input during game play, i.e. left/right
@@ -880,19 +871,16 @@ public class Game extends Canvas {
 		else if (right2Pressed && down2Pressed && !up2Pressed && !left2Pressed) ship.movingLogic(RnD);
 		else ship.movingLogic(0);
 	}
-	public void timeCalc(){//time is spent even not started
+	/*public static void main(String[] args) {
+		Game g = new Game("1p");
+		g.gameLoop();
+	}*/
+	//추후 사용할 경우 재정비 필요. 현재 화면 HUD불가.
+	/**public void timeCalc(){//time is spent even not started
 		if(goGo==false)return;
 		else if(player1Dead && player2Dead)return;
 		tenToHundMillis = (int) ((lastLoopTime - initTime) / 10 % 100);//default time duration
 		aSecond = (int) lastLoopTime / 1000 % 60;
 		aMinute = (int) lastLoopTime / 60000 % 60;
-		timeStamp = String.format("%02d", aMinute) + ":" + String.format("%02d", aSecond) + "." + String.format("%02d", tenToHundMillis);
-	}
-	/**
-	 * The entry point into the game. We'll simply create an
-	 * instance of class which will start the display and game
-	 * loop.
-	 *
-	 * @param argv The arguments that are passed into our game
-	 */
+		timeStamp = String.format("%02d", aMinute) + ":" + String.format("%02d", aSecond) + "." + String.format("%02d", tenToHundMillis);*/
 }

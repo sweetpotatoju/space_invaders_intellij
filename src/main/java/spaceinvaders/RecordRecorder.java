@@ -10,5 +10,6 @@ public class RecordRecorder {
     }
     public void scoreModeAdd(int score){ scoreStamp += score; }
     public int getScore() { return scoreStamp; }
-    public void LoopModeResult(){ howLongLive = game.giveSurvivalTime(); }
+    public void scoreInit() { scoreStamp = 0; }
+    public void LoopModeResult(){} //howLongLive = game.giveSurvivalTime(); }
 }

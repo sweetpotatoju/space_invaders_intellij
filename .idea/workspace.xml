@@ -5,39 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53f506a3-f04e-49a9-8400-dc49e203b8a9" name="Changes" comment="Still have some bugs with (bossNonShot, loopLogic)">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/RecordRecorder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/RecordRecorder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/AlienEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/AlienEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/Entity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ItemEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ItemEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/LifeCounter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/LifeCounter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/LifeEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/LifeEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ShipEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ShipEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ShotEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ShotEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/bossacttackentity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/bossacttackentity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/bosseEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/bosseEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/level2alienEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/level2alienEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sprites/dropheart.GIF" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$5.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$KeyInputHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$KeyInputHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/RecordRecorder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/RecordRecorder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/AlienEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/AlienEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/Entity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/Entity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ItemEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ItemEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/LifeCounter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/LifeCounter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/LifeEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/LifeEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShipEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShipEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShotEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShotEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/bossacttackentity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/bossacttackentity.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/bosseEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/bosseEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/level2alienEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/level2alienEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/sprites/dropheart.GIF" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +29,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="remerge04171400" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -67,28 +49,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/82109/IdeaProjects/space_invaders_intellij/lib/timer.dll",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/82109/IdeaProjects/space_invaders_intellij/lib/timer.dll&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="spaceinvaders.entity" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Window">
+    <configuration name="Game" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="spaceinvaders.Game" />
+      <module name="space_invaders_intellij" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="spaceinvaders.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Window" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="spaceinvaders.Window" />
       <module name="space_invaders_intellij" />
@@ -105,6 +100,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Window" />
+        <item itemvalue="Application.Game" />
       </list>
     </recent_temporary>
   </component>
@@ -118,6 +114,7 @@
       <updated>1681648173661</updated>
       <workItem from="1681648179087" duration="4675000" />
       <workItem from="1681652874773" duration="6965000" />
+      <workItem from="1681729132922" duration="6456000" />
     </task>
     <task id="LOCAL-00001" summary="ItemClassAdded&amp;AlienGenerationRework">
       <created>1681653048856</created>
@@ -133,7 +130,21 @@
       <option name="project" value="LOCAL" />
       <updated>1681706329041</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Still have some bugs with (bossNonShot, loopLogic)">
+      <created>1681707657350</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1681707657350</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Still have some bugs with (bossNonShot, loopLogic)">
+      <created>1681707760257</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1681707760257</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

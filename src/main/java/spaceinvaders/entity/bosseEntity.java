@@ -110,9 +110,14 @@ public class bosseEntity extends Entity {
     public void collidedWith(Entity other) {
         // if we've hit an alien, kill it!
         if (other instanceof ShotEntity){
+            if (bossLifes.getEntityLife()%7 == 0) {
+                bossacttackentity attack = new bossacttackentity(game,"sprites/bossattack.png",this.getX()+10,this.getY()+10);
+                game.addEntity(attack);
+            }
             if (bossLifes.getEntityLife()==1) {
                 game.notifyAlienKilled(this,100);
                 bossLifes.LifeDecrease();
+                game.removeEntity(this);
             }
             else{
                 bossLifes.LifeDecrease();
