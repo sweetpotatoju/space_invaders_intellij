@@ -22,7 +22,6 @@ public class level2alienEntity extends Entity {
     private long frameDuration = 250;
     /** The current frame of animation being displayed */
     private int frameNumber;
-
     /**
      * Create a new alien entity
      *
@@ -40,7 +39,8 @@ public class level2alienEntity extends Entity {
         frames[3] = SpriteStore.get().getSprite("sprites/alien3.gif");
 
         this.game = game;
-        dx = -game.getAlienSpeed();
+        dx = -game.getAlienHoriSpeed();
+        dy = game.getAlienVertSpeed();
     }
 
     /**
@@ -83,7 +83,6 @@ public class level2alienEntity extends Entity {
         // proceed with normal move
         super.move(delta);
     }
-
     /**
      * Update the game logic related to aliens
      */

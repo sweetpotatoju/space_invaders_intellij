@@ -8,10 +8,7 @@ public class RecordRecorder {
     public RecordRecorder(Game game){
         this.game = game;
     }
-    public void TimeAttackMode(){
-        //targetTime - startTime;
-    }
-    public void scoreMode(int score){ scoreStamp = game.giveKillScore(); printRecord(); }
-    public void LoopMode(){ howLongLive = game.giveSurvivalTime(); printRecord(); }
-    public void printRecord(){System.out.println(howLongLive+"/"+scoreStamp);}
+    public void scoreModeAdd(int score){ scoreStamp += score; }
+    public int getScore() { return scoreStamp; }
+    public void LoopModeResult(){ howLongLive = game.giveSurvivalTime(); }
 }
