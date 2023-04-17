@@ -54,24 +54,21 @@ public class ShotEntity extends Entity {
 	public void collidedWith(Entity other) {
 		// prevents double kills, if we've already hit something,
 		// don't collide
-		if (used) {
-			return;
-		}
-
 		// if we've hit an alien, kill it!
-		if (other instanceof AlienEntity|| other instanceof level2alienEntity) {
+		if (other instanceof AlienEntity) {
 			// remove the affected entities
 			game.removeEntity(this);
 			game.removeEntity(other);
-
 			// notify the game that the alien has been killed
-			game.notifyAlienKilled(other);
-			used = true;
+			game.notifyAlienKilled(other,5);
 	  	}
+		else if (other instanceof level2alienEntity){
+			game.removeEntity(this);
+			game.removeEntity(other);
+			game.notifyAlienKilled(other,10);
+		}
 		else if (other instanceof bosseEntity){
 			game.removeEntity(this);
-			game.notifyAlienKilled(other);
-			used = true;
 		}
 	 }
 }
