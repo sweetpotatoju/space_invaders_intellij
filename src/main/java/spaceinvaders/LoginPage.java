@@ -38,12 +38,12 @@ public class LoginPage extends JFrame {
     private FirebaseTool firebaseTool;
 
     private GlobalStorage globalStorage;
-    private String themeImagePath;
-    private String profileImagePath;
+//    private String themeImagePath;
+//    private String profileImagePath;
 
-    public LoginPage(String themeImagePath, String profileImagePath) {
-        this.themeImagePath = themeImagePath;
-        this.profileImagePath = profileImagePath;
+    public LoginPage() {
+//        this.themeImagePath = themeImagePath;
+//        this.profileImagePath = profileImagePath;
         setContentPane(loginPanel);
         setTitle("Login");
         setSize(450, 300);
@@ -86,7 +86,8 @@ public class LoginPage extends JFrame {
         btnResister.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new RegisterPage(themeImagePath, profileImagePath);
+//                new RegisterPage(themeImagePath, profileImagePath);
+                new RegisterPage();
                 dispose();
             }
         });

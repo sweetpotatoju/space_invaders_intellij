@@ -75,7 +75,9 @@ public class Mypage extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 mypage.dispose();
-                new Window(mypage.themeImagePath, mypage.profileImagePath);
+                String themeImagePath = ImagePath.getThemeImagePathMap().get(GlobalStorage.getInstance().getUserTheme());
+                String profileImagePath = ImagePath.getProfileImagePathMap().get(GlobalStorage.getInstance().getUserProfileImage());
+                new Window(themeImagePath, profileImagePath);
 
             }
         });
@@ -138,7 +140,7 @@ public class Mypage extends JFrame {
             this.profileImagePath = "/sprites/Profile5.png";
         }
 
-        ImageIcon profileIcon = new ImageIcon(getClass().getResource(this.profileImagePath));
+        ImageIcon profileIcon = new ImageIcon(getClass().getResource(ImagePath.getProfileImagePathMap().get(picture)));
         Image profileImage = profileIcon.getImage().getScaledInstance(profileWidth, profileHeight, Image.SCALE_SMOOTH);
         profileIcon = new ImageIcon(profileImage);
 //        background.setIcon(profileIcon);

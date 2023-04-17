@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.swing.ImageIcon;
@@ -17,15 +18,16 @@ public class Window extends JFrame {
     private JLabel label;
     private JLabel label2;
     private JLabel profileLabel;
-    private String themeImagePath = "src/main/resources/sprites/windowBack.jpg";
-    private String profileImagePath = "/sprites/basicProfile.png";
+//    private String themeImagePath = "src/main/resources/sprites/windowBack.jpg";
+//    private String profileImagePath = "/sprites/basicProfile.png";
+
+
 
 
 
 
     public Window(String themeImagePath, String profileImagePath) {
-        this.themeImagePath = themeImagePath;
-        this.profileImagePath = profileImagePath;
+
         setTitle("Spaceinvaders");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
@@ -35,7 +37,8 @@ public class Window extends JFrame {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         BackgroundMusic bgm = new BackgroundMusic("src/main/resources/audio/backgroundmusic.wav", executorService);
         executorService.execute(bgm);
-        showWindow(window.themeImagePath, window.profileImagePath);
+        showWindow(themeImagePath, profileImagePath);
+
     }
 
 
@@ -195,20 +198,26 @@ public class Window extends JFrame {
 
         getContentPane().add(panel);
     }
+    public String getDefaultThemeImagePath() {
+        return "";
+    }
 
 
 
     public static void main(String[] args) {
-        String defaultThemeImagePath = "src/main/resources/sprites/windowBack.jpg";
-        String defaultProfileImagePath = "/sprites/basicProfile.png";
+//        String defaultThemeImagePath = "src/main/resources/sprites/windowBack.jpg";
+//        String defaultProfileImagePath = "/sprites/basicProfile.png";
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                LoginPage loginPage = new LoginPage(defaultThemeImagePath, defaultProfileImagePath);
+//                LoginPage loginPage = new LoginPage(defaultThemeImagePath, defaultProfileImagePath);
+                LoginPage loginPage = new LoginPage();
                 loginPage.setLoginLiscctener(new LoginPage.LoginListener() {
                     @Override
                     public void loginSuccess(String email) {
+                        String defaultThemeImagePath = ImagePath.getThemeImagePathMap().get(GlobalStorage.getInstance().getUserTheme());
+                        String defaultProfileImagePath = ImagePath.getProfileImagePathMap().get(GlobalStorage.getInstance().getUserProfileImage());
                         Window window = new Window(defaultThemeImagePath, defaultProfileImagePath);
                     }
                 });

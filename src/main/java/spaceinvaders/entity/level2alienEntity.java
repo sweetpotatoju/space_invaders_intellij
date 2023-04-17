@@ -30,13 +30,13 @@ public class level2alienEntity extends Entity {
      * @param y The intial y location of this alient
      */
     public level2alienEntity(Game game,int x,int y) {
-        super("sprites/alien.gif",x,y);
+        super("sprites/ufoo1.png",x,y);
 
         // setup the animatin frames
         frames[0] = sprite;
-        frames[1] = SpriteStore.get().getSprite("sprites/alien2.gif");
+        frames[1] = SpriteStore.get().getSprite("sprites/ufoo2.png");
         frames[2] = sprite;
-        frames[3] = SpriteStore.get().getSprite("sprites/alien3.gif");
+        frames[3] = SpriteStore.get().getSprite("sprites/ufoo3.png");
 
         this.game = game;
         dx = -game.getAlienHoriSpeed();
