@@ -1,0 +1,93 @@
+Index: src/main/java/spaceinvaders/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/spaceinvaders/User.java b/src/main/java/spaceinvaders/User.java
+new file mode 100644
+--- /dev/null	(date 1681470025427)
++++ b/src/main/java/spaceinvaders/User.java	(date 1681470025427)
+@@ -0,0 +1,18 @@
++package spaceinvaders;
++
++public class User {
++
++    public String tResisterID;
++    public String tResisterPw;
++    public Integer Score;
++
++
++    public User(String tResisterID, String tResisterPw, Integer Score) {
++        this.tResisterID = tResisterID;
++        this.tResisterPw = tResisterPw;
++        this.Score = Score;
++
++    }
++}
++
++
+Index: src/main/java/spaceinvaders/GlobalStorage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/spaceinvaders/GlobalStorage.java b/src/main/java/spaceinvaders/GlobalStorage.java
+new file mode 100644
+--- /dev/null	(date 1681470025429)
++++ b/src/main/java/spaceinvaders/GlobalStorage.java	(date 1681470025429)
+@@ -0,0 +1,54 @@
++package spaceinvaders;
++
++
++import java.util.ArrayList;
++import java.util.HashMap;
++
++public class GlobalStorage {
++    private static GlobalStorage globalStorage = null;
++
++    private String userID = "";
++
++    private String userBestScore = "";
++
++    private String userProfileImage = "";
++
++    private GlobalStorage() {
++
++    }
++
++    public static GlobalStorage getInstance() {
++        if (globalStorage == null) {
++            globalStorage = new GlobalStorage();
++        }
++
++        return globalStorage;
++    }
++
++
++
++
++    public String getUserID() {
++        return userID;
++    }
++
++    public void setUserID(String userID) {
++        this.userID = userID;
++    }
++
++    public String getUserBestScore() {
++        return userBestScore;
++    }
++
++    public void setUserBestScore(String userBestScore) {
++        this.userBestScore = userBestScore;
++    }
++
++    public String getUserProfileImage() {
++        return userProfileImage;
++    }
++
++    public void setUserProfileImage(String userProfileImage) {
++        this.userProfileImage = userProfileImage;
++    }
++}
+\ No newline at end of file
