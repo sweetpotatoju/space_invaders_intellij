@@ -2,6 +2,9 @@ package spaceinvaders.entity;
 
 import spaceinvaders.BackgroundMusic;
 import spaceinvaders.Game;
+import spaceinvaders.ItemSlotMachine;
+import spaceinvaders.Sprite;
+import spaceinvaders.SpriteStore;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -12,10 +15,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ItemEntity extends Entity {
-    private int moveSpeed=100;
-    private int players;
+    private int moveSpeed=200;
     private Game game;
-
+    private Sprite[] imgArray = new Sprite[6];
     /**
      * Construct a entity based on a sprite image and a location.
      *
@@ -23,11 +25,18 @@ public class ItemEntity extends Entity {
      * @param x   The initial x location of this entity
      * @param y   The initial y location of this entity
      */
-    public ItemEntity(Game game, int x, int y) {
-        super("sprites/heart.gif", x, y);
+    public ItemEntity(Game game,String ref, int x, int y) {
+        super(ref, x, y);
+        this.sprite = SpriteStore.get().getSprite(ref);
         this.game = game;
         this.setHorizontalMovement(moveSpeed);
         this.setVerticalMovement(moveSpeed);
+        this.imgArray[0] = SpriteStore.get().getSprite("sprites/itemBox.png");
+        this.imgArray[1] = SpriteStore.get().getSprite("sprites/brokenBox.png");
+        this.imgArray[2] = SpriteStore.get().getSprite("sprites/heart.GIF");
+        this.imgArray[3] = SpriteStore.get().getSprite("sprites/accelator.gif");
+        this.imgArray[4] = SpriteStore.get().getSprite("sprites/keyreverse.png");
+        this.imgArray[5] = SpriteStore.get().getSprite("sprites/invasion.png");
     }
     public void move(long delta) {
         if ((dx < 0) && (x < 10)) {
@@ -44,6 +53,9 @@ public class ItemEntity extends Entity {
         }
 
         super.move(delta);
+    }
+    public void showIt(int i){
+        this.sprite = imgArray[i];
     }
     @Override
     public void collidedWith(Entity other) {

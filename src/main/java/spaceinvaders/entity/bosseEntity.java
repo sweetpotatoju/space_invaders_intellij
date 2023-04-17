@@ -21,9 +21,7 @@ public class bosseEntity extends Entity {
     private long frameDuration = 250;
     /** The current frame of animation being displayed */
     private int frameNumber;
-    private int bossLife = 100 ;
-
-
+    private LifeCounter bossLifes;
     /**
      * Create a new alien entity
      *
@@ -34,17 +32,14 @@ public class bosseEntity extends Entity {
      */
     public bosseEntity (Game game, String s, int x, int y) {
         super("sprites/boss1.png", x, y);
-
-
-
         frames[0] = sprite;
         frames[1] = SpriteStore.get().getSprite("sprites/boss2.png");
         frames[2] = sprite;
         frames[3] = SpriteStore.get().getSprite("sprites/boss3.png");
-
-
+        bossLifes = new LifeCounter(game, this, null, 30);
         this.game = game;
-        dx = -game.getAlienSpeed();
+        dx = -game.getAlienHoriSpeed();
+        dy = game.getAlienVertSpeed();
     }
 
 
@@ -107,8 +102,6 @@ public class bosseEntity extends Entity {
             game.notifyRetire();
         }
     }
-
-
     /**
      * Notification that this alien has collided with another entity
      *
@@ -116,17 +109,14 @@ public class bosseEntity extends Entity {
      */
     public void collidedWith(Entity other) {
         // if we've hit an alien, kill it!
-        if (other instanceof ShotEntity) {
-            // remove the affected entities
-            bossLife--;
-            sprite = SpriteStore.get().getSprite("sprites/level2alien.png");
-            System.out.println(bossLife);
-            if (bossLife <= 0) {
-                // notify the game that the boss has been killed
-                game.notifyAlienKilled(this);
+        if (other instanceof ShotEntity){
+            if (bossLifes.getEntityLife()==1) {
+                game.notifyAlienKilled(this,100);
+                bossLifes.LifeDecrease();
+            }
+            else{
+                bossLifes.LifeDecrease();
             }
         }
     }
-
-
 }
