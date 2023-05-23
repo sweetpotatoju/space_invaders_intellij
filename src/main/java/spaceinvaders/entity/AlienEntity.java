@@ -15,7 +15,7 @@ import java.util.Iterator;
 
 /**
  * An entity which represents one of our space invader aliens.
- * 
+ *
  * @author Kevin Glass
  */
 public class AlienEntity extends Entity {
@@ -38,7 +38,7 @@ public class AlienEntity extends Entity {
 	 * @param y The intial y location of this alient
 	 */
 	public AlienEntity(Game game, int x, int y) {
-	super("sprites/ufoo1.png", x, y);
+		super("sprites/ufoo1.png", x, y);
 
 		// setup the animatin frames
 		frames[0] = sprite;
