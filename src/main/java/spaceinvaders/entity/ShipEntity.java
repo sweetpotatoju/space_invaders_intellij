@@ -69,7 +69,7 @@ public class ShipEntity extends Entity {
 	/**
 	 * Notification that the player's ship has collided with something
 	 *
-	 * @param other The entity with which the ship has collided
+	
 	 */
 	public void movingLogic(int direction){
 		if(direction == 9)this.setHorizontalMovement(-getMoveSpeed());
