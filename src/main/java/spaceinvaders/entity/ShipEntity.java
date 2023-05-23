@@ -99,24 +99,14 @@ public class ShipEntity extends Entity {
 			ItemSlotMachine itemGet = new ItemSlotMachine(game, this);
 			itemGet.spinItem();
 			game.removeEntity(other);
-		} else if (other instanceof bosseEntity) {
+		} else if (other instanceof BossEntity) {
 			LifeDecrease();
 			LifeDecrease();
 			LifeDecrease();
 			if (is2P()) game.notifyDeath(2);
 			else game.notifyDeath(1);
 			game.removeEntity(this);
-		} else if (other instanceof level2alienEntity) {
-			game.killCount+=1;
-			if (getLife() > 1) {
-				LifeDecrease();
-				game.removeEntity(other);
-			} else if (getLife() == 1) {
-				LifeDecrease();
-				if (is2P()) game.notifyDeath(2);
-				else game.notifyDeath(1);
-				game.removeEntity(this);
-			}
+
 		} else if (other instanceof AttackEntity) {
 			if (getLife() > 1) {
 				LifeDecrease();

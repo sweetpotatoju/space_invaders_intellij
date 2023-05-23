@@ -62,12 +62,8 @@ public class ShotEntity extends Entity {
 			// notify the game that the alien has been killed
 			game.notifyAlienKilled(other,5);
 	  	}
-		else if (other instanceof level2alienEntity){
-			game.removeEntity(this);
-			game.removeEntity(other);
-			game.notifyAlienKilled(other,10);
-		}
-		else if (other instanceof bosseEntity){
+
+		else if (other instanceof BossEntity){
 			game.removeEntity(this);
 		}
 	 }

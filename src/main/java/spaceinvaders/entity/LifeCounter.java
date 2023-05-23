@@ -3,11 +3,6 @@ package spaceinvaders.entity;
 import spaceinvaders.BackgroundMusic;
 import spaceinvaders.Game;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,7 +22,7 @@ public class LifeCounter {
         this.entityLife = lifeNumber;
         this.entityLifeArray = new LifeEntity[lifeNumber];
         for (int i = 0; i < entityLife; i++) {
-            if (ship == null && entity instanceof bosseEntity) {
+            if (ship == null && entity instanceof BossEntity) {
                 entityLifeArray[i] = new LifeEntity(game,"sprites/bossHp.png",399-(lifeNumber/2)+i,15,true);
             }
             else {
