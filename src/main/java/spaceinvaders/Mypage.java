@@ -2,10 +2,7 @@ package spaceinvaders;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import javax.swing.ImageIcon;
 
 
@@ -22,8 +19,12 @@ public class Mypage extends JFrame {
     private String themeImagePath = "";
     private String profileImagePath = "";
     private Window window;
+    private BackgroundMusic backgroundMusic;
+//    private OtherWindow otherWindow;
 
     public Mypage(Window window) {
+//        OtherWindow Window = new OtherWindow();
+//        this.otherWindow = Window;
         this.window = window;
         setTitle("Spaceinvaders");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,13 +75,38 @@ public class Mypage extends JFrame {
         apply.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+
                 mypage.dispose();
+
+                if (backgroundMusic != null) {
+                    backgroundMusic.stop();
+                }
+
+
+//                otherWindow.stopBackgroundMusic();
+//                otherWindow.setBackgroundMusic();
+
+
+
                 String themeImagePath = ImagePath.getThemeImagePathMap().get(GlobalStorage.getInstance().getUserTheme());
                 String profileImagePath = ImagePath.getProfileImagePathMap().get(GlobalStorage.getInstance().getUserProfileImage());
                 new Window(themeImagePath, profileImagePath);
 
             }
         });
+//        apply.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                Thread thread = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mypage.dispose();
+//                        new Window(themeImagePath, profileImagePath);
+//                    }
+//                });
+//                thread.start();
+//            }
+//        });
 
         panel.add(apply);
         background = new JLabel();
