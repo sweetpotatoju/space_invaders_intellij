@@ -9,9 +9,8 @@ import spaceinvaders.SpriteStore;
  *
  * @author Kevin Glass
  */
-public class level2alienEntity extends Entity {
+public class BossEntity extends Entity {
     /** The speed at which the alient moves horizontally */
-    private double moveSpeed = 75;
     /** The game in which the entity exists */
     private Game game;
     /** The animation frames */
@@ -22,32 +21,33 @@ public class level2alienEntity extends Entity {
     private long frameDuration = 250;
     /** The current frame of animation being displayed */
     private int frameNumber;
+    private LifeCounter bossLifes;
     /**
      * Create a new alien entity
      *
      * @param game The game in which this entity is being created
-     * @param x The intial x location of this alien
-     * @param y The intial y location of this alient
+     * @param s
+     * @param x    The intial x location of this alien
+     * @param y    The intial y location of this alient
      */
-    public level2alienEntity(Game game,int x,int y) {
-        super("sprites/ufoo1.png",x,y);
-
-        // setup the animatin frames
+    public BossEntity(Game game, String s, int x, int y) {
+        super("sprites/boss1.png", x, y);
         frames[0] = sprite;
-        frames[1] = SpriteStore.get().getSprite("sprites/ufoo2.png");
+        frames[1] = SpriteStore.get().getSprite("sprites/boss2.png");
         frames[2] = sprite;
-        frames[3] = SpriteStore.get().getSprite("sprites/ufoo3.png");
-
+        frames[3] = SpriteStore.get().getSprite("sprites/boss3.png");
+        bossLifes = new LifeCounter(game, this, null, 30);
         this.game = game;
         dx = -game.getAlienHoriSpeed();
         dy = game.getAlienVertSpeed();
     }
 
-    /**
-     * Request that this alien moved based on time elapsed
-     *
-     * @param delta The time that has elapsed since last move
-     */
+
+
+//     * Request that this alien moved based on time elapsed
+//     *
+//     * @param delta The time that has elapsed since last move
+//     */
     public void move(long delta) {
         // since the move tells us how much time has passed
         // by we can use it to drive the animation, however
@@ -83,6 +83,7 @@ public class level2alienEntity extends Entity {
         // proceed with normal move
         super.move(delta);
     }
+
     /**
      * Update the game logic related to aliens
      */
@@ -98,13 +99,26 @@ public class level2alienEntity extends Entity {
             game.notifyRetire();
         }
     }
-
     /**
      * Notification that this alien has collided with another entity
      *
      * @param other The other entity
      */
     public void collidedWith(Entity other) {
-        // collisions with aliens are handled elsewhere
+        // if we've hit an alien, kill it!
+        if (other instanceof ShotEntity){
+            if (bossLifes.getEntityLife()%7 == 0) {
+                AttackEntity attack = new AttackEntity(game,"sprites/bossAttack.png",this.getX()+10,this.getY()+10);
+                game.addEntity(attack);
+            }
+            if (bossLifes.getEntityLife()==1) {
+                game.notifyAlienKilled(this,100);
+                bossLifes.LifeDecrease();
+                game.removeEntity(this);
+            }
+            else{
+                bossLifes.LifeDecrease();
+            }
+        }
     }
 }

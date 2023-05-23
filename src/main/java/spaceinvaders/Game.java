@@ -275,7 +275,8 @@ public class Game extends Canvas {
 					if(waitingForKeyPress)return;
 					if(genCount<alienCount) {
 						Point[] pointArray = points.toArray(new Point[0]); // convert set to array
-						Entity alien = new AlienEntity(Game.this, pointArray[genCount].x, pointArray[genCount].y);
+						AlienEntity alien = new AlienEntity(Game.this, 100, 100);
+						alien.createLevel2Alien(Game.this, 200, 200); // 레벨
 						addEntity(alien);
 						System.out.println("level 1 sponed : " + (genCount+1));
 						++genCount;
@@ -302,7 +303,8 @@ public class Game extends Canvas {
 
 					if (genCount < alienCount) {
 						Point[] pointArray = points.toArray(new Point[0]);
-						Entity alien = new level2alienEntity(Game.this, pointArray[genCount].x, pointArray[genCount].y);
+						AlienEntity alien = new AlienEntity(Game.this, 100, 100);
+						alien.createLevel2Alien(Game.this, 200, 200); // 레벨
 						addEntity(alien);
 						System.out.println("level 2 gen " + (genCount + 1));
 						++genCount;
@@ -320,7 +322,7 @@ public class Game extends Canvas {
 			System.out.println("level 3 intro");
 			if(waitingForKeyPress)return;
 			stageRunning = true;
-			bosseEntity boss = new bosseEntity(this, "sprites/boss2.png", getWidth() / 2, 50);
+			BossEntity boss = new BossEntity(this, "sprites/boss2.png", getWidth() / 2, 50);
 			entities.add(boss);
 		}
 	}
@@ -351,9 +353,9 @@ public class Game extends Canvas {
 	}
 
 	public void notifyRetire(){
-		if (killCount > Integer.parseInt(globalStorage.getUserBestScore())) {
+		if (playBoard.getScore()> Integer.parseInt(globalStorage.getUserBestScore())) {
 			message = "Oh no!, but  New best score!";
-			resultSender(Integer.toString(killCount));
+			resultSender(Integer.toString(playBoard.getScore()));
 			killCount = 0;
 			playBoard.scoreInit();
 		}
@@ -471,8 +473,8 @@ public class Game extends Canvas {
 	public void bossAttack() {
 
 		int randomX = new Random().nextInt(600); // 0부터 599까지의 랜덤한 x좌표 생성
-		AttackEntity bosshot = new AttackEntity(this, "sprites/bossAttack.png", randomX, 100);
-		entities.add(bosshot);
+		AttackEntity bossAttack = new AttackEntity(this, "sprites/bossAttack.png", randomX, 100);
+		entities.add(bossAttack);
 	}
 	public void tryToFire2() {
 		ShipEntity ship = (ShipEntity) ShipCounter[1];
