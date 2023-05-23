@@ -468,7 +468,7 @@ public class Game extends Canvas {
 		entities.add(bosshot);
 	}
 	public void tryToFire2() {
-		ShipEntity ship = (ShipEntity) ShipCounter[1];b
+		ShipEntity ship = (ShipEntity) ShipCounter[1];
 		if (ship.isDead()) return;
 		// check that we have waiting long enough to fire
 		if (System.currentTimeMillis() - ship.getFireTime() < ship.getFireRatio()) {
