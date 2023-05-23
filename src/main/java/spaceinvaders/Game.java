@@ -13,7 +13,10 @@ import java.util.Set;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -101,6 +104,10 @@ public class Game extends Canvas {
 	 * Construct our game and set it running.
 	 */
 	public Game(String option) {
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
+		BackgroundMusic bgm = new BackgroundMusic("src/main/resources/audio/backgroundmusic.wav", executorService);
+		executorService.execute(bgm);
+
 		cycle = 0;
 		if (option.equals("2p")) {multiPlay = true; System.out.println("2p");}
 		else {multiPlay = false; System.out.println("1p");}

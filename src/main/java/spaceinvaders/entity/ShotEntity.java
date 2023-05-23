@@ -1,10 +1,14 @@
 package spaceinvaders.entity;
 
+import spaceinvaders.BackgroundMusic;
 import spaceinvaders.Game;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * An entity representing a shot fired by the player's ship
- * 
+ *
  * @author Kevin Glass
  */
 public class ShotEntity extends Entity {
@@ -13,10 +17,10 @@ public class ShotEntity extends Entity {
 	private Game game;
 	/** True if this shot has been "used", i.e. its hit something */
 	private boolean used = false;
-	
+
 	/**
 	 * Create a new shot from the player
-	 * 
+	 *
 	 * @param game The game in which the shot has been created
 	 * @param sprite The sprite representing this shot
 	 * @param x The initial x location of the shot
@@ -24,31 +28,35 @@ public class ShotEntity extends Entity {
 	 */
 	public ShotEntity(Game game,String sprite,int x,int y) {
 		super(sprite,x,y);
-		
+
 		this.game = game;
-		
+
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
+		BackgroundMusic bgm = new BackgroundMusic("src/main/resources/audio/shot.wav", executorService);
+		executorService.execute(bgm);
+
 		dy = -300;
 	}
 
 	/**
 	 * Request that this shot moved based on time elapsed
-	 * 
+	 *
 	 * @param delta The time that has elapsed since last move
 	 */
 	public void move(long delta) {
 		// proceed with normal move
 		super.move(delta);
-		
+
 		// if we shot off the screen, remove ourselfs
 		if (y < -100) {
 			game.removeEntity(this);
 		}
 	}
-	
+
 	/**
 	 * Notification that this shot has collided with another
 	 * entity
-	 * 
+	 *
 	 * @parma other The other entity with which we've collided
 	 */
 	public void collidedWith(Entity other) {

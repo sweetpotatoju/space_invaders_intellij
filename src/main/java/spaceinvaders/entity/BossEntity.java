@@ -108,7 +108,7 @@ public class BossEntity extends Entity {
         // if we've hit an alien, kill it!
         if (other instanceof ShotEntity){
             if (bossLifes.getEntityLife()%7 == 0) {
-                AttackEntity attack = new AttackEntity(game,"sprites/bossattack.png",this.getX()+10,this.getY()+10);
+                AttackEntity attack = new AttackEntity(game,"sprites/bossAttack.png",this.getX()+10,this.getY()+10);
                 game.addEntity(attack);
             }
             if (bossLifes.getEntityLife()==1) {

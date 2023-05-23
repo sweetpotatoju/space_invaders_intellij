@@ -15,7 +15,7 @@ import java.util.Iterator;
 
 /**
  * An entity which represents one of our space invader aliens.
- * 
+ *
  * @author Kevin Glass
  */
 public class AlienEntity extends Entity {

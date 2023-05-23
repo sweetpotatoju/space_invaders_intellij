@@ -60,9 +60,12 @@ public class ItemEntity extends Entity {
     @Override
     public void collidedWith(Entity other) {
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        BackgroundMusic gain = new BackgroundMusic("src/main/resources/audio/itemGain.wav", executorService);
-        executorService.execute(gain);
+        if (other instanceof ShipEntity){
+
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            BackgroundMusic gain = new BackgroundMusic("src/main/resources/audio/itemGain.wav", executorService);
+            executorService.execute(gain);
+        }
 
         // 아이템 먹을때 효과음
         /*try {
