@@ -105,6 +105,7 @@ public class Mypage extends JFrame {
         int height = 600; // 원하는 이미지 높이
 
         if (theme.equals("1")) {
+
             this.themeImagePath = "src/main/resources/sprites/Theme1.jpg";
         } else if (theme.equals("2")) {
             this.themeImagePath = "src/main/resources/sprites/Theme2.jpg";

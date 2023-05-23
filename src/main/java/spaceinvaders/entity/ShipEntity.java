@@ -117,7 +117,7 @@ public class ShipEntity extends Entity {
 				else game.notifyDeath(1);
 				game.removeEntity(this);
 			}
-		} else if (other instanceof bossacttackentity) {
+		} else if (other instanceof AttackEntity) {
 			if (getLife() > 1) {
 				LifeDecrease();
 				game.removeEntity(other);

@@ -24,7 +24,6 @@ public class BackgroundMusic implements Runnable {
                 Clip clip = AudioSystem.getClip();
                 clip.open(audioInputStream);
                 clip.start();
-                System.out.println("음악 재생 시작");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (UnsupportedAudioFileException e) {

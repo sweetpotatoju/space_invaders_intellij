@@ -44,9 +44,6 @@ public class bosseEntity extends Entity {
 
 
 
-
-
-
 //     * Request that this alien moved based on time elapsed
 //     *
 //     * @param delta The time that has elapsed since last move
@@ -111,7 +108,7 @@ public class bosseEntity extends Entity {
         // if we've hit an alien, kill it!
         if (other instanceof ShotEntity){
             if (bossLifes.getEntityLife()%7 == 0) {
-                bossacttackentity attack = new bossacttackentity(game,"sprites/bossattack.png",this.getX()+10,this.getY()+10);
+                AttackEntity attack = new AttackEntity(game,"sprites/bossattack.png",this.getX()+10,this.getY()+10);
                 game.addEntity(attack);
             }
             if (bossLifes.getEntityLife()==1) {
