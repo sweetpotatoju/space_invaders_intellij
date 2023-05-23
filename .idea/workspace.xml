@@ -4,17 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53f506a3-f04e-49a9-8400-dc49e203b8a9" name="Changes" comment="ItemClassAdded&amp;AlienGenerationRework">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14__7_48__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14__7_48__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-17__12_45__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-17__12_45__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/BackgroundMusic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/BackgroundMusic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/Mypage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/Mypage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/Window.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/AlienEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/AlienEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ItemEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ItemEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ShotEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ShotEntity.java" afterDir="false" />
+    <list default="true" id="53f506a3-f04e-49a9-8400-dc49e203b8a9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Mypage$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Mypage$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Mypage$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Mypage$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Mypage$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Mypage$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$2$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$2$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$3$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$3$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$4$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$4$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$5$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$5$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$7$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$7$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Window$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Window.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Window.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ItemEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ItemEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShotEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShotEntity.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +115,7 @@
       <updated>1681648173661</updated>
       <workItem from="1681648179087" duration="4675000" />
       <workItem from="1681652874773" duration="6965000" />
-      <workItem from="1684828335719" duration="612000" />
+      <workItem from="1684828335719" duration="922000" />
     </task>
     <task id="LOCAL-00001" summary="ItemClassAdded&amp;AlienGenerationRework">
       <created>1681653048856</created>
@@ -123,7 +131,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684828399880</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="bgm &amp; bossAttack">
+      <created>1684829025387</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1684829025387</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -132,6 +147,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="ItemClassAdded&amp;AlienGenerationRework" />
     <MESSAGE value="b 삭제" />
-    <option name="LAST_COMMIT_MESSAGE" value="b 삭제" />
+    <MESSAGE value="bgm &amp; bossAttack" />
+    <option name="LAST_COMMIT_MESSAGE" value="bgm &amp; bossAttack" />
   </component>
 </project>
