@@ -4,6 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+    <list default="true" id="9a032ae6-4b29-432b-86a3-e62c7564cd2e" name="Changes" comment="" />
+    <list default="true" id="53f506a3-f04e-49a9-8400-dc49e203b8a9" name="Changes" comment="ItemClassAdded&amp;AlienGenerationRework">
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Ranking.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Ranking.class" afterDir="false" />
+    </list>
     <list default="true" id="53f506a3-f04e-49a9-8400-dc49e203b8a9" name="Changes" comment="ItemClassAdded&amp;AlienGenerationRework">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/BackgroundMusic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/BackgroundMusic.java" afterDir="false" />
@@ -47,6 +51,19 @@
     <setting file="jar://$USER_HOME$/java-sdk/src.zip!/sun/awt/image/ImageRepresentation.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager">
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2OVaLf168Mm8Lnwnfus6t5xT0Ve" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -60,6 +77,31 @@
   <component name="ProjectId" id="2OVaLf168Mm8Lnwnfus6t5xT0Ve" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/82109/IdeaProjects/space_invaders_intellij/lib/timer.dll&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="spaceinvaders.entity" />
+    </key>
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -107,6 +149,47 @@
     </recent_temporary>
   </component>
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="53f506a3-f04e-49a9-8400-dc49e203b8a9" name="Changes" comment="" />
+      <created>1681648173661</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1681648173661</updated>
+      <workItem from="1681648179087" duration="4675000" />
+      <workItem from="1681652874773" duration="6965000" />
+    </task>
+    <task id="LOCAL-00001" summary="ItemClassAdded&amp;AlienGenerationRework">
+      <created>1681653048856</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1681653048856</updated>
+    </task>
+    <task id="LOCAL-00002" summary="bgm">
+      <created>1684932146339</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1684932146340</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="53f506a3-f04e-49a9-8400-dc49e203b8a9" name="Changes" comment="" />
+      <created>1681648173661</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1681648173661</updated>
+      <workItem from="1681648179087" duration="4675000" />
+      <workItem from="1681652874773" duration="6965000" />
+    </task>
+    <task id="LOCAL-00001" summary="ItemClassAdded&amp;AlienGenerationRework">
+      <created>1681653048856</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1681653048856</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
