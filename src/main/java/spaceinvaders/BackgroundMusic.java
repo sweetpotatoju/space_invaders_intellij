@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 public class BackgroundMusic implements Runnable {
     private String filepath;
     private Executor executor;
-    private  Clip clip;
+    private Clip clip;
 
     public BackgroundMusic(String filepath, Executor executor) {
         this.filepath = filepath;

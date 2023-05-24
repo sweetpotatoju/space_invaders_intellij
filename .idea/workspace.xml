@@ -24,6 +24,7 @@
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ItemEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ItemEntity.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/bosseEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/bosseEntity.class" afterDir="false" />
     </list>
+    <list default="true" id="9a032ae6-4b29-432b-86a3-e62c7564cd2e" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -45,6 +46,7 @@
     <setting file="jar://$USER_HOME$/java-sdk/src.zip!/sun/awt/image/ImageFetcher.java" root0="SKIP_INSPECTION" />
     <setting file="jar://$USER_HOME$/java-sdk/src.zip!/sun/awt/image/ImageRepresentation.java" root0="SKIP_INSPECTION" />
   </component>
+  <component name="ProjectLevelVcsManager">
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -104,32 +106,33 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="53f506a3-f04e-49a9-8400-dc49e203b8a9" name="Changes" comment="" />
-      <created>1681648173661</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1681648173661</updated>
-      <workItem from="1681648179087" duration="4675000" />
-      <workItem from="1681652874773" duration="6965000" />
-    </task>
-    <task id="LOCAL-00001" summary="ItemClassAdded&amp;AlienGenerationRework">
-      <created>1681653048856</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1681653048856</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="ItemClassAdded&amp;AlienGenerationRework" />
-    <option name="LAST_COMMIT_MESSAGE" value="ItemClassAdded&amp;AlienGenerationRework" />
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/spaceinvaders/Window.java</url>
+          <line>211</line>
+          <properties class="spaceinvaders.Window" method="main">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

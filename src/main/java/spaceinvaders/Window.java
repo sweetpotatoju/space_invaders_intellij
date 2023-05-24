@@ -2,14 +2,12 @@ package spaceinvaders;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.swing.ImageIcon;
+
 
 public class Window extends JFrame {
     private Window window = this;
@@ -18,6 +16,7 @@ public class Window extends JFrame {
     private JLabel label;
     private JLabel label2;
     private JLabel profileLabel;
+    private BackgroundMusic backgroundMusic;
 //    private String themeImagePath = "src/main/resources/sprites/windowBack.jpg";
 //    private String profileImagePath = "/sprites/basicProfile.png";
 
@@ -40,6 +39,8 @@ public class Window extends JFrame {
         showWindow(themeImagePath, profileImagePath);
 
     }
+
+
 
 
     public void showWindow(String themeImagePath, String profileImagePath){
@@ -125,6 +126,8 @@ public class Window extends JFrame {
         mypage.setForeground(Color.WHITE);
         Info.setForeground(Color.WHITE);
 
+
+
         button1.addActionListener(new ActionListener() {
 
             @Override
@@ -137,6 +140,8 @@ public class Window extends JFrame {
                         game.gameLoop();
                     }
                 });
+//                window.dispose();
+//                backgroundMusic.stop();
                 thread.start();
             }
         });
@@ -185,9 +190,9 @@ public class Window extends JFrame {
         Info.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                        HowToPlay howToPlay = new HowToPlay();
-                        howToPlay.showHowToPlay();
-                    }
+                HowToPlay howToPlay = new HowToPlay();
+                howToPlay.showHowToPlay();
+            }
         });
 
         panel.add(button1);

@@ -13,7 +13,10 @@ import java.util.Set;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -105,9 +108,6 @@ public class Game extends Canvas {
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
 		BackgroundMusic bgm = new BackgroundMusic("src/main/resources/audio/backgroundmusic.wav", executorService);
 		executorService.execute(bgm);
-
-//		Toolkit toolkit = Toolkit.getDefaultToolkit();
-//		image = toolkit.getImage("sprites/Theme1.jpg");
 
 		cycle = 0;
 		if (option.equals("2p")) {multiPlay = true; System.out.println("2p");}
@@ -280,7 +280,8 @@ public class Game extends Canvas {
 					if(waitingForKeyPress)return;
 					if(genCount<alienCount) {
 						Point[] pointArray = points.toArray(new Point[0]); // convert set to array
-						Entity alien = new AlienEntity(Game.this, pointArray[genCount].x, pointArray[genCount].y);
+						AlienEntity alien = new AlienEntity(Game.this, 100, 100);
+						alien.createLevel2Alien(Game.this, 200, 200); // 레벨
 						addEntity(alien);
 						System.out.println("level 1 sponed : " + (genCount+1));
 						++genCount;
@@ -307,7 +308,8 @@ public class Game extends Canvas {
 
 					if (genCount < alienCount) {
 						Point[] pointArray = points.toArray(new Point[0]);
-						Entity alien = new level2alienEntity(Game.this, pointArray[genCount].x, pointArray[genCount].y);
+						AlienEntity alien = new AlienEntity(Game.this, 100, 100);
+						alien.createLevel2Alien(Game.this, 200, 200); // 레벨
 						addEntity(alien);
 						System.out.println("level 2 gen " + (genCount + 1));
 						++genCount;
@@ -325,7 +327,7 @@ public class Game extends Canvas {
 			System.out.println("level 3 intro");
 			if(waitingForKeyPress)return;
 			stageRunning = true;
-			bosseEntity boss = new bosseEntity(this, "sprites/boss2.png", getWidth() / 2, 50);
+			BossEntity boss = new BossEntity(this, "sprites/boss2.png", getWidth() / 2, 50);
 			entities.add(boss);
 		}
 	}
@@ -356,9 +358,9 @@ public class Game extends Canvas {
 	}
 
 	public void notifyRetire(){
-		if (killCount > Integer.parseInt(globalStorage.getUserBestScore())) {
+		if (playBoard.getScore()> Integer.parseInt(globalStorage.getUserBestScore())) {
 			message = "Oh no!, but  New best score!";
-			resultSender(Integer.toString(killCount));
+			resultSender(Integer.toString(playBoard.getScore()));
 			killCount = 0;
 			playBoard.scoreInit();
 		}
@@ -465,8 +467,8 @@ public class Game extends Canvas {
 	public void bossAttack() {
 
 		int randomX = new Random().nextInt(600); // 0부터 599까지의 랜덤한 x좌표 생성
-		AttackEntity bosshot = new AttackEntity(this, "sprites/bossAttack.png", randomX, 100);
-		entities.add(bosshot);
+		AttackEntity bossAttack = new AttackEntity(this, "sprites/bossAttack.png", randomX, 100);
+		entities.add(bossAttack);
 	}
 	public void tryToFire2() {
 		ShipEntity ship = (ShipEntity) ShipCounter[1];
@@ -865,22 +867,6 @@ public class Game extends Canvas {
 		else if (right2Pressed && down2Pressed && !up2Pressed && !left2Pressed) ship.movingLogic(RnD);
 		else ship.movingLogic(0);
 	}
-
-	public void imageCanvas(String imagePath) {
-		// 이미지 로드
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-
-		image = toolkit.getImage("sprites/Theme1.jpg");
-	}
-
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		// 이미지 그리기
-		g.drawImage(image, 0, 0, this);
-	}
-
-
 	/*public static void main(String[] args) {
 		Game g = new Game("1p");
 		g.gameLoop();
