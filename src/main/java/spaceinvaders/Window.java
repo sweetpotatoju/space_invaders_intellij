@@ -34,9 +34,9 @@ public class Window extends JFrame {
         setLocationRelativeTo(null);
 
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        BackgroundMusic bgm = new BackgroundMusic("src/main/resources/audio/backgroundmusic.wav", executorService);
-        executorService.execute(bgm);
+//        ExecutorService executorService = Executors.newSingleThreadExecutor();
+//        BackgroundMusic bgm = new BackgroundMusic("src/main/resources/audio/backgroundmusic.wav", executorService);
+//        executorService.execute(bgm);
         showWindow(themeImagePath, profileImagePath);
 
     }

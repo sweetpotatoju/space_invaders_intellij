@@ -60,22 +60,13 @@ public class ItemEntity extends Entity {
     @Override
     public void collidedWith(Entity other) {
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        BackgroundMusic gain = new BackgroundMusic("src/main/resources/audio/itemGain.wav", executorService);
-        executorService.execute(gain);
+        if (other instanceof ShipEntity){
 
-        // 아이템 먹을때 효과음
-        /*try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audio/loseHeart.wav"));
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.setFramePosition(0);
-            //볼륨조정
-            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            gainControl.setValue(-20.0f);
-            clip.start();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }*/
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            BackgroundMusic gain = new BackgroundMusic("src/main/resources/audio/itemGain.wav", executorService);
+            executorService.execute(gain);
+        }
+
+
     }
 }

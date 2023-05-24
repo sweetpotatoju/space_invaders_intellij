@@ -96,25 +96,36 @@ public class Game extends Canvas {
 	private static int alienVertSpeed=10, alienHoriSpeed=75;
 	private JLabel backLabel;
 	private Graphics2D userHUD;
+	private Image image;
 
 	/**
 	 * Construct our game and set it running.
 	 */
 	public Game(String option) {
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
+		BackgroundMusic bgm = new BackgroundMusic("src/main/resources/audio/backgroundmusic.wav", executorService);
+		executorService.execute(bgm);
+
+//		Toolkit toolkit = Toolkit.getDefaultToolkit();
+//		image = toolkit.getImage("sprites/Theme1.jpg");
+
 		cycle = 0;
 		if (option.equals("2p")) {multiPlay = true; System.out.println("2p");}
 		else {multiPlay = false; System.out.println("1p");}
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
+
 		// get hold the content of the frame and set up the resolution of the game
 		JPanel panel = (JPanel) container.getContentPane();
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
 
-		// Add background image
-		ImageIcon backgroundImage = new ImageIcon("sprites/rankingPage.png");
-		JLabel background = new JLabel(backgroundImage);
-		container.add(background,BorderLayout.CENTER);
+
+
+//		// Add background image
+//		ImageIcon backgroundImage = new ImageIcon("sprites/rankingPage.png");
+//		JLabel background = new JLabel(backgroundImage);
+//		container.add(background,BorderLayout.CENTER);
 
 
 
@@ -137,7 +148,8 @@ public class Game extends Canvas {
 		// do we'd like to exit the game
 		container.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				System.exit(0);
+//				System.exit(0);
+				bgm.stop();
 			}
 		});
 		// add a key input system (defined below) to our canvas
@@ -429,18 +441,7 @@ public class Game extends Canvas {
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
 		BackgroundMusic ss = new BackgroundMusic("src/main/resources/audio/shot.wav", executorService);
 		executorService.execute(ss);
-			/*try {
-				AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audio/shot.wav"));
-				Clip clip = AudioSystem.getClip();
-				clip.open(audioInputStream);
-				clip.setFramePosition(0);
-				//볼륨조정
-				FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-				gainControl.setValue(-20.0f);
-				clip.start();
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}*/
+
 	}
 	public void level2shot(){
 
@@ -864,6 +865,22 @@ public class Game extends Canvas {
 		else if (right2Pressed && down2Pressed && !up2Pressed && !left2Pressed) ship.movingLogic(RnD);
 		else ship.movingLogic(0);
 	}
+
+	public void imageCanvas(String imagePath) {
+		// 이미지 로드
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+
+		image = toolkit.getImage("sprites/Theme1.jpg");
+	}
+
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		// 이미지 그리기
+		g.drawImage(image, 0, 0, this);
+	}
+
+
 	/*public static void main(String[] args) {
 		Game g = new Game("1p");
 		g.gameLoop();
