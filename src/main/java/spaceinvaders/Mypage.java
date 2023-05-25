@@ -41,12 +41,15 @@ public class Mypage extends JFrame {
         String[] themes = {"1", "2", "3", "4", "5"};
         themeSelector = new JComboBox<>(themes);
         themeSelector.setBounds(450, 420, 305, 30);
+        themeSelector.setBackground(Color.decode("#E6E6FA"));
         panel.add(themeSelector);
 
         String[] profilePictures = {"1", "2", "3", "4", "5"};
         pictureSelector = new JComboBox<>(profilePictures);
         pictureSelector.setBounds(450, 460, 305, 30);
+        pictureSelector.setBackground(Color.PINK);
         panel.add(pictureSelector);
+
 
         // add event listeners to handle theme and profile picture selection
         themeSelector.addActionListener(new ActionListener() {
@@ -123,6 +126,8 @@ public class Mypage extends JFrame {
 
 
     }
+
+//    private String[][] themeList = {{"1", "Theme1.jpg"},{"2", "Theme2.jpg"},{"3", "Theme3.jpg"},{"4", "Theme4.jpg"},{"5", "Theme5.jpg"}};
 
 
 

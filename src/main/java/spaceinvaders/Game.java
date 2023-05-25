@@ -272,17 +272,19 @@ public class Game extends Canvas {
 			TimerTask taskLv1 = new TimerTask() {
 				@Override
 				public void run() {
-					if(waitingForKeyPress)return;
-					if(genCount<alienCount) {
-						Point[] pointArray = points.toArray(new Point[0]); // convert set to array
-						AlienEntity alien = new AlienEntity(Game.this, 100, 100);
-						alien.createLevel2Alien(Game.this, 200, 200); // 레벨
+					if (waitingForKeyPress) return;
+					if (genCount < alienCount) {
+						Point[] pointArray = points.toArray(new Point[0]);
+						Point randomPoint = pointArray[genCount];
+						int x = randomPoint.x;
+						int y = randomPoint.y;
+						AlienEntity alien = new AlienEntity(Game.this, x, y);
+						alien.createLevel1Alien(Game.this, x, y);
 						addEntity(alien);
-						System.out.println("level 1 sponed : " + (genCount+1));
+						System.out.println("level 1 spawned: " + (genCount + 1));
 						++genCount;
-					}
-					else {
-						System.out.println("Lv1 All Sponed");
+					} else {
+						System.out.println("Lv1 All Spawned");
 						timerLv1.cancel();
 						genCount = 0;
 					}
@@ -296,21 +298,22 @@ public class Game extends Canvas {
 			genCount = 0;
 
 			Timer timerLv2 = new Timer();
-			TimerTask taskLv2 = new TimerTask(){
+			TimerTask taskLv2 = new TimerTask() {
 				@Override
 				public void run() {
-					if(waitingForKeyPress) return;
-
+					if (waitingForKeyPress) return;
 					if (genCount < alienCount) {
 						Point[] pointArray = points.toArray(new Point[0]);
-						AlienEntity alien = new AlienEntity(Game.this, 100, 100);
-						alien.createLevel2Alien(Game.this, 200, 200); // 레벨
+						Point randomPoint = pointArray[genCount];
+						int x = randomPoint.x;
+						int y = randomPoint.y;
+						AlienEntity alien = new AlienEntity(Game.this, x, y);
+						alien.createLevel2Alien(Game.this, x, y);
 						addEntity(alien);
-						System.out.println("level 2 gen " + (genCount + 1));
+						System.out.println("level 1 spawned: " + (genCount + 1));
 						++genCount;
-					}
-					else {
-						System.out.println("Lv2 All Sponed");
+					} else {
+						System.out.println("Lv1 All Spawned");
 						timerLv2.cancel();
 						genCount = 0;
 					}
@@ -457,18 +460,7 @@ public class Game extends Canvas {
 		AttackEntity level2Shot = new AttackEntity(this, "sprites/shot.gif", randomX, 100);
 		entities.add(level2Shot);
 
-		/** try {
-		 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audio/shot.wav"));
-		 Clip clip = AudioSystem.getClip();
-		 clip.open(audioInputStream);
-		 clip.setFramePosition(0);
-		 //볼륨조정
-		 FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		 gainControl.setValue(-20.0f);
-		 clip.start();
-		 } catch (Exception ex) {
-		 ex.printStackTrace();
-		 } */
+
 	}
 	public void bossAttack() {
 

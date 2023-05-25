@@ -52,7 +52,6 @@ public class AlienEntity extends Entity {
 
 	public void createLevel2Alien(Game game, int x, int y) {
 		// Create a new alien entity
-		AlienEntity level2Alien = new AlienEntity(game, x, y);
 
 		frames[0] = SpriteStore.get().getSprite("sprites/ufoo1.png");
 		frames[1] = SpriteStore.get().getSprite("sprites/ufoo2.png");
@@ -65,6 +64,24 @@ public class AlienEntity extends Entity {
 
 		// Add the level 2 alien to the gam
 	}
+
+	public void createLevel1Alien(Game game, int x, int y) {
+		// Create a new alien entity
+
+		frames[0] = SpriteStore.get().getSprite("sprites/ufoo1.png");
+		frames[1] = SpriteStore.get().getSprite("sprites/ufoo2.png");
+		frames[2] = SpriteStore.get().getSprite("sprites/ufoo1.png");
+		frames[3] = SpriteStore.get().getSprite("sprites/ufoo3.png");
+		this.game = game;
+		dx = -game.getAlienHoriSpeed();
+		dy = game.getAlienVertSpeed();
+		// Customize the attributes of the level 2 alien
+
+		// Add the level 2 alien to the gam
+	}
+
+
+
 
 
 
