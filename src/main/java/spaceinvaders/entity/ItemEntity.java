@@ -67,18 +67,6 @@ public class ItemEntity extends Entity {
             executorService.execute(gain);
         }
 
-        // 아이템 먹을때 효과음
-        /*try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audio/loseHeart.wav"));
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.setFramePosition(0);
-            //볼륨조정
-            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            gainControl.setValue(-20.0f);
-            clip.start();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }*/
+
     }
 }
