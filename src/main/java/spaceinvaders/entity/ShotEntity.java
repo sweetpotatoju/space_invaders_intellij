@@ -34,10 +34,8 @@ public class ShotEntity extends Entity {
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
 		BackgroundMusic bgm = new BackgroundMusic("src/main/resources/audio/shot.wav", executorService);
 		executorService.execute(bgm);
-
 		dy = -300;
 	}
-
 	/**
 	 * Request that this shot moved based on time elapsed
 	 *
@@ -70,7 +68,6 @@ public class ShotEntity extends Entity {
 			// notify the game that the alien has been killed
 			game.notifyAlienKilled(other,5);
 	  	}
-
 		else if (other instanceof BossEntity){
 			game.removeEntity(this);
 		}

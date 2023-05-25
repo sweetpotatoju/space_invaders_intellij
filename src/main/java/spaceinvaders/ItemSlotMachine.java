@@ -1,5 +1,6 @@
 package spaceinvaders;
 
+import spaceinvaders.entity.AlienEntity;
 import spaceinvaders.entity.ItemEntity;
 import spaceinvaders.entity.ShipEntity;
 public class ItemSlotMachine {
@@ -24,24 +25,23 @@ public class ItemSlotMachine {
         game.removeEntity(display);
         switch(itemIdx){
             case 1://Life add
-                if (ship.getLife()>2)return;
+                if (ship.getLife()>2)break;
                 ship.LifeIncrease();
                 System.out.println("Life");
-                return;
+                break;
             case 2://Ship Accelation
                 ship.accelation();
                 System.out.println("Accel");
-                return;
+                break;
             case 3://Ship keyReverse
-                game.keyReverse(ship.is2P());
+                ship.keyReverse();
                 System.out.println("Reverse");
-                return;
+                break;
             case 4://Alien speedUp
                 System.out.println("Invasion");
-                game.alienInvasion();
-                return;
+                AlienEntity.alienInvasion();
+                break;
             default:
-                return;//nothing
         }
     }
 }
