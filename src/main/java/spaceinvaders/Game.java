@@ -419,14 +419,16 @@ public class Game extends Canvas {
 				notifyWin();
 			}
 		} else if (level == 3) {
-			if(alienCount%5 ==0){
-				bossAttack();
-			}
+
+
 			if (liveCount == 0) {
 				notifyWin();
 			}
 		}
 	}
+
+
+
 	/**
 	 * Attempt to fire a shot from the player. Its called "try"
 	 * since we must first check that the player can fire at this
@@ -456,13 +458,12 @@ public class Game extends Canvas {
 
 
 	}
-	public void bossAttack() {
 
-		int randomX = new Random().nextInt(600); // 0부터 599까지의 랜덤한 x좌표 생성
-		AttackEntity bossAttack = new AttackEntity(this, "sprites/bossAttack.png", randomX, 100);
-		entities.add(bossAttack);
-	}
-	public void tryToFire2() {
+
+
+
+
+		public void tryToFire2() {
 		ShipEntity ship = (ShipEntity) ShipCounter[1];
 		if (ship.isDead()) return;
 		// check that we have waiting long enough to fire
