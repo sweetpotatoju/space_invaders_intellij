@@ -95,7 +95,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RecentsManager">
+  <component name="RecentsManager"/>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\AISELab\Desktop\space_invaders_intellij\src\main\resources\sprites" />
     </key>
