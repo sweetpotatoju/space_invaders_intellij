@@ -3,16 +3,22 @@ package spaceinvaders;
 import spaceinvaders.entity.*;
 
 import javax.swing.*;
+import java.util.List;
+import java.util.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -41,15 +47,13 @@ public class Game extends Canvas {
 	/**
 	 * The list of all the entities that exist in our game
 	 */
-	private final ArrayList<Entity> entities = new ArrayList<>();
-	private final ArrayList<Entity> getEntities = new ArrayList<>();
+	private final List<Entity> entities = new ArrayList<>();
 	/**
 	 * The list of entities that need to be removed from the game this loop
 	 */
 	private final List<Entity> removeList = new ArrayList<Entity>();
-	public final List<Entity> alienEntities = new CopyOnWriteArrayList<>();
 	private GameTimer gameTimer;
-	private TimerTask shipCtrl, genTask, iterTask;
+	private TimerTask shipCtrl, genTask;
 	/** The message to display which waiting for a key press */
 	private String message = "";
 	/** True if we're holding up game play until a key has been pressed */
@@ -94,6 +98,8 @@ public class Game extends Canvas {
 	private long lastLoopTime;
 	private RecordRecorder playBoard = new RecordRecorder();
 	private JLabel backLabel;
+	private Graphics2D userHUD;
+	private Image image;
 
 	/**
 	 * Construct our game and set it running.
@@ -112,10 +118,35 @@ public class Game extends Canvas {
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
 
-		// Add background image
-		ImageIcon backgroundImage = new ImageIcon("sprites/rankingPage.png");
-		JLabel background = new JLabel(backgroundImage);
-		container.add(background,BorderLayout.CENTER);
+
+
+		JButton home = new JButton("HOME");
+		home.setBounds(0,0,80,30);
+		home.setBackground(Color.BLACK);
+		home.setOpaque(false);
+		home.setForeground(Color.BLACK);
+		home.setContentAreaFilled(false);
+		home.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+//				home.setIcon(changeIconGoHome);
+				bgm.stop();
+				container.dispose();
+			}
+
+
+
+		});
+
+
+		panel.add(home);
+
+
+
+
+
+		/*TimeCounter timeCounter = new TimeCounter((int) 0);*/
+		//panel.add(timeCounter);
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
 		panel.add(this);
@@ -130,7 +161,8 @@ public class Game extends Canvas {
 		// do we'd like to exit the game
 		container.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				System.exit(0);
+//				System.exit(0);
+				bgm.stop();
 			}
 		});
 		// add a key input system (defined below) to our canvas
@@ -177,8 +209,14 @@ public class Game extends Canvas {
 		up2Pressed = false;
 		down2Pressed = false;
 		fire2Pressed = false;
-	}
+		//윈도우랑 게임창 노래 겹쳐들림
+//		new BackgroundMusic();
 
+		JButton home = new JButton("HOME");
+		home.setBounds(0,0,80,30);
+		home.setBackground(Color.WHITE);
+
+	}
 	private void initEntities() {
 		if (multiPlay){
 			ShipCounter[0] = new ShipEntity(this, "sprites/ship1p.png",350, 550, defaultPlayerLife,false);
@@ -309,6 +347,10 @@ public class Game extends Canvas {
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
 			g.setColor(Color.black);
 			g.fillRect(0,0,800,600);
+			//Status HUD
+			Graphics2D userHUD = (Graphics2D) strategy.getDrawGraphics();
+			userHUD.setColor(Color.white);
+			userHUD.drawString("Score : "+playBoard.getScore(),(800-g.getFontMetrics().stringWidth("Score : "+killCount))/2,20);
 			if (!waitingForKeyPress) {
 				for (int i=0;i<entities.size();i++) {
 					Entity entity = (Entity) entities.get(i);
@@ -325,8 +367,8 @@ public class Game extends Canvas {
 			// both entities that the collision has occured
 			for (int p=0;p<entities.size();p++) {
 				for (int s=p+1;s<entities.size();s++) {
-					Entity me = entities.get(p);
-					Entity him = entities.get(s);
+					Entity me = (Entity) entities.get(p);
+					Entity him = (Entity) entities.get(s);
 					if (me.collidesWith(him)) {
 						me.collidedWith(him);
 						him.collidedWith(me);
@@ -527,7 +569,7 @@ public class Game extends Canvas {
 
 	public void itemDrop(int x, int y){
 		if (getKillCount()%3 == 0 && getKillCount()/3 >= 1){
-			addEntity(new ItemEntity("sprites/itemBox.png",this,x,y));
+			addEntity(new ItemEntity(this,x,y));
 		}
 	}
 
@@ -564,7 +606,6 @@ public class Game extends Canvas {
 			alienCount = 1;
 			BossEntity boss = new BossEntity(this, 370, 50,defaultBossLife);
 			addEntity(boss);
-			alienEntities.add(boss);
 			addLiveCount();
 		}
 		else {
@@ -607,7 +648,6 @@ public class Game extends Canvas {
 				public void run() {
 					System.out.println("level " + level + "sponed : " + ((tmpIdx) + 1));
 					addEntity(alien[tmpIdx]);
-					alienEntities.add(alien[tmpIdx]);
 					addLiveCount();
 					if (++tmpIdx == alienCount) {
 						System.out.println("Lv" + level + " All Sponed");
@@ -625,22 +665,6 @@ public class Game extends Canvas {
 	public void addKillCount(){killCount++;}
 	public void setKillCount(int set){killCount = set;}
 	public int getKillCount(){return killCount;}
-	public void iterEntity(){
-		if(isTaskExist(iterTask)!=null)return;
-		if(!getEntities.isEmpty())getEntities.clear();
-		iterTask = new TimerTask(){
-			Iterator<Entity> vect = entities.iterator();
-			@Override
-			public void run() {
-				if(vect.hasNext())getEntities.add(vect.next());
-				else gameTimer.removeTask(iterTask);
-			}
-		};
-		gameTimer.addTask(iterTask,0,3);
-	}
-	public ArrayList<Entity> getEntity(){
-		return getEntities;
-	}
 	public void updateLogic() {
 		logicRequiredThisLoop = true;
 	}
