@@ -97,19 +97,6 @@ public class Mypage extends JFrame {
 
             }
         });
-//        apply.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                Thread thread = new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mypage.dispose();
-//                        new Window(themeImagePath, profileImagePath);
-//                    }
-//                });
-//                thread.start();
-//            }
-//        });
 
         panel.add(apply);
         background = new JLabel();
@@ -176,12 +163,8 @@ public class Mypage extends JFrame {
         profileIcon = new ImageIcon(profileImage);
 //        background.setIcon(profileIcon);
 
-        /*// 기존에 추가된 프로필 사진 라벨이 있다면 먼저 제거합니다.
-        if (profileLabel != null) {
-            background.remove(profileLabel);
-        }
 
-*/
+
         profileLabel = new JLabel(profileIcon);
         profileLabel.setBounds(550, 100, profileWidth, profileHeight);
 

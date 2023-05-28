@@ -108,8 +108,23 @@ public class BossEntity extends Entity {
         // if we've hit an alien, kill it!
         if (other instanceof ShotEntity){
             if (bossLifes.getEntityLife()%7 == 0) {
-                AttackEntity attack = new AttackEntity(game,"sprites/bossAttack.png",this.getX()+10,this.getY()+10);
-                game.addEntity(attack);
+                int x = this.getX() + 10; // 초기 x 좌표 설정
+                int y = this.getY() + 10; // 초기 y 좌표 설정
+
+// 첫 번째 공격
+                AttackEntity attack1 = new AttackEntity(game, "sprites/bossAttack.png", x, y);
+                game.addEntity(attack1);
+
+// 두 번째 공격
+                y += 50; // y 좌표를 증가시켜 다음 위치로 조정
+                AttackEntity attack2 = new AttackEntity(game, "sprites/bossAttack.png", x, y);
+                game.addEntity(attack2);
+
+// 세 번째 공격
+                y += 50; // y 좌표를 다시 증가시켜 다음 위치로 조정
+                AttackEntity attack3 = new AttackEntity(game, "sprites/bossAttack.png", x, y);
+                game.addEntity(attack3);
+
             }
             if (bossLifes.getEntityLife()==1) {
                 game.notifyAlienKilled(this,100);
