@@ -5,6 +5,7 @@ import spaceinvaders.Sprite;
 import spaceinvaders.SpriteStore;
 import spaceinvaders.SystemTimer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -27,8 +28,9 @@ public class AlienEntity extends Entity {
 	private int frameNumber;
 	private static double initHSpeed=75;
 	private static double initVSpeed=10;
-	private static TimerTask taskInvasion;
 
+	private List<String[]> imgArray = new ArrayList<>();
+	private String[][] arrAlienImg = new String[2][3];
 	/**
 	 * Create a new alien entity
 	 *
@@ -37,14 +39,19 @@ public class AlienEntity extends Entity {
 	 * @param y The intial y location of this alient
 	 */
 	public AlienEntity(Game game, int x, int y) {
-		super("sprites/ufoo1.png", x, y);
-
-		// setup the animatin frames
-		frames[0] = sprite;
-		frames[1] = SpriteStore.get().getSprite("sprites/ufoo2.png");
-		frames[2] = sprite;
-		frames[3] = SpriteStore.get().getSprite("sprites/ufoo3.png");
+		super("sprites/xIcon.png",x,y);
 		this.game = game;
+		arrAlienImg[0][0]="sprites/ufoo1.png";
+		arrAlienImg[0][1]="sprites/ufoo2.png";
+		arrAlienImg[0][2]="sprites/ufoo3.png";
+		arrAlienImg[1][0]="sprites/level2.png";
+		arrAlienImg[1][1]="sprites/level2-1.png";
+		arrAlienImg[1][2]="sprites/level2-2.png";
+		// setup the animatin frames
+		frames[0] = SpriteStore.get().getSprite(arrAlienImg[game.getLevel()-1][0]);
+		frames[1] = SpriteStore.get().getSprite(arrAlienImg[0][1]);
+		frames[2] = SpriteStore.get().getSprite(arrAlienImg[game.getLevel()-1][0]);
+		frames[3] = SpriteStore.get().getSprite(arrAlienImg[0][2]);
 		int coinToss=(int)Math.round(Math.random());
 		if(coinToss ==0){
 			dx = -initHSpeed;
@@ -58,13 +65,13 @@ public class AlienEntity extends Entity {
 	public void createLevel2Alien(Game game, int x, int y) {
 		// Create a new alien entity
 
-		frames[0] = SpriteStore.get().getSprite("sprites/ufoo1.png");
-		frames[1] = SpriteStore.get().getSprite("sprites/ufoo2.png");
-		frames[2] = SpriteStore.get().getSprite("sprites/ufoo1.png");
-		frames[3] = SpriteStore.get().getSprite("sprites/ufoo3.png");
+		frames[0] = SpriteStore.get().getSprite("sprites/level2.png");
+		frames[1] = SpriteStore.get().getSprite("sprites/level2-1.png");
+		frames[2] = SpriteStore.get().getSprite("sprites/level2.png");
+		frames[3] = SpriteStore.get().getSprite("sprites/level2-2.png");
 		this.game = game;
-		dx = -getHorizontalMovement();
-		dy = getVerticalMovement();
+		dx = -getAlienHMovement();
+		dy = getAlienVMovement();
 		// Customize the attributes of the level 2 alien
 
 		// Add the level 2 alien to the gam
@@ -78,8 +85,8 @@ public class AlienEntity extends Entity {
 		frames[2] = SpriteStore.get().getSprite("sprites/ufoo1.png");
 		frames[3] = SpriteStore.get().getSprite("sprites/ufoo3.png");
 		this.game = game;
-		dx = -game.getAlienHoriSpeed();
-		dy = game.getAlienVertSpeed();
+		dx = -getAlienHMovement();
+		dy = getAlienVMovement();
 		// Customize the attributes of the level 2 alien
 
 		// Add the level 2 alien to the gam
@@ -166,34 +173,5 @@ public class AlienEntity extends Entity {
 
 	public static double getAlienVMovement(){
 		return initVSpeed;
-	}
-
-	//need to fix logic
-	public static void alienInvasion() {
-		if(game.isTaskExist(taskInvasion)!=null)return;
-		double originHoriSpeed = getAlienHMovement();
-		double originVertSpeed = getAlienVMovement();
-		long startTimer = SystemTimer.getTime();
-		double targetHoriSpeed = originHoriSpeed * 2;
-		double targetVertSpeed = originVertSpeed * 2;
-		taskInvasion = new TimerTask() {
-
-			long durationTimer = SystemTimer.getTime();
-
-			@Override
-			public void run() {
-				if (durationTimer - startTimer < 5000) {
-					setAlienHMovement(targetHoriSpeed);
-					setAlienVMovement(targetVertSpeed);
-					durationTimer = SystemTimer.getTime();
-				}
-				else{
-					setAlienHMovement(originHoriSpeed);
-					setAlienVMovement(originVertSpeed);
-					game.removeTask(taskInvasion);
-				}
-			}
-		};
-		game.addTask(taskInvasion,0,4);
 	}
 }
