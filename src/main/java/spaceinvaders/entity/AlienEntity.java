@@ -5,15 +5,7 @@ import spaceinvaders.Sprite;
 import spaceinvaders.SpriteStore;
 import spaceinvaders.SystemTimer;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-
-import java.util.Iterator;
-import java.util.Timer;
+import java.util.List;
 import java.util.TimerTask;
 
 /**
@@ -53,7 +45,13 @@ public class AlienEntity extends Entity {
 		frames[2] = sprite;
 		frames[3] = SpriteStore.get().getSprite("sprites/ufoo3.png");
 		this.game = game;
-		dx = -initHSpeed;
+		int coinToss=(int)Math.round(Math.random());
+		if(coinToss ==0){
+			dx = -initHSpeed;
+		}
+		else{
+			dx = initHSpeed;
+		}
 		dy = initVSpeed;
 	}
 
@@ -144,7 +142,8 @@ public class AlienEntity extends Entity {
 		initHSpeed=hSpeed;
 	}public static void setAlienVMovement(double vSpeed){
 		initVSpeed=vSpeed;
-	}public static double getAlienHMovement(){
+	}
+	public static double getAlienHMovement(){
 		return initHSpeed;
 	}
 
@@ -152,8 +151,9 @@ public class AlienEntity extends Entity {
 		return initVSpeed;
 	}
 
+	//need to fix logic
 	public static void alienInvasion() {
-		if (game.isTaskExist(taskInvasion))return;
+		if(game.isTaskExist(taskInvasion)!=null)return;
 		double originHoriSpeed = getAlienHMovement();
 		double originVertSpeed = getAlienVMovement();
 		long startTimer = SystemTimer.getTime();
@@ -169,13 +169,14 @@ public class AlienEntity extends Entity {
 					setAlienHMovement(targetHoriSpeed);
 					setAlienVMovement(targetVertSpeed);
 					durationTimer = SystemTimer.getTime();
-				} else{
+				}
+				else{
 					setAlienHMovement(originHoriSpeed);
 					setAlienVMovement(originVertSpeed);
 					game.removeTask(taskInvasion);
 				}
 			}
 		};
-		game.addTask(taskInvasion,0,100);
+		game.addTask(taskInvasion,0,4);
 	}
 }

@@ -4,45 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a032ae6-4b29-432b-86a3-e62c7564cd2e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14__7_48__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14__7_48__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-17__12_45__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-17__12_45__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-05-23__9_30__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-05-23__9_30__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-05-23__9_32__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-05-23__9_32__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-05-23__9_40__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-05-23__9_40__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023-05-23__9_29__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023-05-23__9_29__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023-05-23__9_31__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023-05-23__9_31__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023-05-23__9_35__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023-05-23__9_35__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023-05-23__9_40__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023-05-23__9_40__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-04-07__7_51__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-04-07__7_51__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-04-16__9_24__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-04-16__9_24__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-04-17__1_14__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-04-17__1_14__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-05-21__9_41__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-05-21__9_41__Changes_.xml" afterDir="false" />
+    <list default="true" id="9a032ae6-4b29-432b-86a3-e62c7564cd2e" name="Changes" comment="#bug report&#10;1.level always fixed in 1.&#10;2.stage 2 is stucked because gen alien is over one.&#10;3.accelation doesnt work well.&#10;4.invasion is separated by old group and new one.&#10;5.still not working ItemSlotMachine Effect.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/GameTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/GameTimer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/ItemSlotMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/ItemSlotMachine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/RecordRecorder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/RecordRecorder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/AlienEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/AlienEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/BossEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/BossEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ItemEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ItemEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/LifeCounter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/LifeCounter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ShipEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ShipEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ShotEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ShotEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sprites/bossAttack.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sprites/bossAttack.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$5.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$KeyInputHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$KeyInputHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/ItemSlotMachine.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/ItemSlotMachine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/RecordRecorder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/RecordRecorder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/GameTimer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/GameTimer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/AlienEntity$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/AlienEntity$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/AlienEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/AlienEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/BossEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/BossEntity.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShipEntity$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShipEntity$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShipEntity$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShipEntity$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShipEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShipEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShotEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShotEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/bosseEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/sprites/bossAttack.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/sprites/bossAttack.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,22 +65,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/정기수/IdeaProjects/space_invaders_intellij",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/정기수/IdeaProjects/space_invaders_intellij&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Window" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="spaceinvaders.Window" />
@@ -129,8 +111,26 @@
       <updated>1684849041341</updated>
       <workItem from="1684849042409" duration="189000" />
       <workItem from="1684849247278" duration="17691000" />
-      <workItem from="1684913622978" duration="15456000" />
+      <workItem from="1684913622978" duration="24791000" />
+      <workItem from="1684998160074" duration="4234000" />
+      <workItem from="1685094258791" duration="11068000" />
+      <workItem from="1685109520799" duration="20644000" />
     </task>
+    <task id="LOCAL-00001" summary="#bug report&#10;1.level always fixed in 1.&#10;2.stage 2 is stucked because gen alien is over one.&#10;3.accelation doesnt work well.&#10;4.invasion is separated by old group and new one.&#10;5.still not working ItemSlotMachine Effect.">
+      <created>1684975119950</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1684975119950</updated>
+    </task>
+    <task id="LOCAL-00002" summary="#bug report&#10;1.level always fixed in 1.&#10;2.stage 2 is stucked because gen alien is over one.&#10;3.accelation doesnt work well.&#10;4.invasion is separated by old group and new one.&#10;5.still not working ItemSlotMachine Effect.">
+      <created>1684975161175</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1684975161175</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -146,6 +146,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="#bug report&#10;1.level always fixed in 1.&#10;2.stage 2 is stucked because gen alien is over one.&#10;3.accelation doesnt work well.&#10;4.invasion is separated by old group and new one.&#10;5.still not working ItemSlotMachine Effect." />
+    <option name="LAST_COMMIT_MESSAGE" value="#bug report&#10;1.level always fixed in 1.&#10;2.stage 2 is stucked because gen alien is over one.&#10;3.accelation doesnt work well.&#10;4.invasion is separated by old group and new one.&#10;5.still not working ItemSlotMachine Effect." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -163,11 +167,6 @@
           <properties class="java.lang.NullPointerException" package="java.lang" />
           <option name="timeStamp" value="2" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/spaceinvaders/Game.java</url>
-          <line>590</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
@@ -175,6 +174,9 @@
         <watch expression="alienCount" language="JAVA" />
         <watch expression="genCount" language="JAVA" />
         <watch expression="liveCount" language="JAVA" />
+        <watch expression="points" />
+        <watch expression="ptIdx" language="JAVA" />
+        <watch expression="alien" />
       </configuration>
     </watches-manager>
   </component>

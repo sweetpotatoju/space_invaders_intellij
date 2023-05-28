@@ -13,8 +13,8 @@ public class ItemSlotMachine {
     public void spinItem() {
         int itemIdx = (int) (Math.random() * 5);
         ItemEntity display;
-        if (ship.is2P()) display = new ItemEntity(game, "sprites/itemBox.png", 775, 550);
-        else display = new ItemEntity(game, "sprites/itemBox.png", 5, 550);
+        if (ship.is2P()) display = new ItemEntity("sprites/itemBox.png",game, 775, 550);
+        else display = new ItemEntity("sprites/itemBox.png",game,5, 550);
         game.addEntity(display);
         for (int j = 0; j < 100; j++) {
             for (int i = 1; i < 6; i++) {

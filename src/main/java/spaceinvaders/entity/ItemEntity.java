@@ -25,7 +25,7 @@ public class ItemEntity extends Entity {
      * @param x   The initial x location of this entity
      * @param y   The initial y location of this entity
      */
-    public ItemEntity(Game game,String ref, int x, int y) {
+    public ItemEntity(String ref,Game game, int x, int y) {
         super(ref, x, y);
         this.sprite = SpriteStore.get().getSprite(ref);
         this.game = game;

@@ -12,11 +12,15 @@ public class GameTimer extends Timer {
         if (period == 0) this.schedule(task,delay);
         else this.schedule(task,delay,period);
     }
-    public boolean isTaskExist(TimerTask task){
-        return taskArray.contains(task);
+    public TimerTask getTask(TimerTask task){
+        if(taskArray.indexOf(task)==-1)return null;
+        else return taskArray.get(taskArray.indexOf(task));
     }
     public void removeTask(TimerTask task){
+        TimerTask tmp=taskArray.get(taskArray.indexOf(task));
         (taskArray.get(taskArray.indexOf(task))).cancel();
+        System.out.println(task);
+        System.out.println(tmp);
         taskArray.remove(task);
     }
 }

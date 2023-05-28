@@ -1,21 +1,18 @@
 package spaceinvaders;
 
 import spaceinvaders.entity.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -37,21 +34,27 @@ public class Game extends Canvas {
 	 * The stragey that allows us to use accelerate page flipping
 	 */
 	private final BufferStrategy strategy;
+	/**
+	 * This variable will be used in exit command.(For expiring game loop)
+	 * */
 	private final boolean gameExit=false;
 	/**
 	 * The list of all the entities that exist in our game
 	 */
 	private final ArrayList<Entity> entities = new ArrayList<>();
+	private final ArrayList<Entity> getEntities = new ArrayList<>();
 	/**
 	 * The list of entities that need to be removed from the game this loop
 	 */
-	private final ArrayList<Entity> removeList = new ArrayList<Entity>();
+	private final List<Entity> removeList = new ArrayList<Entity>();
+	public final List<Entity> alienEntities = new CopyOnWriteArrayList<>();
 	private GameTimer gameTimer;
-	private TimerTask genTask;
+	private TimerTask shipCtrl, genTask, iterTask;
 	/** The message to display which waiting for a key press */
 	private String message = "";
 	/** True if we're holding up game play until a key has been pressed */
 	private boolean waitingForKeyPress = true;
+	private boolean stageRunning = false;
 	/** True if the left cursor key is currently pressed */
 	private Entity[] ShipCounter = new ShipEntity[2]; private boolean multiPlay;
 	private final int uOnly = 1;
@@ -62,10 +65,10 @@ public class Game extends Canvas {
 	private int keyVal;
 	private boolean leftPressed,left2Pressed, rightPressed, right2Pressed;
 	private boolean upPressed, up2Pressed, downPressed, down2Pressed;
+	private final int defaultPlayerLife=3, defaultBossLife=50;
 	private boolean firePressed, fire2Pressed;
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
-	private boolean isGameStart = false;
 	/**
 	 * The last time at which we recorded the frame rate
 	 */
@@ -83,8 +86,7 @@ public class Game extends Canvas {
 	 */
 	private final JFrame container;
 	private int level;
-	private static int genCount, alienCount;
-	public static int killCount, liveCount;
+	private int killCount, liveCount, alienCount, ptIdx;
 	private static String bestScore = "";
 	private FirebaseTool firebaseTool;
 
@@ -92,6 +94,7 @@ public class Game extends Canvas {
 	private long lastLoopTime;
 	private RecordRecorder playBoard = new RecordRecorder();
 	private JLabel backLabel;
+
 	/**
 	 * Construct our game and set it running.
 	 */
@@ -145,13 +148,13 @@ public class Game extends Canvas {
 		globalStorage = GlobalStorage.getInstance();
 		playBoard.scoreInit();
 
-		this.keyVal=0;
-		this.level=1;
+		this.keyVal = 0;
+		this.level = 1;
+		this.alienCount = 0;
 		this.killCount = 0;
-		this.alienCount = 10  + (level - 1) * 2;
-		this.liveCount = alienCount;
-		this.genCount = 0;
+		this.liveCount = 0;
 	}
+
 	/**
 	 * Start a fresh game, this should clear out any old data and
 	 * create a new set.
@@ -175,35 +178,36 @@ public class Game extends Canvas {
 		down2Pressed = false;
 		fire2Pressed = false;
 	}
+
 	private void initEntities() {
 		if (multiPlay){
-			ShipCounter[0] = new ShipEntity(this, "sprites/ship1p.png",350, 550, false);
-			entities.add(ShipCounter[0]);
-			ShipCounter[1] = new ShipEntity(this, "sprites/ship2p.png",390, 550, true);
+			ShipCounter[0] = new ShipEntity(this, "sprites/ship1p.png",350, 550, defaultPlayerLife,false);
+			addEntity(ShipCounter[0]);
+			ShipCounter[1] = new ShipEntity(this, "sprites/ship2p.png",390, 550, defaultPlayerLife,true);
 			addEntity(ShipCounter[1]);
-		}
-		else{
-			ShipCounter[0] = new ShipEntity(this, "sprites/ship1p.png",370, 550, false);
-			entities.add(ShipCounter[0]);
+		} else{
+			ShipCounter[0] = new ShipEntity(this, "sprites/ship1p.png",370, 550, defaultPlayerLife,false);
+			addEntity(ShipCounter[0]);
 		}
 		shipControl();
 		message ="When you're ready, please press the button!";
 	}
+
 	public void repeatGame(){
 		//need to fix with cycle increasement. it just loop with only e
 		if(level==4){
 			AlienEntity.setAlienHMovement(AlienEntity.getAlienHMovement()*1.1);
 			AlienEntity.setAlienVMovement((AlienEntity.getAlienVMovement()*1.1));
 			level=1;
-		}
-		else{
+		} else{
 			AlienEntity.setAlienHMovement(75);
 			AlienEntity.setAlienVMovement(10);
+			setKillCount(0);
 			level=1;
 		}
-		this.alienCount = 10  + (level - 1) * 2;
-		this.liveCount = alienCount;
+		setLiveCount(0);
 	}
+
 	/**
 	 * Notification that the player has died.
 	 */
@@ -218,67 +222,54 @@ public class Game extends Canvas {
 	public void notifyRetire(){
 		if (playBoard.getScore()> Integer.parseInt(globalStorage.getUserBestScore())) {
 			message = "Oh no!, but  New best score!";
+			waitingForKeyPress = true;
+			stageRunning=false;
 			resultSender(Integer.toString(playBoard.getScore()));
-			killCount = 0;
 			playBoard.scoreInit();
-		}
-		else{
+			repeatGame();
+		} else{
 			message = "Oh no! They got you, try again?";
 			waitingForKeyPress = true;
-			isGameStart = false;
-			repeatGame();
-			killCount=0;
+			stageRunning=false;
 			playBoard.scoreInit();
+			repeatGame();
 		}
 	}
+
 	/**
 	 * Notification that the player has won since all the aliens
 	 * are dead.
 	 */
 	public void notifyWin() {
-		isGameStart = false;
-		message = "Well done! You Win!";
-		genCount = 0;
 		level++;
-		alienCount = 10  + (level - 1) * 2;
-		liveCount = alienCount;
+		setLiveCount(0);
 		message = "level" + level;
 		waitingForKeyPress = true;
+		stageRunning = false;
 		if (level == 4) repeatGame();
 	}
+
 	public void notifyAlienKilled(Entity other, int score) {
 		// reduce the alient count, if there are none left, the player has won!
-		++killCount;
-		--liveCount;
-		System.out.println("kill :"+killCount+" live : "+liveCount+" alien : "+alienCount);
+		addKillCount();
+		subLiveCount();
+		System.out.println("kill :"+getKillCount()+" live : "+getLiveCount()+" alien : "+alienCount);
 		playBoard.scoreModeAdd(score);
 		itemDrop(other.getX(), other.getY());
-		System.out.println(killCount);
-		if (level == 1) {
-			if (liveCount == 0&&killCount==alienCount) {
-				notifyWin();
-			}
+		System.out.println(getKillCount());
+		if (getLevel() == 2&& getKillCount()%2 == 0 && getKillCount() != 0) {
+			level2shot();
 		}
-		else if (level == 2) {
-			if(killCount%2 == 0 && killCount != 0){
-				level2shot();
-			}
-			if (liveCount == 0) {
-				notifyWin();
-			}
-		}
-		else if (level == 3) {
-			if (liveCount == 0) {
-				notifyWin();
-			}
-		}
+		if(getLiveCount()==0&&gameTimer.getTask(genTask)==null)notifyWin();
 	}
+
 	public void level2shot(){
 
 		int randomX = new Random().nextInt(600); // 0부터 599까지의 랜덤한 x좌표 생성
 		AttackEntity level2Shot = new AttackEntity(this, "sprites/shot.gif", randomX, 100);
-		entities.add(level2Shot);
+		addEntity(level2Shot);
 	}
+
 	/**
 	 * The main game loop. This loop is running during all game
 	 * play as is responsible for the following activities:
@@ -361,18 +352,19 @@ public class Game extends Canvas {
 				g.setColor(Color.white);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
 				g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
-			}
-			else {
+			} else {
+				//waitingForKeyPress가 거짓이라 이건 루프문 동안 계속 접근될거임.
 				createAliens();
-				isGameStart = true;
+				stageRunning=true;
 			}
+			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
+			strategy.show();
 			// finally, we've completed drawing so clear up the graphics
 			// and flip the buffer over
 			//g.dispose();
-			strategy.show();
-			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
 		}
 	}
+
 	/**
 	 * A class to handle keyboard input from the user. The class
 	 * handles both dynamic input during game play, i.e. left/right
@@ -510,8 +502,10 @@ public class Game extends Canvas {
 			}
 		}
 	}
+
 	public void shipControl() {
-		TimerTask shipCtrl = new TimerTask() {
+		if(gameTimer.getTask(shipCtrl)!=null);
+		shipCtrl = new TimerTask() {
 			@Override
 			public void run() {
 				if(waitingForKeyPress)return;
@@ -525,16 +519,18 @@ public class Game extends Canvas {
 		};
 		gameTimer.addTask(shipCtrl,0,5);
 	}
+
 	public void resultSender(String result){
 		firebaseTool.setUserBestScore(globalStorage.getUserID(), result);
 		globalStorage.setUserBestScore(result); // 베스트 스코어 업데이트
 	}
 
 	public void itemDrop(int x, int y){
-		if (killCount%3 == 0 && killCount/3 >= 1){
-			addEntity(new ItemEntity(this,"sprites/itemBox.png",x,y));
+		if (getKillCount()%3 == 0 && getKillCount()/3 >= 1){
+			addEntity(new ItemEntity("sprites/itemBox.png",this,x,y));
 		}
 	}
+
 	/**
 	 * Remove an entity from the game. The entity removed will
 	 * no longer move or be drawn.
@@ -544,77 +540,108 @@ public class Game extends Canvas {
 	public void removeEntity(Entity entity) {
 		removeList.add(entity);
 	}
+
 	/** This can help you to access entities.add() in other class */
 	public void addEntity(Entity entity){ entities.add(entity); }
+	public int getLevel(){return level;}
+
 	public void addTask(TimerTask task,long delay,long period){
 		gameTimer.addTask(task,delay,period);
 	}
+
 	public void removeTask(TimerTask task){
 		gameTimer.removeTask(task);
 	}
-	public boolean isTaskExist(TimerTask task){return gameTimer.isTaskExist(task);}
+
+	public TimerTask isTaskExist(TimerTask task){return gameTimer.getTask(task);}//if its not, it will return correct task.
+
 	private void createAliens() {
-		if(!isGameStart) return;
-		// determine the parameters for the aliens based on the current level// increase the number of aliens by 2 for each level
-		int alienWidth = 50; // width of each alien
-		int alienHeight = 30; // height of each alien
-		int minY = 10; // minimum y-coordinate
-		int maxY = 200; // maximum y-coordinate
-		final Set<Point> points = new HashSet<>(); // set to keep track of the generated points
-		Random random = new Random();
-		while (points.size() < alienCount) {
-			int x = random.nextInt(getWidth() - alienWidth);
-			int y = random.nextInt(maxY - minY) + minY;
-			// check if the new point overlaps with any existing points
-			boolean overlapping = false;
-			if(level == 3){break;}
-			for (Point point : points) {
-				if (Math.abs(point.x - x) < alienWidth && Math.abs(point.y - y) < alienHeight) {
-					overlapping = true;
+		if (stageRunning) return;
+		if (gameTimer.getTask(genTask) != null) return;
+		//int ptIdx = 0;
+		System.out.println("level " + level + " intro");
+		if (level == 3) {
+			alienCount = 1;
+			BossEntity boss = new BossEntity(this, 370, 50,defaultBossLife);
+			addEntity(boss);
+			alienEntities.add(boss);
+			addLiveCount();
+		}
+		else {
+			alienCount = 10 + (level - 1) * 2;
+			Entity[] alien = new Entity[alienCount];
+			ptIdx = 0;
+			int alienWidth = 50; // width of each alien
+			int alienHeight = 30; // height of each alien
+			int minY = 10; // minimum y-coordinate
+			int maxY = 200; // maximum y-coordinate
+			final Set<Point> points = new HashSet<>(); // set to keep track of the generated points
+			Random random = new Random();
+			Point[] pointArray = new Point[0];
+			while (points.size() < alienCount) {
+				int x = random.nextInt(getWidth() - alienWidth);
+				int y = random.nextInt(maxY - minY) + minY;
+				// check if the new point overlaps with any existing points
+				boolean overlapping = false;
+				if (level == 3) {
 					break;
 				}
+				for (Point point : points) {
+					if (Math.abs(point.x - x) < alienWidth && Math.abs(point.y - y) < alienHeight) {
+						overlapping = true;
+						break;
+					}
+				}
+				// if not overlapping, add the new point to the set
+				if (!overlapping) {
+					points.add(new Point(x, y));
+				}
+				pointArray = points.toArray(new Point[0]);
 			}
-			// if not overlapping, add the new point to the set
-			if (!overlapping) {
-				points.add(new Point(x, y));
+			for(Point point : points){
+				alien[ptIdx] = new AlienEntity(this, (int) pointArray[ptIdx].getX(), (int) pointArray[ptIdx++].getY());
 			}
+			genTask = new TimerTask() {
+				int tmpIdx = 0;
+				@Override
+				public void run() {
+					System.out.println("level " + level + "sponed : " + ((tmpIdx) + 1));
+					addEntity(alien[tmpIdx]);
+					alienEntities.add(alien[tmpIdx]);
+					addLiveCount();
+					if (++tmpIdx == alienCount) {
+						System.out.println("Lv" + level + " All Sponed");
+						gameTimer.removeTask(genTask);
+					}
+				}
+			};
+			gameTimer.addTask(genTask, 0, 1000);
 		}
-		// create a timer to add aliens every delay milliseconds
-		mobGen(points,level);
+	}
+	public void addLiveCount(){liveCount++;}
+	public void subLiveCount(){liveCount--;}
+	public void setLiveCount(int set){liveCount = set;}
+	public int getLiveCount(){return liveCount;}
+	public void addKillCount(){killCount++;}
+	public void setKillCount(int set){killCount = set;}
+	public int getKillCount(){return killCount;}
+	public void iterEntity(){
+		if(isTaskExist(iterTask)!=null)return;
+		if(!getEntities.isEmpty())getEntities.clear();
+		iterTask = new TimerTask(){
+			Iterator<Entity> vect = entities.iterator();
+			@Override
+			public void run() {
+				if(vect.hasNext())getEntities.add(vect.next());
+				else gameTimer.removeTask(iterTask);
+			}
+		};
+		gameTimer.addTask(iterTask,0,3);
+	}
+	public ArrayList<Entity> getEntity(){
+		return getEntities;
 	}
 	public void updateLogic() {
 		logicRequiredThisLoop = true;
-	}
-	public void mobGen(Set<Point> points, int level){
-		switch(level){
-			case 1:
-			case 2:
-				break;
-			case 3:
-				System.out.println("level 3 intro");
-				BossEntity boss = new BossEntity(this, 370, 50);
-				entities.add(boss);
-				return;
-		}
-		if(gameTimer.isTaskExist(genTask)&&!waitingForKeyPress)return;
-		genTask = new TimerTask() {
-			@Override
-			public void run() {
-				if(genCount==0)System.out.println("level "+level+" intro");
-				if (genCount < alienCount) {
-					Point[] pointArray = points.toArray(new Point[0]); // convert set to array
-					AlienEntity alien = new AlienEntity(Game.this, 100, 100);
-					alien.createLevel2Alien(Game.this, 200, 200); // 레벨
-					addEntity(alien);
-					System.out.println("level "+level+"sponed : " + (genCount + 1));
-					++genCount;
-					if(genCount == alienCount) System.out.println("Lv"+level+" All Sponed");
-				}
-				else {
-					//genTask.cancel();
-				}
-			}
-		};
-		gameTimer.addTask(genTask, 0, 1000);
 	}
 }

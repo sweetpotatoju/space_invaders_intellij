@@ -30,14 +30,14 @@ public class BossEntity extends Entity {
      * @param x    The intial x location of this alien
      * @param y    The intial y location of this alient
      */
-    public BossEntity(Game game, int x, int y) {
-        super("sprites/boss1.png", x, y);
+    public BossEntity(Game game, int x, int y,int lifeNumbers) {
+        super("sprites/boss1.png",x, y);
+        this.game = game;
+        this.bossLifes = new LifeCounter(game, this, lifeNumbers);
         frames[0] = sprite;
         frames[1] = SpriteStore.get().getSprite("sprites/boss2.png");
         frames[2] = sprite;
         frames[3] = SpriteStore.get().getSprite("sprites/boss3.png");
-        bossLifes = new LifeCounter(game, this, null, 30);
-        this.game = game;
         dx = -AlienEntity.getAlienHMovement();
         dy = AlienEntity.getAlienVMovement();
     }

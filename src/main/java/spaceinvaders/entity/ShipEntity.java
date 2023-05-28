@@ -1,13 +1,8 @@
 package spaceinvaders.entity;
 
-import spaceinvaders.BackgroundMusic;
 import spaceinvaders.Game;
 import spaceinvaders.ItemSlotMachine;
-
-import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * The entity that represents the players ship
@@ -20,7 +15,7 @@ public class ShipEntity extends Entity {
 	 */
 	private Game game;
 	private boolean player2, deadSign, keyReversed;
-	private long fireTime;
+	private long fireTime, accelTime, reverseTime;
 	private LifeCounter playerLifes;
 	private int moveSpeed, fireRatio;
 	private int directionVal;
@@ -35,17 +30,21 @@ public class ShipEntity extends Entity {
 	 * @param y    The initial y location of the player's ship
 	 */
 	//boolean can make decision to multi play
-	public ShipEntity(Game game, String ref, int x, int y, boolean player) {
+	public ShipEntity(Game game, String ref, int x, int y, int lifeNumber,boolean player) {
 		super(ref, x, y);
 		this.player2 = player;
 		this.game = game;
-		deadSign = false;
-		fireRatio = 500;
-		playerLifes = new LifeCounter(game, null, this, 3);
+		this.deadSign = false;
+		this.fireRatio = 500;
+		this.playerLifes = new LifeCounter(game, this,lifeNumber);
 		this.moveSpeed=300;
-		directionVal=0;
-		keyReversed=false;
+		this.fireTime=0;
+		this.accelTime=0;
+		this.reverseTime=0;
+		this.directionVal=0;
+		this.keyReversed=false;
 	}
+
 	/**
 	 * Request that the ship move itself based on an elapsed ammount of
 	 * time
@@ -71,12 +70,12 @@ public class ShipEntity extends Entity {
 			return;
 		}
 		super.move(delta);
-		}
+	}
 
 	/**
 	 * Notification that the player's ship has collided with something
 	 *
-	
+
 	 */
 	public void movingLogic(int direction){
 		if(isDead())return;
@@ -128,15 +127,16 @@ public class ShipEntity extends Entity {
 				setVerticalMovement(0);
 		}
 	}
+
 	public void collidedWith(Entity other) {
 		if (other instanceof AlienEntity) {
 			if (getLife() == 0) return;
-			game.killCount+=1;
+			game.addKillCount();
 			if (getLife() == 1) {
-				game.removeEntity(this);
-				LifeDecrease();
 				if (is2P()) game.notifyDeath(2);
 				else game.notifyDeath(1);
+				LifeDecrease();
+				game.removeEntity(this);
 			} else {
 				game.notifyAlienKilled(other,0);
 				game.removeEntity(other);
@@ -147,9 +147,10 @@ public class ShipEntity extends Entity {
 			itemGet.spinItem();
 			game.removeEntity(other);
 		} else if (other instanceof BossEntity) {
-			LifeDecrease();
-			LifeDecrease();
-			LifeDecrease();
+			int currLife=playerLifes.getEntityLife();
+			for (int i = 0;i<currLife;i++){
+				LifeDecrease();
+			}
 			if (is2P()) game.notifyDeath(2);
 			else game.notifyDeath(1);
 			game.removeEntity(this);
@@ -166,38 +167,51 @@ public class ShipEntity extends Entity {
 			}
 		}
 	}
+
 	public void LifeIncrease () {
 		playerLifes.LifeIncrease();
 	}
+
 	public void LifeDecrease () {
 		playerLifes.LifeDecrease();
 	}
+
 	public boolean is2P () {
 		return player2;
 	}
+
 	public int getLife () {
 		return playerLifes.getEntityLife();
 	}
+
 	public long getFireTime (){
 		return fireTime;
 	}
+
 	public void setFireTime (long fireTimeStmp){
 		this.fireTime = fireTimeStmp;
 	}
+
 	public int getFireRatio (){
 		return fireRatio;
 	}
+
 	public void setFireRatio(int fireRatioTgt){
 		this.fireRatio = fireRatioTgt;
 	}
+
 	public boolean isDead(){
 		return deadSign;
 	}
+
 	public void playerDead(){
 		this.deadSign = true;
 	}
+
 	public int getMoveSpeed(){ return moveSpeed; }
+
 	public void setMoveSpeed(int tgt){ moveSpeed=tgt; }
+
 	public void tryToFire() {
 		if (isDead()) return;
 		// check that we have waiting long enough to fire
@@ -209,45 +223,47 @@ public class ShipEntity extends Entity {
 		ShotEntity shot = new ShotEntity(game, "sprites/shot.png",getX()+10,getY()-30);
 		game.addEntity(shot);
 	}
+
 	public void accelation(){
-		if(game.isTaskExist(taskAccel))return;
+		if(game.isTaskExist(taskAccel)!=null){return;}
+		accelTime = System.currentTimeMillis();
 		int originMoveSpeed = getMoveSpeed();
 		int originFireRatio = getFireRatio();
-		long startTime = System.currentTimeMillis();
 		System.out.println("accel");
 		int accelMove = getMoveSpeed()*2;
 		int accelShot = getFireRatio()/2;
 		taskAccel = new TimerTask() {
-			long durationtime = System.currentTimeMillis();
 			@Override
 			public void run() {
-				if(durationtime - startTime<5000){
-					durationtime = System.currentTimeMillis();
+				long durationtime = System.currentTimeMillis();
+				if(durationtime - accelTime<5000){
 					setMoveSpeed(accelMove);
 					setFireRatio(accelShot);
+				} else{
+					setMoveSpeed(originMoveSpeed);
+					setFireRatio(originFireRatio);
+					game.removeTask(taskAccel);
+					System.out.println("Accelate done");
 				}
-				setMoveSpeed(originMoveSpeed);
-				setFireRatio(originFireRatio);
-				game.removeTask(taskAccel);
 			}
 		};
 		game.addTask(taskAccel,0,50);
-		System.out.println("done");
 	}
+
 	public void keyReverse() {
-		if(game.isTaskExist(taskAccel))return;
+		if(game.isTaskExist(taskReverse)!=null){return;}
+		reverseTime = System.currentTimeMillis();
+		System.out.println("key reverse");
 		taskReverse = new TimerTask() {
-			long startTime = System.currentTimeMillis();
-			long durationtime = System.currentTimeMillis();
 			@Override
 			public void run() {
-				if(durationtime - startTime<5000){
+				long durationtime = System.currentTimeMillis();
+				if(durationtime - reverseTime<5000){
 					keyReversed=true;
-					durationtime = System.currentTimeMillis();
-				}
-				else{
+				} else{
 					keyReversed = false;
 					game.removeTask(taskReverse);
+					System.out.println("Reverse done.");
 				}
 			}
 		};
