@@ -1,5 +1,6 @@
 package spaceinvaders;
 
+import spaceinvaders.entity.AlienEntity;
 import spaceinvaders.entity.ItemEntity;
 import spaceinvaders.entity.ShipEntity;
 public class ItemSlotMachine {
@@ -12,8 +13,8 @@ public class ItemSlotMachine {
     public void spinItem() {
         int itemIdx = (int) (Math.random() * 5);
         ItemEntity display;
-        if (ship.is2P()) display = new ItemEntity(game, "sprites/itemBox.png", 775, 550);
-        else display = new ItemEntity(game, "sprites/itemBox.png", 5, 550);
+        if (ship.is2P()) display = new ItemEntity("sprites/itemBox.png",game, 775, 550);
+        else display = new ItemEntity("sprites/itemBox.png",game,5, 550);
         game.addEntity(display);
         for (int j = 0; j < 100; j++) {
             for (int i = 1; i < 6; i++) {
@@ -24,24 +25,23 @@ public class ItemSlotMachine {
         game.removeEntity(display);
         switch(itemIdx){
             case 1://Life add
-                if (ship.getLife()>2)return;
+                if (ship.getLife()>2)break;
                 ship.LifeIncrease();
                 System.out.println("Life");
-                return;
+                break;
             case 2://Ship Accelation
                 ship.accelation();
                 System.out.println("Accel");
-                return;
+                break;
             case 3://Ship keyReverse
-                game.keyReverse(ship.is2P());
+                ship.keyReverse();
                 System.out.println("Reverse");
-                return;
+                break;
             case 4://Alien speedUp
                 System.out.println("Invasion");
-                game.alienInvasion();
-                return;
+                AlienEntity.alienInvasion();
+                break;
             default:
-                return;//nothing
         }
     }
 }

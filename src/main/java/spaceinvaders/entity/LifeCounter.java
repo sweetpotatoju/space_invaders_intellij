@@ -15,18 +15,18 @@ public class LifeCounter {
     private Entity thatObj; */
     private LifeEntity[] entityLifeArray;
     /** Should be fixed to access in only entity. And need to remove  ship Entity Var */
-    public LifeCounter(Game game, Entity entity, ShipEntity ship, int lifeNumber){
+    LifeCounter(Game game, Entity entity, int lifeNumber){
         //setLife(3); error occured; ArrayIndexOutOfBoundsException, breakPoint 0
         this.game = game;
         int posIdx = 20;
         this.entityLife = lifeNumber;
         this.entityLifeArray = new LifeEntity[lifeNumber];
         for (int i = 0; i < entityLife; i++) {
-            if (ship == null && entity instanceof BossEntity) {
+            if (entity instanceof BossEntity) {
                 entityLifeArray[i] = new LifeEntity(game,"sprites/bossHp.png",399-(lifeNumber/2)+i,15,true);
             }
             else {
-                if (ship.is2P()) {
+                if (((ShipEntity)entity).is2P()) {
                     entityLifeArray[i] = new LifeEntity(game,"sprites/heart.gif", posIdx * (i + 1) + 715, 580,false);
                 } else {
                     entityLifeArray[i] = new LifeEntity(game,"sprites/heart.gif", posIdx * (i + 1) - 15, 580,false);
@@ -35,12 +35,12 @@ public class LifeCounter {
             game.addEntity(entityLifeArray[i]);
         }
     }
-    public void LifeIncrease(){
+    void LifeIncrease(){
         if (getEntityLife()==3) return;
         entityLifeArray[getEntityLife()].onIt();
         entityLife++;
     }
-    public void LifeDecrease(){
+    void LifeDecrease(){
         if(getEntityLife()==0) return;
         entityLifeArray[getEntityLife()-1].offIt();
         entityLife--;
@@ -60,7 +60,7 @@ public class LifeCounter {
         BackgroundMusic sound = new BackgroundMusic("src/main/resources/audio/loseHeart.wav", executorService);
         executorService.execute(sound);
     }
-    public int getEntityLife(){
+    int getEntityLife(){
         return entityLife;
     }
 }

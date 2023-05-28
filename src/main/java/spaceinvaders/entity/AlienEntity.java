@@ -3,15 +3,10 @@ package spaceinvaders.entity;
 import spaceinvaders.Game;
 import spaceinvaders.Sprite;
 import spaceinvaders.SpriteStore;
+import spaceinvaders.SystemTimer;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-
-import java.util.Iterator;
+import java.util.List;
+import java.util.TimerTask;
 
 /**
  * An entity which represents one of our space invader aliens.
@@ -21,7 +16,7 @@ import java.util.Iterator;
 public class AlienEntity extends Entity {
 	/** The speed at which the alient moves horizontally */
 	/** The game in which the entity exists */
-	private Game game;
+	private static Game game;
 	/** The animation frames */
 	private Sprite[] frames = new Sprite[4];
 	/** The time since the last frame change took place */
@@ -30,6 +25,10 @@ public class AlienEntity extends Entity {
 	private long frameDuration = 250;
 	/** The current frame of animation being displayed */
 	private int frameNumber;
+	private static double initHSpeed=75;
+	private static double initVSpeed=10;
+	private static TimerTask taskInvasion;
+
 	/**
 	 * Create a new alien entity
 	 *
@@ -46,8 +45,14 @@ public class AlienEntity extends Entity {
 		frames[2] = sprite;
 		frames[3] = SpriteStore.get().getSprite("sprites/ufoo3.png");
 		this.game = game;
-		dx = -game.getAlienHoriSpeed();
-		dy = game.getAlienVertSpeed();
+		int coinToss=(int)Math.round(Math.random());
+		if(coinToss ==0){
+			dx = -initHSpeed;
+		}
+		else{
+			dx = initHSpeed;
+		}
+		dy = initVSpeed;
 	}
 
 	public void createLevel2Alien(Game game, int x, int y) {
@@ -58,8 +63,8 @@ public class AlienEntity extends Entity {
 		frames[2] = SpriteStore.get().getSprite("sprites/ufoo1.png");
 		frames[3] = SpriteStore.get().getSprite("sprites/ufoo3.png");
 		this.game = game;
-		dx = -game.getAlienHoriSpeed();
-		dy = game.getAlienVertSpeed();
+		dx = -getHorizontalMovement();
+		dy = getVerticalMovement();
 		// Customize the attributes of the level 2 alien
 
 		// Add the level 2 alien to the gam
@@ -79,7 +84,6 @@ public class AlienEntity extends Entity {
 
 		// Add the level 2 alien to the gam
 	}
-
 
 
 
@@ -125,6 +129,7 @@ public class AlienEntity extends Entity {
 		// proceed with normal move
 		super.move(delta);
 	}
+
 	/**
 	 * Update the game logic related to aliens
 	 */
@@ -148,5 +153,47 @@ public class AlienEntity extends Entity {
 	 */
 	public void collidedWith(Entity other) {
 		// collisions with aliens are handled elsewhere
+	}
+
+	public static void setAlienHMovement(double hSpeed){
+		initHSpeed=hSpeed;
+	}public static void setAlienVMovement(double vSpeed){
+		initVSpeed=vSpeed;
+	}
+	public static double getAlienHMovement(){
+		return initHSpeed;
+	}
+
+	public static double getAlienVMovement(){
+		return initVSpeed;
+	}
+
+	//need to fix logic
+	public static void alienInvasion() {
+		if(game.isTaskExist(taskInvasion)!=null)return;
+		double originHoriSpeed = getAlienHMovement();
+		double originVertSpeed = getAlienVMovement();
+		long startTimer = SystemTimer.getTime();
+		double targetHoriSpeed = originHoriSpeed * 2;
+		double targetVertSpeed = originVertSpeed * 2;
+		taskInvasion = new TimerTask() {
+
+			long durationTimer = SystemTimer.getTime();
+
+			@Override
+			public void run() {
+				if (durationTimer - startTimer < 5000) {
+					setAlienHMovement(targetHoriSpeed);
+					setAlienVMovement(targetVertSpeed);
+					durationTimer = SystemTimer.getTime();
+				}
+				else{
+					setAlienHMovement(originHoriSpeed);
+					setAlienVMovement(originVertSpeed);
+					game.removeTask(taskInvasion);
+				}
+			}
+		};
+		game.addTask(taskInvasion,0,4);
 	}
 }
