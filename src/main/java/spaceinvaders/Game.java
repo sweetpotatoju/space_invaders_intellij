@@ -100,6 +100,7 @@ public class Game extends Canvas {
 	private JLabel backLabel;
 	private Graphics2D userHUD;
 	private Image image;
+	private Game game = this;
 
 	/**
 	 * Construct our game and set it running.
@@ -122,10 +123,28 @@ public class Game extends Canvas {
 
 
 
-//		// Add background image
-//		ImageIcon backgroundImage = new ImageIcon("sprites/rankingPage.png");
-//		JLabel background = new JLabel(backgroundImage);
-//		container.add(background,BorderLayout.CENTER);
+		JButton home = new JButton("HOME");
+		home.setBounds(0,0,80,30);
+		home.setBackground(Color.BLACK);
+		home.setOpaque(false);
+		home.setForeground(Color.BLACK);
+		home.setContentAreaFilled(false);
+		home.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+//				home.setIcon(changeIconGoHome);
+				bgm.stop();
+				container.dispose();
+			}
+
+
+
+		});
+
+
+		panel.add(home);
+
+
 
 
 
@@ -177,6 +196,9 @@ public class Game extends Canvas {
 	 * create a new set.
 	 */
 	private void startGame() {
+
+
+
 		// clear out any existing entities and intialise a new set
 		entities.clear();
 		initEntities();
@@ -198,6 +220,11 @@ public class Game extends Canvas {
 		tenToHundMillis=0; aSecond=0; aMinute=0;
 		//윈도우랑 게임창 노래 겹쳐들림
 //		new BackgroundMusic();
+
+		JButton home = new JButton("HOME");
+		home.setBounds(0,0,80,30);
+		home.setBackground(Color.WHITE);
+
 	}
 	private void initEntities() {
 		if (multiPlay){
