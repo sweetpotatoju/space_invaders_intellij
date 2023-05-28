@@ -37,10 +37,6 @@ public class ItemSlotMachine {
                 ship.keyReverse();
                 System.out.println("Reverse");
                 break;
-            case 4://Alien speedUp
-                System.out.println("Invasion");
-                AlienEntity.alienInvasion();
-                break;
             default:
         }
     }

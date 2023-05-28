@@ -29,7 +29,13 @@ public class ItemEntity extends Entity {
         super(ref, x, y);
         this.sprite = SpriteStore.get().getSprite(ref);
         this.game = game;
-        this.setHorizontalMovement(moveSpeed);
+        int coinToss=(int)Math.round(Math.random());
+        if(coinToss ==0){
+            setHorizontalMovement(moveSpeed);
+        }
+        else{
+            setHorizontalMovement(-moveSpeed);
+        }
         this.setVerticalMovement(moveSpeed);
         this.imgArray[0] = SpriteStore.get().getSprite("sprites/itemBox.png");
         this.imgArray[1] = SpriteStore.get().getSprite("sprites/brokenBox.png");
