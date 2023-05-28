@@ -487,9 +487,6 @@ public class Game extends Canvas {
 	}
 
 
-
-
-
 		public void tryToFire2() {
 		ShipEntity ship = (ShipEntity) ShipCounter[1];
 		if (ship.isDead()) return;
@@ -553,7 +550,7 @@ public class Game extends Canvas {
 			//Status HUD
 			Graphics2D userHUD = (Graphics2D) strategy.getDrawGraphics();
 			userHUD.setColor(Color.white);
-			userHUD.drawString("Score : "+playBoard.getScore(),(800-g.getFontMetrics().stringWidth("Score : "+killCount))/2,20);
+			userHUD.drawString("Score: " + playBoard.getScore(), 720, 20);
 			/*userHUD.drawString(timeStamp,5,580);*/
 			// cycle round asking each entity to move itself
 			if (!stageRunning)createAliens();

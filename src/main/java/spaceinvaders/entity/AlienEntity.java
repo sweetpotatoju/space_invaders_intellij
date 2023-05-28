@@ -21,6 +21,7 @@ import java.util.Iterator;
 public class AlienEntity extends Entity {
 	/** The speed at which the alient moves horizontally */
 	/** The game in which the entity exists */
+
 	private Game game;
 	/** The animation frames */
 	private Sprite[] frames = new Sprite[4];
@@ -51,12 +52,12 @@ public class AlienEntity extends Entity {
 	}
 
 	public void createLevel2Alien(Game game, int x, int y) {
-		// Create a new alien entity
 
-		frames[0] = SpriteStore.get().getSprite("sprites/ufoo1.png");
-		frames[1] = SpriteStore.get().getSprite("sprites/ufoo2.png");
-		frames[2] = SpriteStore.get().getSprite("sprites/ufoo1.png");
-		frames[3] = SpriteStore.get().getSprite("sprites/ufoo3.png");
+
+		frames[0] = SpriteStore.get().getSprite("sprites/Level2.png");
+		frames[1] = SpriteStore.get().getSprite("sprites/Level2-2.png");
+		frames[2] = SpriteStore.get().getSprite("sprites/Level2.png");
+		frames[3] = SpriteStore.get().getSprite("sprites/Level2-3.png");
 		this.game = game;
 		dx = -game.getAlienHoriSpeed();
 		dy = game.getAlienVertSpeed();
