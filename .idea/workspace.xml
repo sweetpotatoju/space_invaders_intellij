@@ -4,23 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a032ae6-4b29-432b-86a3-e62c7564cd2e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-05-28__6_38__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-05-28__6_38__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-05-28__7_24__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-05-28__7_24__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/Sprite.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/AlienEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/AlienEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sprites/ship1.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sprites/ship2.GIF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$KeyInputHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$KeyInputHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/AlienEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/AlienEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/sprites/ship1.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/sprites/ship2.GIF" beforeDir="false" />
-    </list>
+    <list default="true" id="9a032ae6-4b29-432b-86a3-e62c7564cd2e" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,6 +18,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
@@ -119,14 +108,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681653048856</updated>
     </task>
-    <task id="LOCAL-00002" summary="홈버튼 추가, 랭킹 이쁘게">
-      <created>1685268990762</created>
+    <task id="LOCAL-00002" summary="Level2image add &amp;&amp; scoreborad point rework">
+      <created>1685281147419</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1685268990762</updated>
+      <updated>1685281147419</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -147,6 +136,7 @@
     <MESSAGE value="홈버튼 추가, 랭킹 이쁘게" />
     <MESSAGE value="createAlien random point rework" />
     <MESSAGE value="boss attack rework" />
-    <option name="LAST_COMMIT_MESSAGE" value="boss attack rework" />
+    <MESSAGE value="Level2image add &amp;&amp; scoreborad point rework" />
+    <option name="LAST_COMMIT_MESSAGE" value="Level2image add &amp;&amp; scoreborad point rework" />
   </component>
 </project>
