@@ -3,6 +3,7 @@ package spaceinvaders.entity;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import spaceinvaders.Game;
 import spaceinvaders.Sprite;
 import spaceinvaders.SpriteStore;
 
@@ -34,7 +35,6 @@ public abstract class Entity {
 	private Rectangle me = new Rectangle();
 	/** The rectangle used for other entities during collision resolution */
 	private Rectangle him = new Rectangle();
-	private long moveSpeed;
 	/**
 	 * Construct a entity based on a sprite image and a location.
 	 * 
