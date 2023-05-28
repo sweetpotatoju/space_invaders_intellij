@@ -11,6 +11,9 @@ public class BackgroundMusic implements Runnable {
     private String filepath;
     private Executor executor;
     private Clip clip;
+    private  long stopTime = 0;
+    public boolean isPlaying = false;
+
 
     public BackgroundMusic(String filepath, Executor executor) {
         this.filepath = filepath;
@@ -39,11 +42,8 @@ public class BackgroundMusic implements Runnable {
         });
     }
     public void stop() {
-//        if (clip != null && clip.isRunning() ) {
-//            clip.stop();
-//            clip.close();
-//        }
         clip.stop();
         clip.close();
     }
+
 }

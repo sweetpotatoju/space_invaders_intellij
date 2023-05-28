@@ -27,10 +27,36 @@ public class HowToPlay extends JFrame {
                 ImageIcon icon = new ImageIcon(getClass().getResource("/sprites/howToPlay.png"));
                 Image image = icon.getImage();
                 g.drawImage(image,2,0,getWidth(),getHeight(),null);
+
+
+//                //홈버튼 이미지
+//                ImageIcon homeIcon = new ImageIcon(getClass().getResource("sprites/goHome.png"));
+//                Image image1 = homeIcon.getImage();
+//                g.drawImage(image1,360,500,80,40,null);
+
             }
         };
 
+        JButton homeButton = new JButton();
+        homeButton.setOpaque(false);
+        homeButton.setBorderPainted(false);
+        homeButton.setContentAreaFilled(false);
+        homeButton.setBounds(360, 500, 50, 50);
+        homeButton.setForeground(Color.WHITE);
+
+        // 홈 버튼에 클릭 이벤트 리스너 등록
+        homeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 창 종료
+                dispose();
+            }
+        });
+
+        panel.add(homeButton);
         panel.setLayout(null);
+
+
 
 
 

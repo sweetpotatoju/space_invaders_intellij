@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
@@ -29,6 +31,7 @@ public class Ranking extends JFrame {
         table = new JTable(model);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS); // 컬럼 크기 자동 조정
         table.setEnabled(false); // 테이블 클릭 비활성화
+        table.setBackground(Color.decode("#6495ED"));
 
         // 폰트 사이즈 설정
         table.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -61,6 +64,19 @@ public class Ranking extends JFrame {
                     row.add(bestScore);
                     model.addRow(row);
                 }
+            }
+        });
+
+        // 홈 버튼 추가
+        JButton homeButton = new JButton("HOME");
+        getContentPane().add(homeButton, BorderLayout.SOUTH);
+
+        // 홈 버튼에 클릭 이벤트 리스너 등록
+        homeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 창 종료
+                dispose();
             }
         });
 

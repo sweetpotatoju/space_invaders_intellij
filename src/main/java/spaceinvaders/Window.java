@@ -22,9 +22,6 @@ public class Window extends JFrame {
 
 
 
-
-
-
     public Window(String themeImagePath, String profileImagePath) {
 
         setTitle("Spaceinvaders");
@@ -125,6 +122,13 @@ public class Window extends JFrame {
         ranking.setForeground(Color.WHITE);
         mypage.setForeground(Color.WHITE);
         Info.setForeground(Color.WHITE);
+
+        button1.setContentAreaFilled(false);
+        button3.setContentAreaFilled(false);
+        ranking.setContentAreaFilled(false);
+        mypage.setContentAreaFilled(false);
+        Info.setContentAreaFilled(false);
+
 
 
 

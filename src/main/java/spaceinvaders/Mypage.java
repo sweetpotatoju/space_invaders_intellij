@@ -80,10 +80,10 @@ public class Mypage extends JFrame {
             public void mousePressed(MouseEvent e) {
 
                 mypage.dispose();
-
-                if (backgroundMusic != null) {
-                    backgroundMusic.stop();
-                }
+//
+//                if (backgroundMusic != null) {
+//                    backgroundMusic.stop();
+//                }
 
 
 //                otherWindow.stopBackgroundMusic();
