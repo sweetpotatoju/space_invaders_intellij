@@ -235,5 +235,7 @@ public class Window extends JFrame {
 
 //        Window window = new Window();
 //        window.showWindow();
+
+        //수정수젇ㅇ
     }
 }

@@ -5,26 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a032ae6-4b29-432b-86a3-e62c7564cd2e" name="Changes" comment="" />
-    <list default="true" id="9a032ae6-4b29-432b-86a3-e62c7564cd2e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/Mypage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/Mypage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/AttackEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/AttackEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/BossEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/BossEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ShotEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/ShotEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sprites/bossAttack.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sprites/bossAttack.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$KeyInputHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game$KeyInputHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Game.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/Mypage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/Mypage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/AttackEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/AttackEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShotEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShotEntity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/sprites/bossAttack.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/sprites/bossAttack.png" afterDir="false" />
-    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -76,12 +56,6 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/82109/IdeaProjects/space_invaders_intellij/lib/timer.dll",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "C:/Users/AISELab/Desktop/space_invaders_intellij/lib/gagetimer.jar",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -95,10 +69,6 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RecentsManager"/>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\AISELab\Desktop\space_invaders_intellij\src\main\resources\sprites" />
-    </key>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="spaceinvaders.entity" />
@@ -147,14 +117,13 @@
       <updated>1681653048856</updated>
     </task>
     <task id="LOCAL-00002" summary="홈버튼 추가, 랭킹 이쁘게">
-      <created>1685268990762</created>
+      <created>1685269721599</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1685268990762</updated>
+      <updated>1685269721599</updated>
     </task>
     <option name="localTasksCounter" value="3" />
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
