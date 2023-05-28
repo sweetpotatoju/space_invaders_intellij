@@ -3,12 +3,7 @@ package spaceinvaders.entity;
 import spaceinvaders.Game;
 
 public class AttackEntity extends Entity {
-    /**
-     * The vertical speed at which the players shot moves
-     */ //총알이 움직이는 수직 속도
-    /**
-     * The game in which this entity exists
-     */
+
     private Game game;
     /**
      * True if this shot has been "used", i.e. its hit something
@@ -40,12 +35,7 @@ public class AttackEntity extends Entity {
             game.removeEntity(this);
         }
     }
-    /**
-     * Notification that this shot has collided with another
-     * entity
-     *
-     * @parma other The other entity with which we've collided
-     */
+
     public void collidedWith(Entity other) {
-        }
     }
+}

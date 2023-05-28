@@ -17,6 +17,8 @@ public class ShotEntity extends Entity {
 	private Game game;
 	/** True if this shot has been "used", i.e. its hit something */
 	private boolean used = false;
+	private float velocityX;
+	private float velocityY;
 
 	/**
 	 * Create a new shot from the player
@@ -37,6 +39,7 @@ public class ShotEntity extends Entity {
 
 		dy = -300;
 	}
+
 
 	/**
 	 * Request that this shot moved based on time elapsed
