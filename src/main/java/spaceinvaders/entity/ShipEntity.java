@@ -14,7 +14,7 @@ public class ShipEntity extends Entity {
 	 * The game in which the ship exists
 	 */
 	private Game game;
-	private boolean player2, deadSign, keyReversed;
+	private boolean player2, deadSign, keyReversed,affected;
 	private long fireTime, accelTime, reverseTime;
 	private LifeCounter playerLifes;
 	private int moveSpeed, fireRatio;
@@ -43,6 +43,7 @@ public class ShipEntity extends Entity {
 		this.reverseTime=0;
 		this.directionVal=0;
 		this.keyReversed=false;
+		this.affected=false;
 	}
 
 	/**
@@ -144,7 +145,6 @@ public class ShipEntity extends Entity {
 			}
 		} else if (other instanceof ItemEntity) {
 			ItemSlotMachine itemGet = new ItemSlotMachine(game, this);
-			itemGet.spinItem();
 			game.removeEntity(other);
 		} else if (other instanceof BossEntity) {
 			int currLife=playerLifes.getEntityLife();
@@ -207,7 +207,8 @@ public class ShipEntity extends Entity {
 	public void playerDead(){
 		this.deadSign = true;
 	}
-
+	public void setAffected(boolean toggle){affected=true;}
+	public boolean isAffected(){return affected;}
 	public int getMoveSpeed(){ return moveSpeed; }
 
 	public void setMoveSpeed(int tgt){ moveSpeed=tgt; }

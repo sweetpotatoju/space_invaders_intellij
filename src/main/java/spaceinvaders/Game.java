@@ -569,7 +569,7 @@ public class Game extends Canvas {
 
 	public void itemDrop(int x, int y){
 		if (getKillCount()%3 == 0 && getKillCount()/3 >= 1){
-			addEntity(new ItemEntity("sprites/itemBox.png",this,x,y));
+			addEntity(new ItemEntity(this,x,y));
 		}
 	}
 
@@ -658,6 +658,7 @@ public class Game extends Canvas {
 			gameTimer.addTask(genTask, 0, 1000);
 		}
 	}
+	public void nullYo(){}
 	public void addLiveCount(){liveCount++;}
 	public void subLiveCount(){liveCount--;}
 	public void setLiveCount(int set){liveCount = set;}

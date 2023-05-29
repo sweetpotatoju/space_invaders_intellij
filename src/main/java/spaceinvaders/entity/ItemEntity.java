@@ -15,9 +15,18 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ItemEntity extends Entity {
-    private int moveSpeed=200;
+    private int moveSpeed = 200;
     private Game game;
-    private Sprite[] imgArray = new Sprite[6];
+
+    private long lastFrameChange;
+    /**
+     * The frame duration in milliseconds, i.e. how long any given frame of animation lasts
+     */
+    private long frameDuration = 100;
+    private int frameNumber;
+    private Sprite[] frames = new Sprite[5];
+    private String[] imgArray = new String[5];
+
     /**
      * Construct a entity based on a sprite image and a location.
      *
@@ -25,26 +34,50 @@ public class ItemEntity extends Entity {
      * @param x   The initial x location of this entity
      * @param y   The initial y location of this entity
      */
-    public ItemEntity(String ref,Game game, int x, int y) {
-        super(ref, x, y);
-        this.sprite = SpriteStore.get().getSprite(ref);
+    public ItemEntity(Game game, int x, int y) {
+        super("sprites/itemBox.png", x, y);
         this.game = game;
-        int coinToss=(int)Math.round(Math.random());
-        if(coinToss ==0){
+        int coinToss = (int) Math.round(Math.random());
+        if (coinToss == 0) {
             setHorizontalMovement(moveSpeed);
-        }
-        else{
+        } else {
             setHorizontalMovement(-moveSpeed);
         }
         this.setVerticalMovement(moveSpeed);
-        this.imgArray[0] = SpriteStore.get().getSprite("sprites/itemBox.png");
-        this.imgArray[1] = SpriteStore.get().getSprite("sprites/brokenBox.png");
-        this.imgArray[2] = SpriteStore.get().getSprite("sprites/heart.GIF");
-        this.imgArray[3] = SpriteStore.get().getSprite("sprites/accelator.gif");
-        this.imgArray[4] = SpriteStore.get().getSprite("sprites/keyreverse.png");
-        this.imgArray[5] = SpriteStore.get().getSprite("sprites/invasion.png");
+        this.imgArray[0] = "sprites/itemBox.png";
+        this.imgArray[1] = "sprites/heart.GIF";
+        this.imgArray[2] = "sprites/accelator.gif";
+        this.imgArray[3] = "sprites/keyreverse.png";
+        this.imgArray[4] = "sprites/brokenBox.png";
+        frames[0] = SpriteStore.get().getSprite(imgArray[0]);
+        frames[1] = SpriteStore.get().getSprite(imgArray[1]);
+        frames[2] = SpriteStore.get().getSprite(imgArray[2]);
+        frames[3] = SpriteStore.get().getSprite(imgArray[3]);
+        frames[4] = SpriteStore.get().getSprite(imgArray[4]);
     }
-    public void move(long delta) {
+
+    public void slot(long delta) {
+        // since the move tells us how much time has passed
+        // by we can use it to drive the animation, however
+        // its the not the prettiest solution
+        lastFrameChange += delta;
+
+        // if we need to change the frame, update the frame number
+        // and flip over the sprite in use
+        if (lastFrameChange > frameDuration) {
+            // reset our frame change time counter
+            lastFrameChange = 0;
+
+            // update the frame
+            frameNumber++;
+            if (frameNumber >= frames.length) {
+                frameNumber = 0;
+            }
+
+            sprite = frames[frameNumber];
+        }
+    }
+    public void move ( long delta){
         if ((dx < 0) && (x < 10)) {
             dx = -dx;
             return;
@@ -57,22 +90,16 @@ public class ItemEntity extends Entity {
             game.removeEntity(this);
             return;
         }
-
+        slot(delta);
         super.move(delta);
     }
-    public void showIt(int i){
-        this.sprite = imgArray[i];
-    }
     @Override
-    public void collidedWith(Entity other) {
+    public void collidedWith (Entity other){
 
-        if (other instanceof ShipEntity){
-
+        if (other instanceof ShipEntity) {
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             BackgroundMusic gain = new BackgroundMusic("src/main/resources/audio/itemGain.wav", executorService);
             executorService.execute(gain);
         }
-
-
     }
 }

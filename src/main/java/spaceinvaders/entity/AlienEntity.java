@@ -3,11 +3,8 @@ package spaceinvaders.entity;
 import spaceinvaders.Game;
 import spaceinvaders.Sprite;
 import spaceinvaders.SpriteStore;
-import spaceinvaders.SystemTimer;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimerTask;
 
 /**
  * An entity which represents one of our space invader aliens.
