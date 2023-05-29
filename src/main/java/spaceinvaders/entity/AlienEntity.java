@@ -41,9 +41,9 @@ public class AlienEntity extends Entity {
 		arrAlienImg[0][0]="sprites/ufoo1.png";
 		arrAlienImg[0][1]="sprites/ufoo2.png";
 		arrAlienImg[0][2]="sprites/ufoo3.png";
-		arrAlienImg[1][0]="sprites/ufoo1.png";
-		arrAlienImg[1][1]="sprites/ufoo1.png";
-		arrAlienImg[1][2]="sprites/ufoo1.png";
+		arrAlienImg[1][0]="sprites/level2.png";
+		arrAlienImg[1][1]="sprites/level2-1.png";
+		arrAlienImg[1][2]="sprites/level2-2.png";
 		// setup the animatin frames
 		frames[0] = SpriteStore.get().getSprite(arrAlienImg[game.getLevel()-1][0]);
 		frames[1] = SpriteStore.get().getSprite(arrAlienImg[0][1]);
@@ -62,10 +62,10 @@ public class AlienEntity extends Entity {
 	public void createLevel2Alien(Game game, int x, int y) {
 		// Create a new alien entity
 
-		frames[0] = SpriteStore.get().getSprite("sprites/ufoo1.png");
-		frames[1] = SpriteStore.get().getSprite("sprites/ufoo2.png");
-		frames[2] = SpriteStore.get().getSprite("sprites/ufoo1.png");
-		frames[3] = SpriteStore.get().getSprite("sprites/ufoo3.png");
+		frames[0] = SpriteStore.get().getSprite("sprites/level2.png");
+		frames[1] = SpriteStore.get().getSprite("sprites/level2-1.png");
+		frames[2] = SpriteStore.get().getSprite("sprites/level2.png");
+		frames[3] = SpriteStore.get().getSprite("sprites/level2-2.png");
 		this.game = game;
 		dx = -getAlienHMovement();
 		dy = getAlienVMovement();

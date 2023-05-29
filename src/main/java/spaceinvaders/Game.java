@@ -296,12 +296,12 @@ public class Game extends Canvas {
 		itemDrop(other.getX(), other.getY());
 		System.out.println(getKillCount());
 		if (getLevel() == 2&& getKillCount()%2 == 0 && getKillCount() != 0) {
-			level2shot();
+			level2Shot();
 		}
 		if(getLiveCount()==0&&gameTimer.getTask(genTask)==null)notifyWin();
 	}
 
-	public void level2shot(){
+	public void level2Shot(){
 
 		int randomX = new Random().nextInt(600); // 0부터 599까지의 랜덤한 x좌표 생성
 		AttackEntity level2Shot = new AttackEntity(this, "sprites/shot.gif", randomX, 100);
@@ -350,7 +350,7 @@ public class Game extends Canvas {
 			//Status HUD
 			Graphics2D userHUD = (Graphics2D) strategy.getDrawGraphics();
 			userHUD.setColor(Color.white);
-			userHUD.drawString("Score : "+playBoard.getScore(),(800-g.getFontMetrics().stringWidth("Score : "+killCount))/2,20);
+			userHUD.drawString("Score: " + playBoard.getScore(), 720, 20);
 			if (!waitingForKeyPress) {
 				for (int i=0;i<entities.size();i++) {
 					Entity entity = (Entity) entities.get(i);

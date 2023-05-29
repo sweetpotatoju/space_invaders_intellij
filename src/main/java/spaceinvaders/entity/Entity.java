@@ -129,12 +129,7 @@ public abstract class Entity {
 		return (int) y;
 	}
 	
-	/**
-	 * Check if this entity collised with another.
-	 * 
-	 * @param other The other entity to check collision against
-	 * @return True if the entities collide with each other
-	 */
+
 	public void setLocation(int x, int y){ this.x = x; this.y =y; }
 	public boolean collidesWith(Entity other) {
 		me.setBounds((int) x,(int) y,sprite.getWidth(),sprite.getHeight());

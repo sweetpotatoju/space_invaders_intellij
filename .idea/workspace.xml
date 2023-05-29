@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a032ae6-4b29-432b-86a3-e62c7564cd2e" name="Changes" comment="#bug report&#10;1.level always fixed in 1.&#10;2.stage 2 is stucked because gen alien is over one.&#10;3.accelation doesnt work well.&#10;4.invasion is separated by old group and new one.&#10;5.still not working ItemSlotMachine Effect.">
+    <list default="true" id="9a032ae6-4b29-432b-86a3-e62c7564cd2e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14__7_48__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-14__7_48__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-17__12_45__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-04-17__12_45__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-05-23__9_30__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-05-23__9_30__Changes_.xml" afterDir="false" />
@@ -50,6 +50,8 @@
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShipEntity$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShipEntity$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShipEntity$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShipEntity$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShipEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spaceinvaders/entity/ShipEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/BossEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/BossEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spaceinvaders/entity/Entity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,6 +74,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/spaceinvaders/entity/AlienEntity.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="jar://$USER_HOME$/java-sdk/src.zip!/java/awt/image/DataBufferInt.java" root0="SKIP_INSPECTION" />
     <setting file="jar://$USER_HOME$/java-sdk/src.zip!/java/awt/image/DirectColorModel.java" root0="SKIP_INSPECTION" />
     <setting file="jar://$USER_HOME$/java-sdk/src.zip!/java/awt/image/Raster.java" root0="SKIP_INSPECTION" />
@@ -90,22 +93,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/정기수/IdeaProjects/space_invaders_intellij&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/space_invaders_intellij-master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="spaceinvaders.entity" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Window" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="spaceinvaders.Window" />
@@ -134,6 +139,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1684849041341</updated>
+      <workItem from="1681648179087" duration="4675000" />
+      <workItem from="1681652874773" duration="6965000" />
+      <workItem from="1685261463605" duration="7038000" />
+      <workItem from="1685261463605" duration="6702000" />
+      <workItem from="1685100668765" duration="649000" />
+      <workItem from="1685253820175" duration="7810000" />
+      <workItem from="1685271134672" duration="44000" />
+      <workItem from="1685271185408" duration="32000" />
+      <workItem from="1685271673517" duration="1028000" />
       <workItem from="1684849042409" duration="189000" />
       <workItem from="1684849247278" duration="17691000" />
       <workItem from="1684913622978" duration="24791000" />
@@ -141,6 +155,8 @@
       <workItem from="1685094258791" duration="11068000" />
       <workItem from="1685109520799" duration="20644000" />
       <workItem from="1685282204240" duration="8373000" />
+      <workItem from="1685283839174" duration="3703000" />
+      <workItem from="1685287750991" duration="3389000" />
     </task>
     <task id="LOCAL-00001" summary="#bug report&#10;1.level always fixed in 1.&#10;2.stage 2 is stucked because gen alien is over one.&#10;3.accelation doesnt work well.&#10;4.invasion is separated by old group and new one.&#10;5.still not working ItemSlotMachine Effect.">
       <created>1684975119950</created>
@@ -156,7 +172,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684975161175</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="REWORK UI">
+      <created>1685287290368</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1685287290368</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,8 +197,13 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="홈버튼 추가, 랭킹 이쁘게" />
+    <MESSAGE value="createAlien random point rework" />
+    <MESSAGE value="boss attack rework" />
+    <MESSAGE value="Level2image add &amp;&amp; scoreborad point rework" />
     <MESSAGE value="#bug report&#10;1.level always fixed in 1.&#10;2.stage 2 is stucked because gen alien is over one.&#10;3.accelation doesnt work well.&#10;4.invasion is separated by old group and new one.&#10;5.still not working ItemSlotMachine Effect." />
-    <option name="LAST_COMMIT_MESSAGE" value="#bug report&#10;1.level always fixed in 1.&#10;2.stage 2 is stucked because gen alien is over one.&#10;3.accelation doesnt work well.&#10;4.invasion is separated by old group and new one.&#10;5.still not working ItemSlotMachine Effect." />
+    <MESSAGE value="REWORK UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="REWORK UI" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
